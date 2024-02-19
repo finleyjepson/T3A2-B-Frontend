@@ -21,8 +21,9 @@ function App() {
             <nav class="bg-gray-50 dark:bg-gray-700">
                 <div class="px-5 py-3">
                     <div class="flex items-center">
-                        <ul class="flex flex-row font-medium mt-0 space-x-8 rtl:space-x-reverse text-sm">
+                        <ul class="flex flex-row font-medium mt-0 space-x-8 text-sm">
                             <li>
+                                {/* aria-current="page" is for screen readers to comprehend the current page as the Home page */}
                                 <a href="#" class="text-gray-900 dark:text-white hover:underline" aria-current="page">Home</a>
                             </li>
                             <li>
