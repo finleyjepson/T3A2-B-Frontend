@@ -9,7 +9,7 @@ export default function EventLanding({ events }) {
 			<li key={index}>
 				<Link to={`${index}`}>
 					<div className="p-4">
-						<p className="text-xl">{event.title}</p>
+						<h1 className="text-xl">{event.title}</h1>
 						<p>{event.description}</p>
 						<p>{event.date}</p>
 					</div>
