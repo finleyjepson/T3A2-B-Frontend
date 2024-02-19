@@ -1,16 +1,16 @@
 import React from 'react'
 
-export default function EventInfo({events}) {
+export default function EventInfo({ events, id } ) {
 	return (
 	<>
 		<ul>
-			{events.map((event, index) => (
-				<li key={index}>
-				<p>{event.title}</p>
-				<p>{event.description}</p>
-				<p>{event.date}</p>
-				</li>
-			))}
+			<li>
+				<div className="p-4">
+					<h1 className="text-xl">{events[id].title}</h1>
+					<p>{events[id].date}</p>
+					<p>{events[id].description}</p>
+				</div>
+			</li>
 		</ul>
 	</>
 	)

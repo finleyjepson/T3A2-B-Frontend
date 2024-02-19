@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom' 
 
 export default function Navbar() {
   return (
@@ -29,7 +30,10 @@ export default function Navbar() {
                           <a href="#" className="text-gray-900 dark:text-white hover:underline" aria-current="page">Home</a>
                       </li>
                       <li>
-                          <a href="#" className="text-gray-900 dark:text-white hover:underline">Events</a>
+                            <Link to="/events" >
+                                <p className="text-gray-900 dark:text-white hover:underline">Events</p>
+                            </Link>
+                          {/* <a href="#" className="text-gray-900 dark:text-white hover:underline">Events</a> */}
                       </li>
                       <li>
                           <a href="#" className="text-gray-900 dark:text-white hover:underline">About</a>
