@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom'
 import Navbar from './components/Navbar.jsx'
 import EventInfo from './components/EventInfo.jsx'
 import EventLanding from './components/EventLanding.jsx'
+import SignUp from './components/SignUp.jsx'
 import { useEffect, useState } from 'react'
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
                     <Route path='/' />
                     <Route path='/events' element={<EventLanding events={ events } />} />
                     <Route path='/events/:id' element={<EventInfoWrapper events={ events }/>} />
+                    <Route path='/signup' element={<SignUp />} />
                 </Routes>
             </BrowserRouter>
         </>
