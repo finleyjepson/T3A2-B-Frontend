@@ -1,0 +1,5 @@
+/* Adding Tailwind directives per https://tailwindcss.com/docs/guides/vite */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
