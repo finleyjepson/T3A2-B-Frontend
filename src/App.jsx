@@ -4,6 +4,7 @@ import EventInfo from './components/EventInfo.jsx'
 import EventList from './components/EventList.jsx'
 import UpcomingEventsContainer from './components/UpcomingEventsContainer.jsx'
 import EventsLandingContainer from './components/EventsLandingContainer.jsx'
+import UpcomingAnimeContainer from './components/UpcomingAnimeContainer.jsx'
 import SignUp from './components/SignUp.jsx'
 import Login from './components/Login.jsx'
 import { useEffect, useState } from 'react'
@@ -19,6 +20,7 @@ function App() {
         let response = await fetch("http://localhost:4000/events/all")
         response = await response.json()
         setEvents(response)
+        await console.log(events)
         }
         getEvents()
     }, [])
@@ -26,18 +28,15 @@ function App() {
     // Higher order component for single event info
     function EventInfoWrapper({ events }) {
         const { id } = useParams()
-        console.log(id)
-        console.log(events)
         return <EventInfo events={ events } id={ id }/>
     }
-
     return (
         <>
             <BrowserRouter>
                 <Navbar />
                 <Routes>
                     <Route path='/' element={<UpcomingEventsContainer events={ events }/>}/>
-                    <Route path='/events' element={<EventsLandingContainer events={ events } />} />
+                    <Route path='/events' element={<UpcomingAnimeContainer events={ events } />} />
                     <Route path='/events/:id' element={<EventInfoWrapper events={ events }/>} />
                     <Route path='/signup' element={<SignUp />} />
                     <Route path='/login' element={<Login />} />
