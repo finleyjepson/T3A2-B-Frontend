@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom'
 import Navbar from './components/Navbar.jsx'
 import EventInfo from './components/EventInfo.jsx'
-import EventLanding from './components/EventLanding.jsx'
+import EventList from './components/EventList.jsx'
+import UpcomingEventsContainer from './components/UpcomingEventsContainer.jsx'
 import SignUp from './components/SignUp.jsx'
 import { useEffect, useState } from 'react'
 
@@ -33,8 +34,8 @@ function App() {
             <BrowserRouter>
                 <Navbar />
                 <Routes>
-                    <Route path='/' />
-                    <Route path='/events' element={<EventLanding events={ events } />} />
+                    <Route path='/' element={<UpcomingEventsContainer events={ events }/>}/>
+                    <Route path='/events' element={<EventList events={ events } />} />
                     <Route path='/events/:id' element={<EventInfoWrapper events={ events }/>} />
                     <Route path='/signup' element={<SignUp />} />
                 </Routes>
