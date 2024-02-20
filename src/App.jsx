@@ -5,6 +5,7 @@ import EventList from './components/EventList.jsx'
 import UpcomingEventsContainer from './components/UpcomingEventsContainer.jsx'
 import SignUp from './components/SignUp.jsx'
 import Login from './components/Login.jsx'
+import PollContainer from './components/PollContainer.jsx'
 import { useEffect, useState } from 'react'
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
                     <Route path='/events/:id' element={<EventInfoWrapper events={ events }/>} />
                     <Route path='/signup' element={<SignUp />} />
                     <Route path='/login' element={<Login />} />
+                    <Route path='/poll' element={<PollContainer />} />
                 </Routes>
             </BrowserRouter>
         </>
