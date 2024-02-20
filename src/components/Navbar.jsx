@@ -16,7 +16,7 @@ export default function Navbar() {
             </a>
             {/* Login / Sign up buttons */}
             <div className="flex space-x-4 items-center">
-                <a href="#" className="text-black text-sm">Login</a>
+                <Link to="/login" className="text-black text-sm">Login</Link>
                 <Link to="/signup" className="bg-indigo-600 px-4 py-2 rounded text-white hover:bg-indigo-500 text-sm">Sign up</Link>
             </div>
       </header>
