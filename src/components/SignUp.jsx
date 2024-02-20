@@ -3,7 +3,7 @@ import React from 'react'
 export default function Signup() {
     return (
                 // Create a sign up box for registrations
-                <div className="p-4 mt-10 flex flex-col items-center  px-6 py-8 mx-auto md:h-screen lg:py-0">
+                <div className="p-4 mt-10 flex flex-col items-center px-6 py-8 mx-auto md:h-screen lg:py-0">
                     <div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 border-gray-700">
                         <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
 
