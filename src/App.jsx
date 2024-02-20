@@ -7,6 +7,7 @@ import EventsLandingContainer from './components/EventsLandingContainer.jsx'
 import UpcomingAnimeContainer from './components/UpcomingAnimeContainer.jsx'
 import SignUp from './components/SignUp.jsx'
 import Login from './components/Login.jsx'
+import Home from './components/Home.jsx'
 import { useEffect, useState } from 'react'
 
 function App() {
@@ -20,7 +21,6 @@ function App() {
         let response = await fetch("http://localhost:4000/events/all")
         response = await response.json()
         setEvents(response)
-        await console.log(events)
         }
         getEvents()
     }, [])
@@ -30,13 +30,14 @@ function App() {
         const { id } = useParams()
         return <EventInfo events={ events } id={ id }/>
     }
+
     return (
         <>
             <BrowserRouter>
                 <Navbar />
                 <Routes>
-                    <Route path='/' element={<UpcomingEventsContainer events={ events }/>}/>
-                    <Route path='/events' element={<UpcomingEventsContainer events={ events } />} />
+                    <Route path='/' element={<Home events={ events }/>}/>
+                    <Route path='/events' element={<EventsLandingContainer events={ events } />} />
                     <Route path='/events/:id' element={<EventInfoWrapper events={ events }/>} />
                     <Route path='/signup' element={<SignUp />} />
                     <Route path='/login' element={<Login />} />
