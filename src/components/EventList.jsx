@@ -8,7 +8,7 @@ export default function EventList({ events, max }) {
 		<ul>
 			{events.slice(0, max).map((event, index) => (
 			<li key={index}>
-				<Link to={`${index}`}>
+				<Link to={`/events/${index}`}>
 					<div className="p-4">
 						<h1 className="text-xl">{event.title}</h1>
 						<p>{event.description}</p>

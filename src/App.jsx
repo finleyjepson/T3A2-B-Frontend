@@ -3,6 +3,7 @@ import Navbar from './components/Navbar.jsx'
 import EventInfo from './components/EventInfo.jsx'
 import EventList from './components/EventList.jsx'
 import UpcomingEventsContainer from './components/UpcomingEventsContainer.jsx'
+import EventsLandingContainer from './components/EventsLandingContainer.jsx'
 import SignUp from './components/SignUp.jsx'
 import Login from './components/Login.jsx'
 import { useEffect, useState } from 'react'
@@ -36,7 +37,7 @@ function App() {
                 <Navbar />
                 <Routes>
                     <Route path='/' element={<UpcomingEventsContainer events={ events }/>}/>
-                    <Route path='/events' element={<EventList events={ events } />} />
+                    <Route path='/events' element={<EventsLandingContainer events={ events } />} />
                     <Route path='/events/:id' element={<EventInfoWrapper events={ events }/>} />
                     <Route path='/signup' element={<SignUp />} />
                     <Route path='/login' element={<Login />} />

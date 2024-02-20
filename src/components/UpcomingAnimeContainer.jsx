@@ -1,7 +1,5 @@
 import React from 'react'
-import EventList from './EventList'
 
-// Events container on home page
 function UpcomingEventsContainer({ events }) {
   return (
     <>
@@ -16,4 +14,4 @@ function UpcomingEventsContainer({ events }) {
   )
 }
 
-export default UpcomingEventsContainer
+export default UpcomingAnimeContainer
