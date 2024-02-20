@@ -7,6 +7,7 @@ import EventsLandingContainer from './components/EventsLandingContainer.jsx'
 import UpcomingAnimeContainer from './components/UpcomingAnimeContainer.jsx'
 import SignUp from './components/SignUp.jsx'
 import Login from './components/Login.jsx'
+import PollContainer from './components/PollContainer.jsx'
 import Home from './components/Home.jsx'
 import { useEffect, useState } from 'react'
 
@@ -41,6 +42,7 @@ function App() {
                     <Route path='/events/:id' element={<EventInfoWrapper events={ events }/>} />
                     <Route path='/signup' element={<SignUp />} />
                     <Route path='/login' element={<Login />} />
+                    <Route path='/poll' element={<PollContainer />} />
                 </Routes>
             </BrowserRouter>
         </>
