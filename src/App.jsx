@@ -36,7 +36,7 @@ function App() {
                 <Navbar />
                 <Routes>
                     <Route path='/' element={<UpcomingEventsContainer events={ events }/>}/>
-                    <Route path='/events' element={<UpcomingAnimeContainer events={ events } />} />
+                    <Route path='/events' element={<UpcomingEventsContainer events={ events } />} />
                     <Route path='/events/:id' element={<EventInfoWrapper events={ events }/>} />
                     <Route path='/signup' element={<SignUp />} />
                     <Route path='/login' element={<Login />} />
