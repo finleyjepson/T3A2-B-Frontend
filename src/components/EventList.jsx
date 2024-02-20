@@ -1,11 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function EventLanding({ events }) {
+export default function EventList({ events, max }) {
+
 	return (
 	<>
 		<ul>
-			{events.map((event, index) => (
+			{events.slice(0, max).map((event, index) => (
 			<li key={index}>
 				<Link to={`${index}`}>
 					<div className="p-4">

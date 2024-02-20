@@ -27,13 +27,15 @@ export default function Navbar() {
                   <ul className="flex flex-row font-medium mt-0 space-x-8 text-sm">
                       <li>
                           {/* aria-current="page" is for screen readers to comprehend the current page as the Home page */}
-                          <a href="#" className="text-gray-900 dark:text-white hover:underline" aria-current="page">Home</a>
+                          <Link to="/" >
+                                <p className="text-gray-900 dark:text-white hover:underline">Home</p>
+                            </Link>
+                          {/* <a href="#" className="text-gray-900 dark:text-white hover:underline" aria-current="page">Home</a> */}
                       </li>
                       <li>
                             <Link to="/events" >
                                 <p className="text-gray-900 dark:text-white hover:underline">Events</p>
                             </Link>
-                          {/* <a href="#" className="text-gray-900 dark:text-white hover:underline">Events</a> */}
                       </li>
                       <li>
                           <a href="#" className="text-gray-900 dark:text-white hover:underline">About</a>
