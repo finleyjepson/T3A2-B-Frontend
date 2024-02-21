@@ -11,8 +11,7 @@ export default function Signup() {
 
     // Synchronise the form data state with user input changes 
     function handleChange(e) { 
-        const name = e.target.name
-        const value = e.target.value
+        const { name, value } = e.target;
         // Get the target field (name) and update the value in setFormData
         setFormData(previousState => ({
             ...previousState,
@@ -28,7 +27,7 @@ export default function Signup() {
 
     // Handle the form submission (Send POST request with form submission)
     async function handleSubmit(e) {
-        e.preventDefault(); // Prevent browser from reloading page
+        e.preventDefault() // Prevent browser from reloading page
         // Send response to POST /auth/register/ as JSON
         try {
             const response = await fetch('http://localhost:4000/auth/register', {
@@ -41,13 +40,14 @@ export default function Signup() {
                     password: formData.password,
                 }),
             });
-            // Basic error handling logged to console
+            // Basic error handling logged to console. Unsuccessful response:
             if (!response.ok) {
                 throw new Error('Response was not ok');
             }
-    
+            // Successful response:
             const data = await response.json();
             console.log('User successfully registered', data);
+        // Catch response:    
         } catch (error) {
             console.error('Problem registering the user', error.message);
         }
