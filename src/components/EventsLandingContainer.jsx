@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import EventList from './EventList'
 
 function EventsLandingContainer({ events }) {
@@ -9,7 +9,6 @@ function EventsLandingContainer({ events }) {
 
   // onChange handler function listening to input box
   function changeHandler(event) {
-    event.preventDefault()
     // Set 'search' term with each change of the input field
     setSearch(event.target.value)
     // Filter and return event titles and description that include the 'search' term state
@@ -19,7 +18,7 @@ function EventsLandingContainer({ events }) {
     // Set filteredEvents to filtered events; which will now be passed to the EventList component to render
     setFilteredEvents(filtered)
   }
-    
+
   return (
     <>
       <input type="text" placeholder="Search Anime and Events" onChange={changeHandler} className="px-4 py-2 mt-4 mx-8 bg-gray-200 rounded-lg"></input>
