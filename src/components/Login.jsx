@@ -36,7 +36,15 @@ export default function Login() {
             // Successful login response:
             const data = await response.json();
             console.log('Successfully logged in', data);
-
+            
+            // Retrieve the auth tokens
+            const accessToken = data.accessToken
+            const refreshToken = data.refreshToken
+            // Store the tokens securely
+            localStorage.setItem('accessToken', accessToken)
+            localStorage.setItem('refreshToken', refreshToken)
+            console.log(refreshToken)
+            console.log(accessToken)
             // Redirect user back to home after successful login:
             window.location.href = '/';
 
