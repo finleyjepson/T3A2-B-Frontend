@@ -29,7 +29,7 @@ export default function Signup() {
     // Handle the form submission (Send POST request with form submission)
     async function handleSubmit(e) {
         e.preventDefault(); // Prevent browser from reloading page
-    
+        // Send response to POST /auth/register/ as JSON
         try {
             const response = await fetch('http://localhost:4000/auth/register', {
                 method: 'POST',
@@ -41,7 +41,7 @@ export default function Signup() {
                     password: formData.password,
                 }),
             });
-    
+            // Basic error handling logged to console
             if (!response.ok) {
                 throw new Error('Response was not ok');
             }
