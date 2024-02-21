@@ -1,15 +1,34 @@
-import React from 'react'
+import React, { useState } from 'react'
 import EventList from './EventList'
 
-function EventsLandingContainer({ events}) {
+function EventsLandingContainer({ events }) {
+
+  // State for search
+  const [search, setSearch] = useState("")
+  const [filteredEvents, setFilteredEvents] = useState(events)
+
+  // onChange handler function listening to input box
+  function changeHandler(event) {
+    event.preventDefault()
+    // Set 'search' term with each change of the input field
+    setSearch(event.target.value)
+    // Filter and return event titles and description that include the 'search' term state
+    const filtered = events.filter(event => {
+      return `${event.title.toLowerCase()} ${event.description.toLowerCase()}`.includes(search.toLowerCase())
+    })
+    // Set filteredEvents to filtered events; which will now be passed to the EventList component to render
+    setFilteredEvents(filtered)
+  }
+    
   return (
     <>
-    <div className="p-4">
-      <div className="py-2 mx-4 rounded-t-lg bg-blue-600 px-4 text-xl max-w-[500px] text-white ">Events</div>
-      <div className="mx-4 rounded-b-lg bg-blue-50 max-w-[500px] border-2 border-x-gray-300 border-b-gray-300">
-        <EventList events={ events } />
+      <input type="text" placeholder="Search Anime and Events" onChange={changeHandler} className="px-4 py-2 mt-4 mx-8 bg-gray-200 rounded-lg"></input>
+      <div className="p-4">
+        <div className="py-2 mx-4 rounded-t-lg bg-blue-600 px-4 text-xl max-w-[500px] text-white ">Events</div>
+        <div className="mx-4 rounded-b-lg bg-blue-50 max-w-[500px] border-2 border-x-gray-300 border-b-gray-300">
+          <EventList events={ filteredEvents } />
+        </div>
       </div>
-    </div>
     </>
   )
 }
