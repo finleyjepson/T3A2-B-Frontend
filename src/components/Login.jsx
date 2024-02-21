@@ -36,6 +36,10 @@ export default function Login() {
             // Successful login response:
             const data = await response.json();
             console.log('Successfully logged in', data);
+
+            // Redirect user back to home after successful login:
+            window.location.href = '/';
+
         // Catch response:
         } catch (error) {
         console.error('Problem logging in:', error.message);
