@@ -5,7 +5,7 @@ import PollContainer from './PollContainer'
 
 export default function Home({ events }) {
   return (
-    <div className="flex">
+    <div className="flex flex-wrap">
       <UpcomingEventsContainer events={ events }/>
       <UpcomingAnimeContainer events={ events }/>
       <PollContainer />

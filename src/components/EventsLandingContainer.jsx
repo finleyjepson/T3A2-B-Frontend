@@ -33,7 +33,7 @@ function EventsLandingContainer({ events }) {
 
   return (
     <>
-      <input type="text" placeholder="Search Anime and Events" onChange={changeHandler} value={search} className="px-4 py-2 mt-4 mx-8 bg-gray-200 rounded-lg"></input>
+      <input type="text" placeholder="🔎 Search Anime and Events" onChange={changeHandler} value={search} className="w-72 px-4 py-2 mt-4 mx-8 bg-gray-200 rounded-lg"></input>
       <div className="p-4">
         <div className="py-2 mx-4 rounded-t-lg bg-blue-600 px-4 text-xl max-w-[500px] text-white ">Events</div>
         <div className="mx-4 rounded-b-lg bg-blue-50 max-w-[500px] border-2 border-x-gray-300 border-b-gray-300">
