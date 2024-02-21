@@ -51,8 +51,6 @@ export default function Login() {
             localStorage.setItem('refreshToken', refreshToken)
 
             // Redirect user back to home after successful login:
-            // window.location.href = '/';
-            
             navigate('/')
 
         // Catch response:
