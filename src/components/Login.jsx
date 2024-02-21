@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom' // Used for navigation after login without page reload
 
 export default function Login() {
+    const navigate = useNavigate()
+
     // Utilise useState hook to initialise state that will store the form data
     const [formData, setFormData] = useState({
         username: '',
@@ -36,6 +39,22 @@ export default function Login() {
             // Successful login response:
             const data = await response.json();
             console.log('Successfully logged in', data);
+            
+            // Retrieve the auth tokens
+            const accessToken = data.accessToken
+            const refreshToken = data.refreshToken
+            console.log('Access Token:', accessToken);
+            console.log('Refresh Token:', refreshToken);
+
+            // Store the tokens securely
+            localStorage.setItem('accessToken', accessToken)
+            localStorage.setItem('refreshToken', refreshToken)
+
+            // Redirect user back to home after successful login:
+            // window.location.href = '/';
+            
+            navigate('/')
+
         // Catch response:
         } catch (error) {
         console.error('Problem logging in:', error.message);
