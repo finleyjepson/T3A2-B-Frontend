@@ -15,11 +15,11 @@ export default function Login() {
                             {/* Form labels and input boxes */}
                             <form className="space-y-4 md:space-y-4" action="#">
                                 <div>
-                                    <label for="text" class="block mb-2 text-sm font-medium text-gray-900">Username</label>
-                                    <input type="text" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="" required="" />
+                                    <label htmlFor="text" class="block mb-2 text-sm font-medium text-gray-900">Username</label>
+                                    <input type="text" name="username" id="username" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="" required="" />
                                 </div>
                                 <div>
-                                    <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Password</label>
+                                    <label htmlFor="password" class="block mb-2 text-sm font-medium text-gray-900">Password</label>
                                     <input type="password" name="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" />
                                 </div>
 

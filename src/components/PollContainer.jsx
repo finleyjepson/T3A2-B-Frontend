@@ -10,9 +10,6 @@ function PollContainer() {
                         title="StrawPoll Embed"
                         src="https://strawpoll.com/embed/GJn47PbWbyz"
                         style={{ position: 'static', visibility: 'visible', display: 'block', width: '100%', flexGrow: 1 }}
-                        frameBorder="0"
-                        allowFullScreen
-                        allowTransparency
                     >
                         Loading...        
                     </iframe>
