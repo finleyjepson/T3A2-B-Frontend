@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom' // Used for navigation after login without page reload
 
 export default function Signup() {
+    const navigate = useNavigate()
+
     // Utilise useState hook to initialise state that will store the form data
     const [formData, setFormData] = useState({
         email: '',
@@ -51,6 +54,10 @@ export default function Signup() {
             // Successful response:
             const data = await response.json();
             console.log('User successfully registered', data);
+
+            // Redirect user back to home after successful sign up:
+            navigate('/')
+
         // Catch response:    
         } catch (error) {
             console.error('Problem registering the user', error.message);
