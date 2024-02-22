@@ -46,9 +46,9 @@ export default function Login() {
             console.log('Access Token:', accessToken);
             console.log('Refresh Token:', refreshToken);
 
-            // Store the tokens securely
-            localStorage.setItem('accessToken', accessToken)
-            localStorage.setItem('refreshToken', refreshToken)
+            // Store the tokens securely (change sessionStorage to localStorage as needed)
+            sessionStorage.setItem('accessToken', accessToken)
+            sessionStorage.setItem('refreshToken', refreshToken)
 
             // Redirect user back to home after successful login:
             navigate('/')
