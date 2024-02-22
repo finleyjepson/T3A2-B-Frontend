@@ -5,6 +5,8 @@ import EventList from './components/EventList.jsx'
 import UpcomingEventsContainer from './components/UpcomingEventsContainer.jsx'
 import EventsLandingContainer from './components/EventsLandingContainer.jsx'
 import UpcomingAnimeContainer from './components/UpcomingAnimeContainer.jsx'
+import UserList from './components/UserList.jsx'
+import UserListContainer from './components/UserListContainer.jsx'
 import SignUp from './components/SignUp.jsx'
 import Login from './components/Login.jsx'
 import PollContainer from './components/PollContainer.jsx'
@@ -39,6 +41,7 @@ function App() {
                 <Routes>
                     <Route path='/' element={<Home events={ events }/>}/>
                     <Route path='/events' element={<EventsLandingContainer events={ events } />} />
+                    <Route path='/users' element={<UserListContainer />} />
                     <Route path='/events/:id' element={<EventInfoWrapper events={ events }/>} />
                     <Route path='/signup' element={<SignUp />} />
                     <Route path='/login' element={<Login />} />
