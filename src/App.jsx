@@ -64,6 +64,7 @@ function App() {
                     <Route path='/login' element={<Login setIsLoggedIn={setIsLoggedIn} />} />
                     <Route path='/poll' element={<PollContainer />} />
                     <Route path='/unauth' element={<Unauthorised />} />
+                    <Route path='*' element={<Unauthorised />} />
                 </Routes>
             </BrowserRouter>
         </>
