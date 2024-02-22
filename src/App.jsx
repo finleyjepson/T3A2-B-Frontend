@@ -10,6 +10,7 @@ import UserListContainer from './components/UserListContainer.jsx'
 import SignUp from './components/SignUp.jsx'
 import Login from './components/Login.jsx'
 import PollContainer from './components/PollContainer.jsx'
+import Unauthorised from './components/Unauthorised.jsx'
 import Home from './components/Home.jsx'
 import { useEffect, useState } from 'react'
 
@@ -46,6 +47,7 @@ function App() {
                     <Route path='/signup' element={<SignUp />} />
                     <Route path='/login' element={<Login />} />
                     <Route path='/poll' element={<PollContainer />} />
+                    <Route path='/unauth' element={<Unauthorised />} />
                 </Routes>
             </BrowserRouter>
         </>
