@@ -1,20 +1,8 @@
 import React, { useEffect, useState } from 'react'
 
-export default function UserList() {
+export default function UserList({ users}) {
 
-	const [users, setUsers] = useState([])
 
-	useEffect(() => {
-	async function getUsers() {
-		let response = await fetch("http://localhost:4000/users/all"
-		// Uncomment the below line once bearer token is available from session storage. Token goes into '{token}'
-		// , {headers: {Authorization: 'Bearer {token}'}}
-		)
-		let data = await response.json()
-		setUsers(data)
-	}
-	getUsers()
-	}, [])
 
 	return (
 		<>
