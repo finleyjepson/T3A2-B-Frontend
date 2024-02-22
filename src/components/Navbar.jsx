@@ -45,6 +45,11 @@ export default function Navbar() {
                       <li>
                           <a href="#" className="text-gray-900 dark:text-white hover:underline">Contact Us</a>
                       </li>
+                      <li>
+                            <Link to="/users" >
+                                <p className="text-gray-900 dark:text-white hover:underline">Users</p>
+                            </Link>
+                      </li>
                   </ul>
               </div>
           </div>
