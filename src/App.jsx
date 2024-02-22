@@ -15,6 +15,21 @@ import Home from './components/Home.jsx'
 import { useEffect, useState } from 'react'
 
 function App() {
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+    // Check login status on component mount
+    useEffect(() => {
+        const accessToken = sessionStorage.getItem('accessToken')
+        setIsLoggedIn(!!accessToken); // if accessToken is present, set to true
+    }, [])
+
+    // Defining handleLogout function
+    const handleLogout = () => {
+        // Remove tokens from session storage
+        sessionStorage.removeItem('accessToken')
+        sessionStorage.removeItem('refreshToken')
+        setIsLoggedIn(false) 
+    }
 
     // Event state
     let [events, setEvents] = useState([])
@@ -38,14 +53,15 @@ function App() {
     return (
         <>
             <BrowserRouter>
-                <Navbar />
+                {/* Navbar tracks logged in status through a prop */}
+                <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout}/> 
                 <Routes>
                     <Route path='/' element={<Home events={ events }/>}/>
                     <Route path='/events' element={<EventsLandingContainer events={ events } />} />
                     <Route path='/users' element={<UserListContainer />} />
                     <Route path='/events/:id' element={<EventInfoWrapper events={ events }/>} />
                     <Route path='/signup' element={<SignUp />} />
-                    <Route path='/login' element={<Login />} />
+                    <Route path='/login' element={<Login setIsLoggedIn={setIsLoggedIn} />} />
                     <Route path='/poll' element={<PollContainer />} />
                     <Route path='/unauth' element={<Unauthorised />} />
                 </Routes>

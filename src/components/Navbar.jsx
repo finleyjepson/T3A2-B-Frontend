@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom' 
 
-export default function Navbar() {
+export default function Navbar({ isLoggedIn, handleLogout }) {
   return (
     <>
     {/* Change className="p-4" to increase padding */}
@@ -14,12 +14,22 @@ export default function Navbar() {
                 {/* Adding placeholder app name */}
                 <span className="text-2xl md:text-4xl font-extrabold bg-gradient-to-r from-purple-400 via-blue-400 to-pink-300 inline-block text-transparent bg-clip-text">AnimeScreen</span>
             </Link>
-            {/* Login / Sign up buttons */}
-            <div className="flex space-x-4 items-center">
-                <Link to="/login" className="text-black text-sm">Login</Link>
-                <Link to="/signup" className="bg-indigo-600 px-4 py-2 rounded text-white hover:bg-indigo-500 text-sm">Sign up</Link>
-            </div>
-      </header>
+
+            {/* Profile/Logout : Login/Signup, based on login state */}
+            {isLoggedIn ? (
+                <div className="flex space-x-4 items-center">
+                {/* Logout button */} 
+                <button className="text-black text-sm" onClick={handleLogout}>Logout</button>
+                </div>
+            ) : (
+                // Login / Sign up button
+                <div className="flex space-x-4 items-center">
+                    <Link to="/login" className="text-black text-sm">Login</Link>
+                    <Link to="/signup" className="bg-indigo-600 px-4 py-2 rounded text-white hover:bg-indigo-500 text-sm">Sign up</Link>
+                </div>
+            )}
+        </header>
+
       {/* Navigation bar */}
       <nav className="bg-gray-50 dark:bg-gray-800">
           <div className="px-5 py-3">
