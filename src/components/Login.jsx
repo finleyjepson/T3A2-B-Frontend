@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom' // Used for navigation after login without page reload
 
-export default function Login({ setIsLoggedIn }) {
+export default function Login({ setIsLoggedIn, setUsername }) {
     const navigate = useNavigate()
 
     // Utilise useState hook to initialise state that will store the form data
@@ -12,7 +12,13 @@ export default function Login({ setIsLoggedIn }) {
 
     // Synchronise the form data state with user input changes 
     function handleChange(e) { 
-        const { name, value } = e.target;
+        const { name, value } = e.target
+
+        // Testing logging username change state to console
+        if (name === 'username') {
+            console.log('Username:', value)
+        }
+
         // Get the target field (name) and update the value in setFormData
         setFormData(previousState => ({
             ...previousState,
@@ -37,20 +43,24 @@ export default function Login({ setIsLoggedIn }) {
                 throw new Error('Failed to login')
             }
             // Successful login response:
-            const data = await response.json();
-            console.log('Successfully logged in', data);
+            const data = await response.json()
+            console.log('Successfully logged in', data)
             
             // Retrieve the auth tokens
-            const accessToken = data.accessToken
+            const accessToken = data.accessToken;
             const refreshToken = data.refreshToken
-            console.log('Access Token:', accessToken);
-            console.log('Refresh Token:', refreshToken);
+            const loggedinUsername = formData.username
+            console.log('Access Token:', accessToken)
+            console.log('Refresh Token:', refreshToken)
+            console.log('Logged in username:', loggedinUsername)
 
             // Store the tokens securely (change sessionStorage to localStorage as needed)
             sessionStorage.setItem('accessToken', accessToken)
             sessionStorage.setItem('refreshToken', refreshToken)
 
             setIsLoggedIn(true) // Update isLoggedIn state to true
+            
+            setUsername(loggedinUsername) // Store the username in state for use
 
             // Redirect user back to home after successful login:
             navigate('/')
@@ -86,7 +96,7 @@ export default function Login({ setIsLoggedIn }) {
                                 {/* Login confirmation button */}
                                 <button type="submit" className="w-full text-white bg-indigo-600 hover:bg-primary-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Login</button>
                                 
-                                {/* Promptfor users that don't have an account */}
+                                {/* Prompt for users that don't have an account */}
                                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                                     Don't have an account yet? <a href="/signup" className="font-medium text-primary-600 hover:underline">Sign up here</a>
                                 </p>
