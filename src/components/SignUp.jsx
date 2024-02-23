@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom' // Used for navigation after login without page reload
 
-export default function Signup({ setIsLoggedIn }) {
+export default function Signup({ setIsLoggedIn, setUsername }) {
     const navigate = useNavigate()
 
     // Utilise useState hook to initialise state that will store the form data
@@ -56,13 +56,14 @@ export default function Signup({ setIsLoggedIn }) {
             const data = await response.json()
             const accessToken = data.accessToken
             const refreshToken = data.refreshToken
-
-            // Store tokens securely
+            const signedUpUsername = formData.username
+            // Store tokens and username securely
             sessionStorage.setItem('accessToken', accessToken)
             sessionStorage.setItem('refreshToken', refreshToken)
-
-            // Update isLoggedIn state after successful signup
+            
+            // Update isLoggedIn and username state after successful signup
             setIsLoggedIn(true)
+            setUsername(signedUpUsername)
             console.log('User successfully registered', data)
 
             // Redirect user back to home after successful sign up:
