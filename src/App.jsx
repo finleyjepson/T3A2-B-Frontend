@@ -7,6 +7,7 @@ import EventsLandingContainer from './components/EventsLandingContainer.jsx'
 import UpcomingAnimeContainer from './components/UpcomingAnimeContainer.jsx'
 import UserList from './components/UserList.jsx'
 import UserListContainer from './components/UserListContainer.jsx'
+import CreateEvent from './components/CreateEvent.jsx'
 import SignUp from './components/SignUp.jsx'
 import Login from './components/Login.jsx'
 import PollContainer from './components/PollContainer.jsx'
@@ -15,7 +16,11 @@ import Home from './components/Home.jsx'
 import { useEffect, useState } from 'react'
 
 function App() {
+    // Variable / states for isLoggedIn and username
     const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [username, setUsername] = useState('') 
+
+    console.log('Username value in app.jsx:', username)
 
     // Check login status on component mount
     useEffect(() => {
@@ -54,16 +59,18 @@ function App() {
         <>
             <BrowserRouter>
                 {/* Navbar tracks logged in status through a prop */}
-                <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout}/> 
+                <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} username={username}/> 
                 <Routes>
                     <Route path='/' element={<Home events={ events }/>}/>
                     <Route path='/events' element={<EventsLandingContainer events={ events } />} />
                     <Route path='/users' element={<UserListContainer />} />
                     <Route path='/events/:id' element={<EventInfoWrapper events={ events }/>} />
+                    <Route path='events/new' element={<CreateEvent />} />
                     <Route path='/signup' element={<SignUp setIsLoggedIn={setIsLoggedIn} />} />
-                    <Route path='/login' element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+                    <Route path='/login' element={<Login setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />} />
                     <Route path='/poll' element={<PollContainer />} />
                     <Route path='/unauth' element={<Unauthorised />} />
+                    <Route path='*' element={<Unauthorised />} />
                 </Routes>
             </BrowserRouter>
         </>

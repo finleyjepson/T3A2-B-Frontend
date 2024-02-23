@@ -1,8 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom' 
 
-export default function Navbar({ isLoggedIn, handleLogout }) {
-  return (
+export default function Navbar({ isLoggedIn, handleLogout, username }) {
+    console.log('Navbar username:', username)
+    // State to track visibility of profile dropdown menu
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+    // Function to toggle the profile dropdown menu
+    const toggleMenu = () => {
+        console.log('Toggling menu')
+        console.log('isMenuOpen:', isMenuOpen)
+        setIsMenuOpen(!isMenuOpen)
+    }
+
+    // Handle the logout function
+    const handleSignOut = () => {
+        handleLogout()
+    }
+
+    return (
     <>
     {/* Change className="p-4" to increase padding */}
         <header className="p-4 flex items-center justify-between">
@@ -17,10 +33,32 @@ export default function Navbar({ isLoggedIn, handleLogout }) {
 
             {/* Profile/Logout : Login/Signup, based on login state */}
             {isLoggedIn ? (
-                <div className="flex space-x-4 items-center">
-                {/* Logout button */} 
-                <button className="text-black text-sm" onClick={handleLogout}>Logout</button>
+                <div className="flex items-center space-x-3 md:space-x-0 rtl:space-x-reverse relative">
+                {/* Profile photo button */}
+                    <button type="button" className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300" id="user-menu-button" aria-expanded={isMenuOpen} onClick={toggleMenu} data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
+                        <span className="sr-only">Open user menu</span>
+                        <img className="w-8 h-8 rounded-full" src="https://emoji.beeimg.com/🍔/apple" alt="user photo" />
+                    </button>
+                {/* Dropdown menu */}
+                    <div className={`absolute top-full right-0 mt-2 z-50 ${isMenuOpen ? '' : 'hidden'} my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow`} id="user-dropdown">
+                        <div className="px-4 py-3">
+                            <span className="block text-sm text-gray-500 truncate dark:text-gray-400">{username}</span>
+                        </div>
+                    <ul className="py-2" aria-labelledby="user-menu-button">
+                        <li>
+                            <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                        </li>
+                        <li>
+                            <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Settings</a>
+                        </li>
+                        <li>
+                        <button type="button" onClick={handleSignOut} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</button>
+                        </li>
+                    </ul>
+                    </div>
                 </div>
+            
+            // If not logged in...
             ) : (
                 // Login / Sign up button
                 <div className="flex space-x-4 items-center">
@@ -56,6 +94,11 @@ export default function Navbar({ isLoggedIn, handleLogout }) {
                       <li>
                             <Link to="/users" >
                                 <p className="text-gray-900 dark:text-white hover:underline">Users</p>
+                            </Link>
+                      </li>
+                      <li>
+                            <Link to="/events/new" >
+                                <p className="text-gray-900 dark:text-white hover:underline">Create Event</p>
                             </Link>
                       </li>
                   </ul>
