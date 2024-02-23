@@ -23,11 +23,18 @@ export default function CreateEvent() {
         }))
     }
 
+      // Use effect to re-filter events
+    useEffect(() => {
+        // Run filterList function when 'search' state is updated
+        getGeo(eventInfo.venue)
+    },[eventInfo.venue])
+
     async function submitEvent(event) {
         event.preventDefault()
 
         getGeo(eventInfo.venue)
         console.log(coords)
+        
 
         // try {
         //     const response = await fetch('http://localhost:4000/events/', {
@@ -59,8 +66,7 @@ export default function CreateEvent() {
         const api = import.meta.env.VITE_GOOGLE_API_KEY
         const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${venue}&key=${api}`)
         const data = await response.json()
-        const location = data
-        setCoords(location.results[0].geometry.location)
+        setCoords(data.results[0].geometry.location)
     }
 
     return (
