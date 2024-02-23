@@ -58,6 +58,11 @@ export default function Navbar({ isLoggedIn, handleLogout }) {
                                 <p className="text-gray-900 dark:text-white hover:underline">Users</p>
                             </Link>
                       </li>
+                      <li>
+                            <Link to="/events/new" >
+                                <p className="text-gray-900 dark:text-white hover:underline">Create Event</p>
+                            </Link>
+                      </li>
                   </ul>
               </div>
           </div>
