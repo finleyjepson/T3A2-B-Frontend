@@ -13,11 +13,11 @@ export default function Signup({ setIsLoggedIn }) {
     })
 
     // State variable for whether form is submitted (for password check)
-    const [formSubmitted, setFormSubmitted] = useState(false);
+    const [formSubmitted, setFormSubmitted] = useState(false)
 
     // Synchronise the form data state with user input changes 
     function handleChange(e) { 
-        const { name, value } = e.target;
+        const { name, value } = e.target
         // Get the target field (name) and update the value in setFormData
         setFormData(previousState => ({
             ...previousState,
@@ -53,7 +53,7 @@ export default function Signup({ setIsLoggedIn }) {
             }
 
             // Successful response; Login upon signup and retrieve tokens
-            const data = await response.json();
+            const data = await response.json()
             const accessToken = data.accessToken
             const refreshToken = data.refreshToken
 
@@ -63,14 +63,14 @@ export default function Signup({ setIsLoggedIn }) {
 
             // Update isLoggedIn state after successful signup
             setIsLoggedIn(true)
-            console.log('User successfully registered', data);
+            console.log('User successfully registered', data)
 
             // Redirect user back to home after successful sign up:
             navigate('/')
 
         // Catch response:    
         } catch (error) {
-            console.error('Problem registering the user', error.message);
+            console.error('Problem registering the user', error.message)
         }
     }
     

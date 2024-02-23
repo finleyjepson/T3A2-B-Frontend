@@ -38,13 +38,13 @@ export default function Login({ setIsLoggedIn }) {
             }
             // Successful login response:
             const data = await response.json();
-            console.log('Successfully logged in', data);
+            console.log('Successfully logged in', data)
             
             // Retrieve the auth tokens
             const accessToken = data.accessToken
             const refreshToken = data.refreshToken
-            console.log('Access Token:', accessToken);
-            console.log('Refresh Token:', refreshToken);
+            console.log('Access Token:', accessToken)
+            console.log('Refresh Token:', refreshToken)
 
             // Store the tokens securely (change sessionStorage to localStorage as needed)
             sessionStorage.setItem('accessToken', accessToken)
@@ -57,7 +57,7 @@ export default function Login({ setIsLoggedIn }) {
 
         // Catch response:
         } catch (error) {
-        console.error('Problem logging in:', error.message);
+        console.error('Problem logging in:', error.message)
         }
     }
 
