@@ -26,7 +26,7 @@ export default function UserListContainer() {
 			}
 
 			let data = await response.json()
-			setUsers(data)
+			setUsers(data.user)
 		} catch (err) {
 			console.log("Failed to fetch list")
 		}
@@ -45,11 +45,11 @@ export default function UserListContainer() {
 	function filterList(users) {
 		// Filter and return user.usernames that include the 'search' term state
 		const filtered = users.filter(user => {
-		  return `${user.username.toLowerCase()}`.includes(search.toLowerCase())
+			return `${user.username.toLowerCase()}`.includes(search.toLowerCase())
 		})
 		// Set filteredUsers to filtered users; which will now be passed to the UserList component to render
 		setFilteredUsers(filtered)
-	  }
+		}
 
 	// Use effect to re-filter users
 	useEffect(() => {

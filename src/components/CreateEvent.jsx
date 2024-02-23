@@ -1,11 +1,15 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function CreateEvent() {
+
+    
+    const [coords, setCoords] = useState({})
 
     const [eventInfo, setEventInfo] = useState({
         title: "",
         description: "",
         date: "",
+        venue: "",
         anime: "",
         organiser: "",
         price: 0
@@ -22,33 +26,42 @@ export default function CreateEvent() {
     async function submitEvent(event) {
         event.preventDefault()
 
-        try {
-            const response = await fetch('http://localhost:4000/events/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    title: eventInfo.title,
-                    description: eventInfo.description,
-                    category: "65d7f3396459d46c88d58b9f",
-                    date: eventInfo.date,
-                    anime: eventInfo.date,
-                    // createdBy: 
-                    organiser: eventInfo.organiser,
-                    price: eventInfo.price
-                }),
-            });
-            
-            console.log(response)
+        getGeo(eventInfo.venue)
+        console.log(coords)
 
-        // Catch response:    
-        } catch (error) {
-            console.error('Problem creating event', error.message);
-        }
-
+        // try {
+        //     const response = await fetch('http://localhost:4000/events/', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify({
+        //             title: eventInfo.title,
+        //             description: eventInfo.description,
+        //             category: "65d7f3396459d46c88d58b9f",
+        //             date: eventInfo.date,
+        //             venue: eventInfo.venue,
+        //             coords: coords,
+        //             anime: eventInfo.date,
+        //             // createdBy: 
+        //             organiser: eventInfo.organiser,
+        //             price: eventInfo.price
+        //         }),
+        //     }) 
+        //     console.log(response)
+        // // Catch response:    
+        // } catch (error) {
+        //     console.error('Problem creating event', error.message);
+        // }
     }
 
+    async function getGeo(venue) {
+        const api = import.meta.env.VITE_GOOGLE_API_KEY
+        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${venue}&key=${api}`)
+        const data = await response.json()
+        const location = data
+        setCoords(location.results[0].geometry.location)
+    }
 
     return (
         <>
@@ -62,6 +75,8 @@ export default function CreateEvent() {
                         <input name="description" id="description" value={eventInfo.description} onChange={changeHandler}></input>
                         <label>Date</label>
                         <input name="date" id="date" value={eventInfo.date} onChange={changeHandler}></input>
+                        <label>Venue</label>
+                        <input name="venue" id="venue" value={eventInfo.venue} onChange={changeHandler}></input>
                         <label>Anime</label>
                         <input name="anime" id="anime" value={eventInfo.anime} onChange={changeHandler}></input>
                         <label>Organiser</label>
