@@ -13,6 +13,11 @@ export default function Navbar({ isLoggedIn, handleLogout, username }) {
         setIsMenuOpen(!isMenuOpen)
     }
 
+    // Handle the logout function
+    const handleSignOut = () => {
+        handleLogout()
+    }
+
     return (
     <>
     {/* Change className="p-4" to increase padding */}
@@ -47,7 +52,7 @@ export default function Navbar({ isLoggedIn, handleLogout, username }) {
                             <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Settings</a>
                         </li>
                         <li>
-                            <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                        <button type="button" onClick={handleSignOut} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</button>
                         </li>
                     </ul>
                     </div>
