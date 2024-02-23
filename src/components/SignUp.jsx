@@ -12,13 +12,10 @@ export default function Signup({ setIsLoggedIn }) {
         confirmPassword: ''
     })
 
-    // State variable for whether form is submitted (for password check)
-    const [formSubmitted, setFormSubmitted] = useState(false);
-
     // Synchronise the form data state with user input changes 
     function handleChange(e) { 
         const { name, value } = e.target;
-        // Get the target field (name) and update the value in setFormData
+        // Get the target field (name) and update the value in eventInfo
         setFormData(previousState => ({
             ...previousState,
             [name]: value

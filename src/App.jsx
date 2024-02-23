@@ -7,6 +7,7 @@ import EventsLandingContainer from './components/EventsLandingContainer.jsx'
 import UpcomingAnimeContainer from './components/UpcomingAnimeContainer.jsx'
 import UserList from './components/UserList.jsx'
 import UserListContainer from './components/UserListContainer.jsx'
+import CreateEvent from './components/CreateEvent.jsx'
 import SignUp from './components/SignUp.jsx'
 import Login from './components/Login.jsx'
 import PollContainer from './components/PollContainer.jsx'
@@ -60,6 +61,7 @@ function App() {
                     <Route path='/events' element={<EventsLandingContainer events={ events } />} />
                     <Route path='/users' element={<UserListContainer />} />
                     <Route path='/events/:id' element={<EventInfoWrapper events={ events }/>} />
+                    <Route path='events/new' element={<CreateEvent />} />
                     <Route path='/signup' element={<SignUp setIsLoggedIn={setIsLoggedIn} />} />
                     <Route path='/login' element={<Login setIsLoggedIn={setIsLoggedIn} />} />
                     <Route path='/poll' element={<PollContainer />} />
