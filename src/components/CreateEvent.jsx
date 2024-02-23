@@ -23,18 +23,17 @@ export default function CreateEvent() {
         }))
     }
 
-      // Use effect to re-filter events
+      // Use effect to re-run getGeo on venue input change
     useEffect(() => {
-        // Run filterList function when 'search' state is updated
+        // Re-run getGeo function every time event venue is updated
         getGeo(eventInfo.venue)
     },[eventInfo.venue])
 
     async function submitEvent(event) {
         event.preventDefault()
 
-        getGeo(eventInfo.venue)
+        // Console log coordinates on submit from the coordinates state
         console.log(coords)
-        
 
         // try {
         //     const response = await fetch('http://localhost:4000/events/', {
@@ -62,11 +61,23 @@ export default function CreateEvent() {
         // }
     }
 
+    // Geocode getter function
     async function getGeo(venue) {
+        // Import API_KEY from .env file
         const api = import.meta.env.VITE_GOOGLE_API_KEY
-        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${venue}&key=${api}`)
-        const data = await response.json()
-        setCoords(data.results[0].geometry.location)
+        if (venue) {
+            try {
+                // Make call to Google Maps Geocode, taking in 'venue' as parameter
+                const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${venue}&key=${api}`)
+            const data = await response.json()
+            // Extract lat and long and set to coords state
+            setCoords(data.results[0].geometry.location)
+            } catch(error) {
+                // This is the hacky bit; disguising error as 'listening for location'
+                console.log("Listening for location")
+            }
+        }
+
     }
 
     return (
