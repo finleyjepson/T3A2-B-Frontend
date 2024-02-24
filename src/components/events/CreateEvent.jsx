@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react'
 
 export default function CreateEvent({getEvents}) {
-
-    
     const [coords, setCoords] = useState({})
 
     const [eventInfo, setEventInfo] = useState({
@@ -11,6 +9,7 @@ export default function CreateEvent({getEvents}) {
         date: "",
         venue: "",
         anime: "",
+        createdBy: "",
         organiser: "",
         price: 0
     })
@@ -39,6 +38,7 @@ export default function CreateEvent({getEvents}) {
             // User token handling
             const accessToken = sessionStorage.getItem('accessToken') // Retrieve the session's access token
             console.log('Access token:', accessToken)
+            const user = JSON.parse(sessionStorage.getItem('user')) // Retrieve the user object
             if (!accessToken) {
                 throw new Error('Access token not found. Please login.')
             }
@@ -57,8 +57,9 @@ export default function CreateEvent({getEvents}) {
                     venue: eventInfo.venue,
                     // Commenting out coords as this is breaking event creation. Something to do with the mapping.
                     // coords: coords,
-                    anime: eventInfo.date,
+                    anime: eventInfo.anime,
                     // createdBy: 
+                    createdBy: user._id,
                     organiser: eventInfo.organiser,
                     price: eventInfo.price
                 }),
