@@ -1,6 +1,6 @@
 import React from 'react'
 import UpcomingAnimeContainer from './UpcomingAnimeContainer'
-import UpcomingEventsContainer from './UpcomingEventsContainer'
+import UpcomingEventsContainer from './events/UpcomingEventsContainer'
 import PollContainer from './PollContainer'
 
 export default function Home({ events }) {

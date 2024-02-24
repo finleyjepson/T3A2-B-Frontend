@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import EventList from './EventList'
-import DropdownList from './DropdownList'
+import DropdownList from '../DropdownList'
 
 function EventsLandingContainer({ events }) {
 
