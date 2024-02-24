@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-export default function CreateEvent() {
+export default function CreateEvent({getEvents}) {
 
     
     const [coords, setCoords] = useState({})
@@ -64,6 +64,7 @@ export default function CreateEvent() {
                 }),
             }) 
             console.log(response)
+            getEvents()
         // Catch response:    
         } catch (error) {
             console.error('Problem creating event', error.message);

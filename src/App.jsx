@@ -39,13 +39,14 @@ function App() {
     // Event state
     let [events, setEvents] = useState([])
 
-    // Load events from database to Events state
-    useEffect(() => {
-        async function getEvents() {
+    async function getEvents() {
         let response = await fetch("http://localhost:4000/events/all")
         response = await response.json()
         setEvents(response)
         }
+
+    // Load events from database to Events state
+    useEffect(() => {
         getEvents()
     }, [])
 
@@ -65,7 +66,7 @@ function App() {
                     <Route path='/events' element={<EventsLandingContainer events={ events } />} />
                     <Route path='/users' element={<UserListContainer />} />
                     <Route path='/events/:id' element={<EventInfoWrapper events={ events }/>} />
-                    <Route path='events/new' element={<CreateEvent />} />
+                    <Route path='events/new' element={<CreateEvent getEvents={getEvents}/>} />
                     <Route path='/signup' element={<SignUp setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />} />
                     <Route path='/login' element={<Login setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />} />
                     <Route path='/poll' element={<PollContainer />} />
