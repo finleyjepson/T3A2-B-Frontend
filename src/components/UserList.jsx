@@ -4,7 +4,7 @@ export default function UserList({ users }) {
 
 	async function addOrganiser(event){
 
-		await fetch(`http://localhost:4000/toggle/users/${event.target.value}`, {
+		await fetch(`http://localhost:4000/users/toggle/${event.target.value}`, {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json'
