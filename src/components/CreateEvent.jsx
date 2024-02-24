@@ -96,37 +96,38 @@ export default function CreateEvent() {
             <div className="p-4">
                 <div className="py-2 mx-4 rounded-t-lg bg-red-600 px-4 text-xl max-w-[500px] text-white ">Create Event</div>
                 <div className="mx-4 rounded-b-lg bg-red-50 max-w-[500px] border-2 border-x-gray-300 border-b-gray-300">
-                    <form onSubmit={submitEvent} >
-                        <div>
-                        <label >Title</label>
-                        <input name="title" id="title" value={eventInfo.title} onChange={changeHandler} ></input>
-                        </div> 
-                        <div>
-                        <label >Description</label>
-                        <input name="description" id="description" value={eventInfo.description} onChange={changeHandler} ></input>
-                        </div>
-                        <div>
-                        <label >Date</label>
-                        <input name="date" id="date" value={eventInfo.date} onChange={changeHandler} ></input>
-                        </div>
-                        <div>
-                        <label >Venue</label>
-                        <input name="venue" id="venue" value={eventInfo.venue} onChange={changeHandler} ></input>
-                        </div>
-                        <div>
-                        <label >Anime</label>
-                        <input name="anime" id="anime" value={eventInfo.anime} onChange={changeHandler} ></input>
-                        </div>
-                        <div>
-                        <label>Organiser</label>
-                        <input name="organiser" id="organiser" value={eventInfo.organiser} onChange={changeHandler} ></input>
-                        </div>
-                        <div>
-                        <label >Price</label>
-                        <input name="price" id="price" value={eventInfo.price} onChange={changeHandler} ></input>
-                        </div>
-                        <button type="submit">Create Event!</button>
-                    </form>
+                <form className="space-y-4 md:space-y-4" onSubmit={submitEvent}> 
+                    <div className="m-4">
+                        <label className="block mb-2 text-sm font-medium text-gray-900">Title</label>
+                        <input name="title" id="title" value={eventInfo.title} onChange={changeHandler} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="" required="" />
+                    </div>
+                    <div className="m-4">
+                        <label className="block mb-2 text-sm font-medium text-gray-900 ">Description</label>
+                        <textarea name="description" id="description" value={eventInfo.description} onChange={changeHandler} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 h-40" placeholder="" required="" />
+                    </div>
+                    <div className="m-4">
+                        <label className="block mb-2 text-sm font-medium text-gray-900">Venue</label>
+                        <input name="venue" id="venue" value={eventInfo.venue} onChange={changeHandler} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="" required="" />
+                    </div>
+                    <div className="m-4">
+                        <label className="block mb-2 text-sm font-medium text-gray-900">Date</label>
+                        <input name="date" id="date" value={eventInfo.date} onChange={changeHandler} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="" required="" />
+                    </div>
+                    <div className="m-4">
+                        <label className="block mb-2 text-sm font-medium text-gray-900">Anime</label>
+                        <input name="anime" id="anime" value={eventInfo.anime} onChange={changeHandler} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="" required="" />
+                    </div>
+                    <div className="m-4">
+                        <label className="block mb-2 text-sm font-medium text-gray-900">Organiser</label>
+                        <input name="organiser" id="organiser" value={eventInfo.organiser} onChange={changeHandler} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="" required="" />
+                    </div>
+                    <div className="m-4">
+                        <label className="block mb-2 text-sm font-medium text-gray-900">Price</label>
+                        <input name="price" id="price" value={eventInfo.price} onChange={changeHandler} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="" required="" />
+                    </div>
+
+                    <button type="submit" className="text-white bg-indigo-600 hover:bg-primary-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center m-4">Create Event</button>
+                </form>
                 </div>
             </div>
         </>

@@ -53,7 +53,7 @@ export default function UserList({ users }) {
 			<ul>
 			{users.map((user, index) => (
 				<li key={index} className="px-4 py-2 odd:bg-gray-200">
-				    <div className="flex justify-between">
+					<div className="flex justify-between">
                         <p>{user.username}</p>
                         <p>{user._id}</p>
                         
@@ -67,10 +67,10 @@ export default function UserList({ users }) {
                             // If the user IS an organiser...
                             <button className="bg-green-600 py-1 px-2 rounded-md text-white" onClick={() => toggleOrganiser(user._id, true)}>+ Organiser</button>
                         )}
-				    </div>
+					</div>
                     <div className="flex justify-between py-1">
                         <p> Organiser: {user.isOrganiser.toString()}</p>
-				        <p> Admin: {user.isAdmin.toString()}</p>
+						<p> Admin: {user.isAdmin.toString()}</p>
                     </div>
 				</li>
 			))}
