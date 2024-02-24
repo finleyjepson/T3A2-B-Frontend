@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom' // Used for navigation after login without page reload
 
 export default function Login({ setIsLoggedIn, setUsername }) {
@@ -59,6 +59,9 @@ export default function Login({ setIsLoggedIn, setUsername }) {
             // Store the tokens securely (change sessionStorage to localStorage as needed)
             sessionStorage.setItem('accessToken', accessToken)
             sessionStorage.setItem('refreshToken', refreshToken)
+            sessionStorage.setItem('user', JSON.stringify(data.user))
+
+            console.log('User:', sessionStorage.getItem('user'))
 
             setIsLoggedIn(true) // Update isLoggedIn state to true
             
@@ -104,7 +107,7 @@ export default function Login({ setIsLoggedIn, setUsername }) {
 
                                 {/* Prompt for users that don't have an account */}
                                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                                    Don't have an account yet? <a href="/signup" className="font-medium text-primary-600 hover:underline">Sign up here</a>
+                                    Do not have an account yet? <a href="/signup" className="font-medium text-primary-600 hover:underline">Sign up here</a>
                                 </p>
                             </form>
                         </div>
