@@ -1,4 +1,4 @@
-import Maps from "./Maps"
+import Maps from "../Maps"
 
 
 export default function EventInfo({ events, id } ) {
