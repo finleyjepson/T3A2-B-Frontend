@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react"
+import Axios from "axios"
 
 export default function CreateEvent({ getEvents, categories }) {
     const [coords, setCoords] = useState({})
+    const [searchTerm, setSearchTerm] = useState('')
+    const [searchResults, setSearchResults] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
+    const [skipSearch, setSkipSearch] = useState(false)
 
     const [eventInfo, setEventInfo] = useState({
         title: "",
@@ -23,6 +28,42 @@ export default function CreateEvent({ getEvents, categories }) {
         }))
     }
 
+    useEffect(() => {
+        if (!skipSearch) {
+            const delayTimer = setTimeout(() => {
+                if (searchTerm) { // Only search if there's input
+                setIsLoading(true)
+                Axios.get(`https://api.jikan.moe/v4/anime?q=${searchTerm}`)
+                    .then(res => {
+                    setSearchResults(res.data.data.slice(0,5)) // Limit to top 5 results
+                    setIsLoading(false)
+                    console.log(res.data.data)
+                    })
+                    .catch(err => console.error(err)); 
+                } else {
+                setSearchResults([]) // Clear results if no search term
+                }
+            }, 500) // Delay API call slightly
+
+            return () => clearTimeout(delayTimer)
+        }
+    }, [searchTerm, skipSearch])
+
+    const handleSearchChange = (event) => {
+        setSkipSearch(false)
+        setSearchTerm(event.target.value)
+    }
+
+    const handleSelectAnime = (anime) => {
+        setEventInfo((previousState) => ({
+            ...previousState,
+            anime: anime.title,
+        }))
+        setSkipSearch(true) // Skip search on select
+        setSearchTerm(anime.title) // Set the input value
+        setSearchResults([]) // Clear results
+    }
+
     // Use effect to re-run getGeo on venue input change
     useEffect(() => {
         // Re-run getGeo function every time event venue is updated
@@ -34,7 +75,7 @@ export default function CreateEvent({ getEvents, categories }) {
 
         // Console log coordinates on submit from the coordinates state
         console.log(coords)
-
+        console.log(eventInfo)
         try {
             // User token handling
             const accessToken = sessionStorage.getItem("accessToken") // Retrieve the session's access token
@@ -164,15 +205,22 @@ export default function CreateEvent({ getEvents, categories }) {
                         </div>
                         <div className='m-4'>
                             <label className='block mb-2 text-sm font-medium text-gray-900'>Anime</label>
-                            <input
-                                name='anime'
-                                id='anime'
-                                value={eventInfo.anime}
-                                onChange={changeHandler}
-                                className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
-                                placeholder=''
-                                required=''
+                            <input 
+                                type="text" 
+                                value={searchTerm} 
+                                onChange={handleSearchChange}
+                                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                             />
+                            {isLoading && <p>Loading...</p>}
+                            {searchResults.length > 0 && (
+                                <ul className="search-results">
+                                {searchResults.map(anime => (
+                                    <li key={anime.mal_id} onClick={() => handleSelectAnime(anime)}>
+                                    {anime.title}
+                                    </li>
+                                ))}
+                                </ul>
+                            )}
                         </div>
                         <div className='m-4'>
                             <label className='block mb-2 text-sm font-medium text-gray-900'>Organiser</label>
