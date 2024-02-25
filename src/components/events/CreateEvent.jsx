@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react"
 
 export default function CreateEvent({ getEvents, categories }) {
-    
     const [coords, setCoords] = useState({})
 
     const [eventInfo, setEventInfo] = useState({
@@ -124,17 +123,15 @@ export default function CreateEvent({ getEvents, categories }) {
                                 required=''
                             />
                         </div>
-                        <select name='category' onChange={changeHandler} className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 m-4'>
+                        <select
+                            name='category'
+                            onChange={changeHandler}
+                            className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 m-4'>
                             <option value='' disabled selected>
                                 Select a category
                             </option>
                             {categories.map((category) => (
-                                <option 
-                                name='category' 
-                                id='category' 
-                                key={category._id} 
-                                value={category._id}
-                                >
+                                <option name='category' id='category' key={category._id} value={category._id}>
                                     {category.name}
                                 </option>
                             ))}
@@ -157,7 +154,7 @@ export default function CreateEvent({ getEvents, categories }) {
                                 type='date'
                                 name='date'
                                 id='date'
-                                pattern="\d{4}-\d{2}-\d{2}"
+                                pattern='\d{4}-\d{2}-\d{2}'
                                 value={eventInfo.date}
                                 onChange={changeHandler}
                                 className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'

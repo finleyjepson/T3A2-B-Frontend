@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, useParams } from "react-router-dom"
-import Navbar from "./components/Navbar.jsx"
+import Navbar from "./components/navigation/Navbar.jsx"
 import EventInfo from "./components/events/EventInfo.jsx"
 import EventsLandingContainer from "./components/events/EventsLandingContainer.jsx"
 import UserListContainer from "./components/users/UserListContainer.jsx"
@@ -9,6 +9,7 @@ import Login from "./components/auth/Login.jsx"
 import PollContainer from "./components/PollContainer.jsx"
 import Unauthorised from "./components/auth/Unauthorised.jsx"
 import Home from "./components/Home.jsx"
+import ProfileDropdown from "./components/navigation/ProfileDropdown.jsx"
 import { useEffect, useState } from "react"
 
 function App() {
@@ -65,7 +66,8 @@ function App() {
         <>
             <BrowserRouter>
                 {/* Navbar tracks logged in status through a prop */}
-                <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} username={username} />
+                <ProfileDropdown isLoggedIn={isLoggedIn} handleLogout={handleLogout} username={username} />
+                <Navbar />
                 <Routes>
                     <Route path='/' element={<Home events={events} />} />
                     <Route path='/events' element={<EventsLandingContainer events={events} />} />

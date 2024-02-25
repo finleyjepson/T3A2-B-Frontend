@@ -1,7 +1,7 @@
-import { useState } from "react"
-import { Link } from "react-router-dom"
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
-export default function Navbar({ isLoggedIn, handleLogout, username }) {
+function ProfileDropdown({ isLoggedIn, handleLogout, username }) {
     console.log("Navbar username:", username)
     // State to track visibility of profile dropdown menu
     const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -20,8 +20,8 @@ export default function Navbar({ isLoggedIn, handleLogout, username }) {
 
     return (
         <>
-            {/* Change className="p-4" to increase padding */}
-            <header className='p-4 flex items-center justify-between'>
+           {/* Change className="p-4" to increase padding */}
+           <header className='p-4 flex items-center justify-between'>
                 {/* Adding placeholder logo from Heroicons.com */}
                 <Link to='/' className='flex items-center gap-1'>
                     <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' className='w-10 h-10 fill-yellow-500'>
@@ -89,48 +89,8 @@ export default function Navbar({ isLoggedIn, handleLogout, username }) {
                     </div>
                 )}
             </header>
-
-            {/* Navigation bar */}
-            <nav className='bg-gray-50 dark:bg-gray-800'>
-                <div className='px-5 py-3'>
-                    <div className='flex items-center'>
-                        <ul className='flex flex-row font-medium mt-0 space-x-8 text-sm'>
-                            <li>
-                                {/* aria-current="page" is for screen readers to comprehend the current page as the Home page */}
-                                <Link to='/'>
-                                    <p className='text-gray-900 dark:text-white hover:underline'>Home</p>
-                                </Link>
-                                {/* <a href="#" className="text-gray-900 dark:text-white hover:underline" aria-current="page">Home</a> */}
-                            </li>
-                            <li>
-                                <Link to='/events'>
-                                    <p className='text-gray-900 dark:text-white hover:underline'>Events</p>
-                                </Link>
-                            </li>
-                            <li>
-                                <a href='#' className='text-gray-900 dark:text-white hover:underline'>
-                                    About
-                                </a>
-                            </li>
-                            <li>
-                                <a href='#' className='text-gray-900 dark:text-white hover:underline'>
-                                    Contact Us
-                                </a>
-                            </li>
-                            <li>
-                                <Link to='/users'>
-                                    <p className='text-gray-900 dark:text-white hover:underline'>Users</p>
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to='/events/new'>
-                                    <p className='text-gray-900 dark:text-white hover:underline'>Create Event</p>
-                                </Link>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
         </>
     )
 }
+
+export default ProfileDropdown
