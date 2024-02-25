@@ -42,7 +42,8 @@ function App() {
         response = await response.json()
         // setEvents(response)
         const currentEvents = response.filter(event => new Date(event.date) - new Date > 0)
-        setEvents(currentEvents)
+        const sortedCurrentEvents = currentEvents.sort((a, b) => new Date(a.date) - new Date(b.date))
+        setEvents(sortedCurrentEvents)
     }
 
     async function getCategories() {
