@@ -41,7 +41,9 @@ function App() {
     async function getEvents() {
         let response = await fetch("http://localhost:4000/events/all")
         response = await response.json()
-        setEvents(response)
+        // setEvents(response)
+        const currentEvents = response.filter(event => new Date(event.date) - new Date > 0)
+        setEvents(currentEvents)
     }
 
     async function getCategories() {
@@ -70,7 +72,7 @@ function App() {
                 <Navbar />
                 <Routes>
                     <Route path='/' element={<Home events={events} />} />
-                    <Route path='/events' element={<EventsLandingContainer events={events} />} />
+                    <Route path='/events' element={<EventsLandingContainer events={events} categories={ categories } getEvents={ getEvents }/>} />
                     <Route path='/users' element={<UserListContainer />} />
                     <Route path='/events/:id' element={<EventInfoWrapper events={events} />} />
                     <Route path='events/new' element={<CreateEvent getEvents={getEvents} categories={ categories }/>} />
