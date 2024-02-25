@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 
-export default function CreateEvent({ getEvents }) {
+export default function CreateEvent({ getEvents, categories }) {
+    
     const [coords, setCoords] = useState({})
 
     const [eventInfo, setEventInfo] = useState({
@@ -8,6 +9,7 @@ export default function CreateEvent({ getEvents }) {
         description: "",
         date: "",
         venue: "",
+        category: "",
         anime: "",
         createdBy: "",
         organiser: "",
@@ -52,7 +54,7 @@ export default function CreateEvent({ getEvents }) {
                 body: JSON.stringify({
                     title: eventInfo.title,
                     description: eventInfo.description,
-                    category: "65d7f3396459d46c88d58b9f",
+                    category: eventInfo.category,
                     date: eventInfo.date,
                     venue: eventInfo.venue,
                     // Commenting out coords as this is breaking event creation. Something to do with the mapping.
@@ -122,6 +124,21 @@ export default function CreateEvent({ getEvents }) {
                                 required=''
                             />
                         </div>
+                        <select name='category' onChange={changeHandler}>
+                            <option value='' disabled selected>
+                                Select a category
+                            </option>
+                            {categories.map((category) => (
+                                <option 
+                                name='category' 
+                                id='category' 
+                                key={category._id} 
+                                value={category._id}
+                                >
+                                    {category.name}
+                                </option>
+                            ))}
+                        </select>
                         <div className='m-4'>
                             <label className='block mb-2 text-sm font-medium text-gray-900'>Venue</label>
                             <input

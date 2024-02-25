@@ -33,7 +33,9 @@ function App() {
     }
 
     // Event state
-    let [events, setEvents] = useState([])
+    const [events, setEvents] = useState([])
+    // Categories state
+    const [categories, setCategories] = useState([])
 
     async function getEvents() {
         let response = await fetch("http://localhost:4000/events/all")
@@ -41,9 +43,16 @@ function App() {
         setEvents(response)
     }
 
+    async function getCategories() {
+        let response = await fetch("http://localhost:4000/categories")
+        response = await response.json()
+        setCategories(response)
+    }
+
     // Load events from database to Events state
     useEffect(() => {
         getEvents()
+        getCategories()
     }, [])
 
     // Higher order component for single event info
@@ -62,7 +71,7 @@ function App() {
                     <Route path='/events' element={<EventsLandingContainer events={events} />} />
                     <Route path='/users' element={<UserListContainer />} />
                     <Route path='/events/:id' element={<EventInfoWrapper events={events} />} />
-                    <Route path='events/new' element={<CreateEvent getEvents={getEvents} />} />
+                    <Route path='events/new' element={<CreateEvent getEvents={getEvents} categories={ categories }/>} />
                     <Route path='/signup' element={<SignUp setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />} />
                     <Route path='/login' element={<Login setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />} />
                     <Route path='/poll' element={<PollContainer />} />

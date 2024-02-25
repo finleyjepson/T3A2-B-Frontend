@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-export default function CreateEvent({getEvents}) {
+export default function CreateEvent({ getEvents}) {
     
     const [coords, setCoords] = useState({})
 
