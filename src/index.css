@@ -3,3 +3,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.fc .fc-toolbar-title {
+  font-size: 1rem;
+}
+
+.fc table {
+  font-size: 10px;
+}
+
+.fc .fc-button-primary {
+  background-color: transparent;
+  border-color: transparent;
+  color: rgb(94, 148, 192);
+  transition: ease-in-out;
+  transition-duration: 500ms;
+}
+
+.fc .fc-button-primary:hover {
+  background-color: teal;
+  border-color: transparent;
+}
+
+.fc .fc-button-primary:focus {
+  box-shadow: none;
+}

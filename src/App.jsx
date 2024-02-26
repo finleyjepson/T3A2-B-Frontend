@@ -12,6 +12,7 @@ import Home from "./components/Home.jsx"
 import ProfileDropdown from "./components/navigation/ProfileDropdown.jsx"
 import ProfilePage from "./components/UserProfile.jsx"
 import { useEffect, useState } from "react"
+import Calendar from './components/Calendar.jsx'
 
 function App() {
     // Variable / states for isLoggedIn and username
