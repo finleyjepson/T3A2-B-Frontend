@@ -32,8 +32,6 @@ function ProfileDropdown({ isLoggedIn, user, username, setIsLoggedIn }) {
                 console.error('Logout failed:', error)
             })
 
-        setIsLoggedIn(false)
-
         navigate('/')
     }
 

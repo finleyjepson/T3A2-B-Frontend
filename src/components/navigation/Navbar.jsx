@@ -1,6 +1,15 @@
 import { Link } from "react-router-dom"
+import { useState, useEffect } from "react"
 
-export default function Navbar() {
+export default function Navbar({ user, isLoggedin }) {
+    const [isLoggedInState, setIsLoggedInState] = useState()
+    const [userState, setUserState] = useState({})
+
+    useEffect(() => {
+        setIsLoggedInState(isLoggedin)
+        setUserState(user)
+    }, [isLoggedin, user])
+
     return (
         <>
             {/* Navigation bar */}
@@ -30,21 +39,27 @@ export default function Navbar() {
                                     Contact Us
                                 </a>
                             </li>
-                            <li>
-                                <Link to='/users'>
-                                    <p className='text-gray-900 dark:text-white hover:underline animate-in fade-in duration-2s'>Users</p>
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to='/events/new'>
-                                    <p className='text-gray-900 dark:text-white hover:underline animate-in fade-in duration-2s'>Create Event</p>
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to='/profile'>
-                                    <p className='text-gray-900 dark:text-white hover:underline animate-in fade-in duration-2s'>Profile</p>
-                                </Link>
-                            </li>
+                            {(isLoggedin && userState.isAdmin) && (
+                                <li>
+                                    <Link to='/users'>
+                                        <p className='text-gray-900 dark:text-white hover:underline animate-in fade-in duration-2s'>Users</p>
+                                    </Link>
+                                </li>
+                            )}
+                            {(isLoggedin && (userState.isAdmin || userState.isOrganiser)) && (
+                                <li>
+                                    <Link to='/events/new'>
+                                        <p className='text-gray-900 dark:text-white hover:underline animate-in fade-in duration-2s'>Create Event</p>
+                                    </Link>
+                                </li>
+                            )}
+                            {isLoggedin && (
+                                <li>
+                                    <Link to='/profile'>
+                                        <p className='text-gray-900 dark:text-white hover:underline animate-in fade-in duration-2s'>Profile</p>
+                                    </Link>
+                                </li>
+                            )}
                         </ul>
                     </div>
                 </div>
