@@ -40,6 +40,11 @@ export default function Navbar() {
                                     <p className='text-gray-900 dark:text-white hover:underline'>Create Event</p>
                                 </Link>
                             </li>
+                            <li>
+                                <Link to='/profile'>
+                                    <p className='text-gray-900 dark:text-white hover:underline'>Profile</p>
+                                </Link>
+                            </li>
                         </ul>
                     </div>
                 </div>

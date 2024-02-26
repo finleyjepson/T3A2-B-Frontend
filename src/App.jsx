@@ -10,6 +10,7 @@ import PollContainer from "./components/PollContainer.jsx"
 import Unauthorised from "./components/auth/Unauthorised.jsx"
 import Home from "./components/Home.jsx"
 import ProfileDropdown from "./components/navigation/ProfileDropdown.jsx"
+import ProfilePage from "./components/UserProfile.jsx"
 import { useEffect, useState } from "react"
 
 function App() {
@@ -80,6 +81,7 @@ function App() {
                     <Route path='/signup' element={<SignUp setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />} />
                     <Route path='/login' element={<Login setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />} />
                     <Route path='/poll' element={<PollContainer />} />
+                    <Route path='/profile' element={<ProfilePage />} />
                     <Route path='/unauth' element={<Unauthorised />} />
                     <Route path='*' element={<Unauthorised />} />
                 </Routes>
