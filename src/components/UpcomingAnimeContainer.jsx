@@ -3,7 +3,7 @@ export default function UpcomingAnimeContainer({ events }) {
     let animeList = []
 
     for (let i = 0; i < events.length; i++) {
-        if (events[i].anime) {
+        if (events[i].anime && events[i].anime !== "Other") {
             animeList.push(events[i])
         }
     }
