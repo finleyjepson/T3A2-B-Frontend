@@ -1,7 +1,3 @@
-import dotenv from "dotenv"
-
-dotenv.config()
-
 export default function UserList({ users }) {
     // async function addOrganiser(event){
 
@@ -36,7 +32,7 @@ export default function UserList({ users }) {
     // Consolidate into a toggle function call to directly accept userId as a param, instead of using an event handler
 
     async function toggleOrganiser(userId, isOrganiser) {
-        await fetch(process.env.BACKEND_API_URL+`/users/toggle/${userId}`, {
+        await fetch(import.meta.env.VITE_BACKEND_API_URL+`/users/toggle/${userId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

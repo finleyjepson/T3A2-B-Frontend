@@ -1,8 +1,5 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom" // Used for navigation after login without page reload
-import dotenv from "dotenv"
-
-dotenv.config()
 
 export default function Login({ setIsLoggedIn, setUsername }) {
     const navigate = useNavigate()
@@ -36,7 +33,7 @@ export default function Login({ setIsLoggedIn, setUsername }) {
         e.preventDefault() // Prevent browser from reloading page
         // Send response to POST /auth/login as JSON
         try {
-            const response = await fetch(process.env.BACKEND_API_URL+"/auth/login", {
+            const response = await fetch(import.meta.env.VITE_BACKEND_API_URL+"/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

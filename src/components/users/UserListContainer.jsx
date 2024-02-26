@@ -1,9 +1,6 @@
 import { useState, useEffect } from "react"
 import UserList from "./UserList"
 import { useNavigate } from "react-router-dom"
-import dotenv from "dotenv"
-
-dotenv.config()
 
 export default function UserListContainer() {
     const navigate = useNavigate()
@@ -18,7 +15,7 @@ export default function UserListContainer() {
         async function getUsers() {
             try {
                 let response = await fetch(
-                    process.env.BACKEND_API_URL+"/users/all"
+                    import.meta.env.VITE_BACKEND_API_URL+"/users/all"
                     // Uncomment the below line once bearer token is available from session storage. Token goes into '{token}'
                     // , {headers: {Authorization: 'Bearer {token}'}}
                 )

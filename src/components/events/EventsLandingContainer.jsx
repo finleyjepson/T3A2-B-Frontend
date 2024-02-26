@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import EventList from "./EventList"
 
-function EventsLandingContainer({ events, categories, getEvents }) {
+function EventsLandingContainer({ events, getEvents }) {
     // State for search
     const [search, setSearch] = useState("")
     const [filteredEvents, setFilteredEvents] = useState(events)

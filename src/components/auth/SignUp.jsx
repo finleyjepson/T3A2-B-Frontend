@@ -1,8 +1,5 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom" // Used for navigation after login without page reload
-import dotenv from "dotenv"
-
-dotenv.config()
 
 export default function Signup({ setIsLoggedIn, setUsername }) {
     const navigate = useNavigate()
@@ -40,7 +37,7 @@ export default function Signup({ setIsLoggedIn, setUsername }) {
 
         // Send response to POST /auth/register/ as JSON
         try {
-            const response = await fetch(process.env.BACKEND_API_URL+"/auth/register", {
+            const response = await fetch(import.meta.env.VITE_BACKEND_API_URL+"/auth/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

@@ -11,12 +11,8 @@ import Unauthorised from "./components/auth/Unauthorised.jsx"
 import Home from "./components/Home.jsx"
 import ProfileDropdown from "./components/navigation/ProfileDropdown.jsx"
 import { useEffect, useState } from "react"
-import Calendar from './components/Calendar.jsx'
 import UserProfilePage from "./components/users/UserProfile.jsx"
 import axios from 'axios' // Used for making HTTP requests
-import dotenv from "dotenv"
-
-dotenv.config()
 
 function App() {
     // Variable / states for isLoggedIn and username
@@ -58,7 +54,7 @@ function App() {
     // Function to fetch user data from the backend
     const fetchUserData = async (userId) => {
         try {
-            const response = await axios.get(process.env.BACKEND_API_URL+`/users/${userId}`, {
+            const response = await axios.get(import.meta.env.VITE_BACKEND_API_URL+`/users/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`, // Assuming token is stored in sessionStorage
                 },
@@ -84,7 +80,7 @@ function App() {
     const [categories, setCategories] = useState([])
 
     async function getEvents() {
-        let response = await fetch(process.env.BACKEND_API_URL+"/events/all")
+        let response = await fetch(import.meta.env.VITE_BACKEND_API_URL+"/events/all")
         response = await response.json()
         // setEvents(response)
         const currentEvents = response.filter(event => new Date(event.date) - new Date > 0)
@@ -93,7 +89,7 @@ function App() {
     }
 
     async function getCategories() {
-        let response = await fetch(process.env.BACKEND_API_URL+"/categories")
+        let response = await fetch(import.meta.env.VITE_BACKEND_API_URL+"/categories")
         response = await response.json()
         setCategories(response)
     }
