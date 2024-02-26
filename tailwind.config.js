@@ -8,8 +8,16 @@ export default {
         "node_modules/@zach.codes/react-calendar/dist/**/*.js"
     ],
     theme: {
+        extend: {
+            animationDuration: {
+                "1.5s": "1.5s",
+                "2s": "2s",
+            }
+        }
     },
-    plugins: [],
+    plugins: [
+        require("tailwindcss-animate"),
+    ],
 }
 
 
