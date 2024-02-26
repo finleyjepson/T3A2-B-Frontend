@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
-function ProfileDropdown({ isLoggedIn, handleLogout, username }) {
-    console.log("Navbar username:", username)
+function ProfileDropdown({ isLoggedIn, handleLogout, user, username }) {
+    console.log("Navbar username:", user.username)
     // State to track visibility of profile dropdown menu
     const [isMenuOpen, setIsMenuOpen] = useState(false)
 

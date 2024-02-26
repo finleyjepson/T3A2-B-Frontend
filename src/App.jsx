@@ -10,22 +10,62 @@ import PollContainer from "./components/PollContainer.jsx"
 import Unauthorised from "./components/auth/Unauthorised.jsx"
 import Home from "./components/Home.jsx"
 import ProfileDropdown from "./components/navigation/ProfileDropdown.jsx"
-import ProfilePage from "./components/users/UserProfile.jsx"
 import { useEffect, useState } from "react"
 import Calendar from './components/Calendar.jsx'
+import UserProfilePage from "./components/users/UserProfile.jsx"
+import axios from 'axios' // Used for making HTTP requests
 
 function App() {
     // Variable / states for isLoggedIn and username
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [username, setUsername] = useState("")
+    const [user, setUser] = useState("") // State to hold user data
+    const [userId, setUserId] = useState(null) // State for userId
 
     console.log("Username value in app.jsx:", username)
+    console.log("Username value in app.jsx (jon):", user.username)
 
     // Check login status on component mount
     useEffect(() => {
         const accessToken = sessionStorage.getItem("accessToken")
         setIsLoggedIn(!!accessToken) // if accessToken is present, set to true
     }, [])
+
+    useEffect(() => {
+        // Retrieve userId from sessionStorage when the component mounts
+        const storedUser = JSON.parse(sessionStorage.getItem('user'))
+        const storedAccessToken = sessionStorage.getItem('accessToken')
+        console.log('Stored user:', storedUser)
+        console.log('Stored accessToken:', storedAccessToken)
+        if (storedUser) {
+            setUserId(storedUser._id)
+            // Set the user state directly
+            setUser(storedUser)
+        }
+        console.log('Stored user ID:', storedUser?._id) // Ensure storedUser is not null before accessing _id
+    }, [])
+    
+    useEffect(() => {
+        // Call fetchUserData only if userId is set
+        if (userId) {
+            fetchUserData(userId)
+        }
+    }, [userId])
+
+    // Function to fetch user data from the backend
+    const fetchUserData = async (userId) => {
+        try {
+            const response = await axios.get(`http://localhost:4000/users/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`, // Assuming token is stored in sessionStorage
+                },
+            })
+            console.log('User Data:', response.data)
+            setUser(response.data.user)            
+        } catch (error) {
+            console.error('Error fetching user data:', error)
+        }
+    }
 
     // Defining handleLogout function
     const handleLogout = () => {
@@ -71,7 +111,7 @@ function App() {
         <>
             <BrowserRouter>
                 {/* Navbar tracks logged in status through a prop */}
-                <ProfileDropdown isLoggedIn={isLoggedIn} handleLogout={handleLogout} username={username} />
+                <ProfileDropdown isLoggedIn={isLoggedIn} handleLogout={handleLogout} username={username} user={user} />
                 <Navbar />
                 <Routes>
                     <Route path='/' element={<Home events={events} />} />
@@ -82,7 +122,7 @@ function App() {
                     <Route path='/signup' element={<SignUp setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />} />
                     <Route path='/login' element={<Login setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />} />
                     <Route path='/poll' element={<PollContainer />} />
-                    <Route path='/profile' element={<ProfilePage />} />
+                    <Route path='/profile' element={<UserProfilePage user={user} username={username}/>} />
                     <Route path='/unauth' element={<Unauthorised />} />
                     <Route path='*' element={<Unauthorised />} />
                 </Routes>
