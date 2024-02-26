@@ -10,7 +10,7 @@ import PollContainer from "./components/PollContainer.jsx"
 import Unauthorised from "./components/auth/Unauthorised.jsx"
 import Home from "./components/Home.jsx"
 import ProfileDropdown from "./components/navigation/ProfileDropdown.jsx"
-import ProfilePage from "./components/UserProfile.jsx"
+import ProfilePage from "./components/users/UserProfile.jsx"
 import { useEffect, useState } from "react"
 import Calendar from './components/Calendar.jsx'
 

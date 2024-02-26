@@ -52,9 +52,11 @@ export default function Login({ setIsLoggedIn, setUsername }) {
             const accessToken = data.accessToken
             const refreshToken = data.refreshToken
             const loggedinUsername = formData.username
+            const backendUsername = data.user.username
             console.log("Access Token:", accessToken)
             console.log("Refresh Token:", refreshToken)
             console.log("Logged in username:", loggedinUsername)
+            console.log("Backend username:", backendUsername)
 
             // Store the tokens securely (change sessionStorage to localStorage as needed)
             sessionStorage.setItem("accessToken", accessToken)
