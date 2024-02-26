@@ -43,7 +43,7 @@ function App() {
             setUser(storedUser)
         }
         console.log('Stored user ID:', storedUser?._id) // Ensure storedUser is not null before accessing _id
-    }, [])
+    }, [isLoggedIn])
     
     useEffect(() => {
         // Call fetchUserData only if userId is set
@@ -104,7 +104,7 @@ function App() {
             <BrowserRouter>
                 {/* Navbar tracks logged in status through a prop */}
                 <ProfileDropdown isLoggedIn={isLoggedIn} username={username} user={user} setIsLoggedIn={setIsLoggedIn} />
-                <Navbar />
+                <Navbar user={user} isLoggedin={isLoggedIn} />
                 <Routes>
                     <Route path='/' element={<Home events={events} />} />
                     <Route path='/events' element={<EventsLandingContainer events={events} categories={ categories } getEvents={ getEvents }/>} />
