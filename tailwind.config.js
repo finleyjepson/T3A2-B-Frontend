@@ -10,6 +10,8 @@ export default {
     theme: {
         extend: {
             animationDuration: {
+                "1s": "1s",
+                "1.25s": "1.25s",
                 "1.5s": "1.5s",
                 "2s": "2s",
                 "3s": "3s",
