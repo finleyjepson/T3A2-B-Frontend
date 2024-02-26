@@ -1,48 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios' // Used for making HTTP requests
 
-const UserProfilePage = () => {
-    const [user, setUser] = useState(null) // State for user data
-    const [userId, setUserId] = useState(null) // State for userId
+const UserProfilePage = ({ user, updateUser, username }) => {
     const [profilePicture, setProfilePicture] = useState(null) // State for profile picture
     const [favoriteAnime, setFavoriteAnime] = useState([]) // State for favorite anime list
     const [favoriteCharacters, setFavoriteCharacters] = useState([]) // State for favorite characters list
-
-    useEffect(() => {
-        // Retrieve userId from sessionStorage when the component mounts
-        const storedUser = JSON.parse(sessionStorage.getItem('user'))
-        const storedAccessToken = sessionStorage.getItem('accessToken')
-        console.log('Stored user:', storedUser)
-        console.log('Stored accessToken:', storedAccessToken)
-        if (storedUser) {
-            setUserId(storedUser._id)
-        }
-        console.log('Stored user ID:', storedUser._id)
-    }, [])
-    
-    useEffect(() => {
-        // Call fetchUserData only if userId is set
-        if (userId) {
-            fetchUserData(userId)
-        }
-    }, [userId])
-
-    // Function to fetch user data from the backend
-    const fetchUserData = async (userId) => {
-        try {
-            const response = await axios.get(`http://localhost:4000/users/${userId}`, {
-                headers: {
-                    Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`, // Assuming token is stored in sessionStorage
-                },
-            })
-            console.log('User Data:', response.data)
-            setUser(response.data.user)
-            // setFavoriteAnime(response.data.user.animes)
-            // setFavoriteCharacters(response.data.user.characters)
-        } catch (error) {
-            console.error('Error fetching user data:', error)
-        }
-    }
 
     // Function to handle profile picture change
     const handleProfilePictureChange = (event) => {
@@ -73,7 +35,7 @@ const UserProfilePage = () => {
                 {/* Display the username if user data is available */}
                 {user && (
                     <div className="col-span-10 text-center">
-                        <h1 className="text-2xl font-bold mb-4">Welcome, {user.username}!</h1>
+                        <h1 className="text-2xl font-bold mb-4">Welcome, {username}!</h1>
                     </div>
                 )}
 
