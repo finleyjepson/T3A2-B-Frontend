@@ -22,7 +22,7 @@ function EventsLandingContainer({ events, categories, getEvents }) {
     function filterList(events) {
         // Filter and return event titles and description that include the 'search' term state
         const filtered = events.filter((event) => {
-            return `${event.title.toLowerCase()} ${event.description.toLowerCase()}`.includes(search.toLowerCase())
+            return `${event.title.toLowerCase()} ${event.description.toLowerCase()} ${event.anime.toLowerCase()}`.includes(search.toLowerCase())
         })
         // Set filteredEvents to filtered events; which will now be passed to the EventList component to render
         setFilteredEvents(filtered)

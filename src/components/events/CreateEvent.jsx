@@ -14,7 +14,7 @@ export default function CreateEvent({ getEvents, categories }) {
         date: "",
         venue: "",
         category: "",
-        anime: "",
+        anime: "Other",
         createdBy: "",
         organiser: "",
         price: 0,
