@@ -11,38 +11,38 @@ export default function Navbar() {
                             <li>
                                 {/* aria-current="page" is for screen readers to comprehend the current page as the Home page */}
                                 <Link to='/'>
-                                    <p className='text-gray-900 dark:text-white hover:underline'>Home</p>
+                                    <p className='text-gray-900 dark:text-white hover:underline animate-in fade-in duration-2s'>Home</p>
                                 </Link>
                                 {/* <a href="#" className="text-gray-900 dark:text-white hover:underline" aria-current="page">Home</a> */}
                             </li>
                             <li>
                                 <Link to='/events'>
-                                    <p className='text-gray-900 dark:text-white hover:underline'>Events</p>
+                                    <p className='text-gray-900 dark:text-white hover:underline animate-in fade-in duration-2s'>Events</p>
                                 </Link>
                             </li>
                             <li>
-                                <a href='#' className='text-gray-900 dark:text-white hover:underline'>
+                                <a href='#' className='text-gray-900 dark:text-white hover:underline animate-in fade-in duration-2s'>
                                     About
                                 </a>
                             </li>
                             <li>
-                                <a href='#' className='text-gray-900 dark:text-white hover:underline'>
+                                <a href='#' className='text-gray-900 dark:text-white hover:underline animate-in fade-in duration-2s'>
                                     Contact Us
                                 </a>
                             </li>
                             <li>
                                 <Link to='/users'>
-                                    <p className='text-gray-900 dark:text-white hover:underline'>Users</p>
+                                    <p className='text-gray-900 dark:text-white hover:underline animate-in fade-in duration-2s'>Users</p>
                                 </Link>
                             </li>
                             <li>
                                 <Link to='/events/new'>
-                                    <p className='text-gray-900 dark:text-white hover:underline'>Create Event</p>
+                                    <p className='text-gray-900 dark:text-white hover:underline animate-in fade-in duration-2s'>Create Event</p>
                                 </Link>
                             </li>
                             <li>
                                 <Link to='/profile'>
-                                    <p className='text-gray-900 dark:text-white hover:underline'>Profile</p>
+                                    <p className='text-gray-900 dark:text-white hover:underline animate-in fade-in duration-2s'>Profile</p>
                                 </Link>
                             </li>
                         </ul>

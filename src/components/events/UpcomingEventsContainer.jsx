@@ -5,7 +5,7 @@ import { Link } from "react-router-dom"
 function UpcomingEventsContainer({ events }) {
     return (
         <>
-            <div className='py-4'>
+            <div className='py-4 animate-in slide-in-from-top ease-out duration-1000'>
                 {/* <div className="py-2 mx-4 rounded-t-lg bg-orange-600 px-4 text-xl max-w-[500px] text-white ">Upcoming Events</div> */}
                 <div className='py-2 mx-4 rounded-t-lg bg-orange-600 px-4 text-xl max-w-[500px] text-white '>
                     <Link to='/events'>Upcoming Events</Link>
