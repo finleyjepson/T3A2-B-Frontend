@@ -129,7 +129,7 @@ export default function CreateEvent({ getEvents, categories }) {
             } catch (error) {
                 // This is the hacky bit; disguising error as 'listening for location'
                 console.log("Listening for location")
-                console.log("Error fetching geocode:", error)
+                console.log("Error fetching geocode, address not valid:", error)
             }
         }
     }

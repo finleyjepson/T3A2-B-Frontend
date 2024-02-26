@@ -12,6 +12,8 @@ export default {
             animationDuration: {
                 "1.5s": "1.5s",
                 "2s": "2s",
+                "3s": "3s",
+                "5s": "5s",
             }
         }
     },
