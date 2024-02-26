@@ -1,35 +1,82 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react'
+import axios from 'axios' // Used for making HTTP requests
 
 const UserProfilePage = () => {
-    const [profilePicture, setProfilePicture] = useState(null); // State for profile picture
-    const [favoriteAnime, setFavoriteAnime] = useState([]); // State for favorite anime list
-    const [favoriteCharacters, setFavoriteCharacters] = useState([]); // State for favorite characters list
+    const [user, setUser] = useState(null) // State for user data
+    const [userId, setUserId] = useState(null) // State for userId
+    const [profilePicture, setProfilePicture] = useState(null) // State for profile picture
+    const [favoriteAnime, setFavoriteAnime] = useState([]) // State for favorite anime list
+    const [favoriteCharacters, setFavoriteCharacters] = useState([]) // State for favorite characters list
+
+    useEffect(() => {
+        // Retrieve userId from sessionStorage when the component mounts
+        const storedUser = JSON.parse(sessionStorage.getItem('user'))
+        const storedAccessToken = sessionStorage.getItem('accessToken')
+        console.log('Stored user:', storedUser)
+        console.log('Stored accessToken:', storedAccessToken)
+        if (storedUser) {
+            setUserId(storedUser._id)
+        }
+        console.log('Stored user ID:', storedUser._id)
+    }, [])
+    
+    useEffect(() => {
+        // Call fetchUserData only if userId is set
+        if (userId) {
+            fetchUserData(userId)
+        }
+    }, [userId])
+
+    // Function to fetch user data from the backend
+    const fetchUserData = async (userId) => {
+        try {
+            const response = await axios.get(`http://localhost:4000/users/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`, // Assuming token is stored in sessionStorage
+                },
+            })
+            console.log('User Data:', response.data)
+            setUser(response.data.user)
+            // setFavoriteAnime(response.data.user.animes)
+            // setFavoriteCharacters(response.data.user.characters)
+        } catch (error) {
+            console.error('Error fetching user data:', error)
+        }
+    }
 
     // Function to handle profile picture change
     const handleProfilePictureChange = (event) => {
-        const file = event.target.files[0]; // Index 0 for first file selected
-        setProfilePicture(file);
-    };
+        const file = event.target.files[0] // Index 0 for first file selected
+        setProfilePicture(file)
+    }
 
     // Function to handle adding a favorite anime
     const handleAddFavoriteAnime = (event) => {
-        event.preventDefault();
-        const anime = event.target.elements.anime.value;
-        setFavoriteAnime(prevState => [...prevState, anime]);
-        event.target.reset();
-    };
+        event.preventDefault()
+        const anime = event.target.elements.anime.value
+        setFavoriteAnime(prevState => [...prevState, anime])
+        event.target.reset()
+    }
 
     // Function to handle adding a favorite character
     const handleAddFavoriteCharacter = (event) => {
-        event.preventDefault();
-        const character = event.target.elements.character.value;
-        setFavoriteCharacters(prevState => [...prevState, character]);
-        event.target.reset();
+        event.preventDefault()
+        const character = event.target.elements.character.value
+        setFavoriteCharacters(prevState => [...prevState, character])
+        event.target.reset()
     };
 
     return (
         <div className="container mx-auto py-6">
             <div className="grid grid-cols-10 gap-6">
+                
+                {/* Display the username if user data is available */}
+                {user && (
+                    <div className="col-span-10 text-center">
+                        <h1 className="text-2xl font-bold mb-4">Welcome, {user.username}!</h1>
+                    </div>
+                )}
+
                 {/* Profile Picture Box */}
                 <div className="bg-indigo-100 rounded-lg overflow-hidden col-span-2">
                     <div className="p-6">
@@ -93,7 +140,7 @@ const UserProfilePage = () => {
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
 export default UserProfilePage;
