@@ -1,7 +1,4 @@
 import { useEffect } from "react"
-import dotenv from "dotenv"
-
-dotenv.config()
 
 export default function DropdownList({ setCategories, categories, setSearchCat }) {
     // Get list of categories
@@ -10,7 +7,7 @@ export default function DropdownList({ setCategories, categories, setSearchCat }
 
     useEffect(() => {
         async function getCategories() {
-            let response = await fetch(process.env.REACT_APP_API_URL + "/categories")
+            let response = await fetch(import.meta.env.REACT_APP_API_URL + "/categories")
             let data = await response.json()
             setCategories(data)
         }

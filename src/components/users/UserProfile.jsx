@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios' // Used for making HTTP requests
+import { useState } from 'react'
 
-const UserProfilePage = ({ user, updateUser, username }) => {
+const UserProfilePage = ({ user, username }) => {
     const [profilePicture, setProfilePicture] = useState(null) // State for profile picture
     const [favoriteAnime, setFavoriteAnime] = useState([]) // State for favorite anime list
     const [favoriteCharacters, setFavoriteCharacters] = useState([]) // State for favorite characters list

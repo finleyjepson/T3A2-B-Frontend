@@ -1,8 +1,5 @@
 import { useState, useEffect } from "react"
 import Axios from "axios"
-import dotenv from "dotenv"
-
-dotenv.config()
 
 export default function CreateEvent({ getEvents, categories }) {
     const [coords, setCoords] = useState({})
@@ -88,7 +85,7 @@ export default function CreateEvent({ getEvents, categories }) {
                 throw new Error("Access token not found. Please login.")
             }
 
-            const response = await fetch(process.env.BACKEND_API_URL+"/events", {
+            const response = await fetch(import.meta.env.VITE_BACKEND_API_URL+"/events", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
