@@ -1,10 +1,13 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
-function ProfileDropdown({ isLoggedIn, handleLogout, user, username }) {
+function ProfileDropdown({ isLoggedIn, user, username, setIsLoggedIn }) {
     console.log("Navbar username:", user.username)
     // State to track visibility of profile dropdown menu
     const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+    const navigate = useNavigate()
 
     // Function to toggle the profile dropdown menu
     const toggleMenu = () => {
@@ -13,9 +16,25 @@ function ProfileDropdown({ isLoggedIn, handleLogout, user, username }) {
         setIsMenuOpen(!isMenuOpen)
     }
 
-    // Handle the logout function
-    const handleSignOut = () => {
-        handleLogout()
+    // Defining handleLogout function
+    const handleLogout = () => {
+        // Remove tokens from session storage
+        axios.delete(import.meta.env.VITE_BACKEND_API_URL + '/auth/logout', {
+            token: sessionStorage.getItem('accessToken')
+        })
+            .then(response => {
+                console.log('Logout successful:', response.data)
+                // Clear session storage
+                sessionStorage.clear()
+                setIsLoggedIn(false)
+            })
+            .catch(error => {
+                console.error('Logout failed:', error)
+            })
+
+        setIsLoggedIn(false)
+
+        navigate('/')
     }
 
     return (
@@ -69,7 +88,7 @@ function ProfileDropdown({ isLoggedIn, handleLogout, user, username }) {
                                     </a>
                                 </li>
                                 <li>
-                                    <button type='button' onClick={handleSignOut} className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'>
+                                    <button type='button' onClick={handleLogout} className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'>
                                         Sign out
                                     </button>
                                 </li>
