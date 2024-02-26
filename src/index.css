@@ -8,8 +8,29 @@
   font-size: 1rem;
 }
 
+.fc .fc-media-screen .fc-direction-ltr .fc-theme-standard {
+  height: 3
+}
+
+#calendar {
+  width: 500px;
+  height: 450px;
+}
+
+.fc-scroller {
+  height: auto !important;
+}
+
+.fc .fc-media-screen .fc-direction-ltr .fc-theme-standard {
+  height: 400px;
+}
+
+.fc-scroller {
+  overflow: visible !important;
+}
+
 .fc table {
-  font-size: 10px;
+  font-size: 8px;
 }
 
 .fc .fc-button-primary {

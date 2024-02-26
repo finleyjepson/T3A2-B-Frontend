@@ -38,11 +38,10 @@ export default function Calendar({ events }) {
  
   // Fullcalendar component
   return (
-    <div className="w-1/3 h-1/3 p-4 border-solid border-gray-300 border-2 rounded-lg m-4">
+    <div className="w-1/3 h-1/3 p-4 border-solid border-gray-300 border-2 rounded-lg m-4" id="calendar">
       <Fullcalendar 
       plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
       initialView={"dayGridMonth"}
-      height={"60vh"}
       displayEventTime={false}
       // 'events' prop passed in to events
       events={events}
