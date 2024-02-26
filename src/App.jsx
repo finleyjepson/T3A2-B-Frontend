@@ -11,6 +11,7 @@ import Unauthorised from "./components/auth/Unauthorised.jsx"
 import Home from "./components/Home.jsx"
 import ProfileDropdown from "./components/navigation/ProfileDropdown.jsx"
 import { useEffect, useState } from "react"
+import Calendar from './components/Calendar.jsx'
 
 function App() {
     // Variable / states for isLoggedIn and username
