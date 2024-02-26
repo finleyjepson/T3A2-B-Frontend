@@ -67,25 +67,6 @@ function App() {
         }
     }
 
-    // Defining handleLogout function
-    const handleLogout = () => {
-        // Remove tokens from session storage
-        axios.delete(import.meta.env.VITE_BACKEND_API_URL + '/auth/logout', {
-            token: sessionStorage.getItem('accessToken')
-        })
-            .then(response => {
-                console.log('Logout successful:', response.data)
-                // Clear session storage
-                sessionStorage.clear()
-                setIsLoggedIn(false)
-            })
-            .catch(error => {
-                console.error('Logout failed:', error)
-            })
-
-        setIsLoggedIn(false)
-    }
-
     // Event state
     const [events, setEvents] = useState([])
     // Categories state
@@ -122,7 +103,7 @@ function App() {
         <>
             <BrowserRouter>
                 {/* Navbar tracks logged in status through a prop */}
-                <ProfileDropdown isLoggedIn={isLoggedIn} handleLogout={handleLogout} username={username} user={user} />
+                <ProfileDropdown isLoggedIn={isLoggedIn} username={username} user={user} setIsLoggedIn={setIsLoggedIn} />
                 <Navbar />
                 <Routes>
                     <Route path='/' element={<Home events={events} />} />

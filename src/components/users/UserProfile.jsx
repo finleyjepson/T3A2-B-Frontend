@@ -113,4 +113,4 @@ const UserProfilePage = ({ user }) => {
     )
 }
 
-export default UserProfilePage;
+export default UserProfilePage
