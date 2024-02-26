@@ -8,13 +8,8 @@
   font-size: 1rem;
 }
 
-.fc .fc-media-screen .fc-direction-ltr .fc-theme-standard {
-  height: 3
-}
-
 #calendar {
   width: 500px;
-  height: 450px;
 }
 
 .fc-scroller {
@@ -50,3 +45,6 @@
   box-shadow: none;
 }
 
+.fc-daygrid-event-dot {
+  border: calc(var(--fc-daygrid-event-dot-width) / 2) solid #d837d3
+}
