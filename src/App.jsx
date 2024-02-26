@@ -1,4 +1,7 @@
 import { BrowserRouter, Routes, Route, useParams } from "react-router-dom"
+import { useEffect, useState } from "react"
+import axios from 'axios' // Used for making HTTP requests
+// components
 import Navbar from "./components/navigation/Navbar.jsx"
 import EventInfo from "./components/events/EventInfo.jsx"
 import EventsLandingContainer from "./components/events/EventsLandingContainer.jsx"
@@ -10,9 +13,7 @@ import PollContainer from "./components/PollContainer.jsx"
 import Unauthorised from "./components/auth/Unauthorised.jsx"
 import Home from "./components/Home.jsx"
 import ProfileDropdown from "./components/navigation/ProfileDropdown.jsx"
-import { useEffect, useState } from "react"
 import UserProfilePage from "./components/users/UserProfile.jsx"
-import axios from 'axios' // Used for making HTTP requests
 
 function App() {
     // Variable / states for isLoggedIn and username
@@ -69,8 +70,19 @@ function App() {
     // Defining handleLogout function
     const handleLogout = () => {
         // Remove tokens from session storage
-        sessionStorage.removeItem("accessToken")
-        sessionStorage.removeItem("refreshToken")
+        axios.delete(import.meta.env.VITE_BACKEND_API_URL + '/auth/logout', {
+            token: sessionStorage.getItem('accessToken')
+        })
+            .then(response => {
+                console.log('Logout successful:', response.data)
+                // Clear session storage
+                sessionStorage.clear()
+                setIsLoggedIn(false)
+            })
+            .catch(error => {
+                console.error('Logout failed:', error)
+            })
+
         setIsLoggedIn(false)
     }
 
@@ -121,7 +133,7 @@ function App() {
                     <Route path='/signup' element={<SignUp setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />} />
                     <Route path='/login' element={<Login setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />} />
                     <Route path='/poll' element={<PollContainer />} />
-                    <Route path='/profile' element={<UserProfilePage user={user} username={username}/>} />
+                    <Route path='/profile' element={<UserProfilePage user={user}/>} />
                     <Route path='/unauth' element={<Unauthorised />} />
                     <Route path='*' element={<Unauthorised />} />
                 </Routes>
