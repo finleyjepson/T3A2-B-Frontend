@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react"
 import Axios from "axios"
 
-export default function CreateEvent({ getEvents, categories }) {
+export default function CreateEvent({ getEvents, categories}) {
     const [coords, setCoords] = useState({})
     const [searchTerm, setSearchTerm] = useState('')
     const [searchResults, setSearchResults] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [skipSearch, setSkipSearch] = useState(false)
+
+    const user = JSON.parse(sessionStorage.getItem("user"))
 
     const [eventInfo, setEventInfo] = useState({
         title: "",
@@ -80,7 +82,6 @@ export default function CreateEvent({ getEvents, categories }) {
             // User token handling
             const accessToken = sessionStorage.getItem("accessToken") // Retrieve the session's access token
             console.log("Access token:", accessToken)
-            const user = JSON.parse(sessionStorage.getItem("user")) // Retrieve the user object
             if (!accessToken) {
                 throw new Error("Access token not found. Please login.")
             }
@@ -136,125 +137,131 @@ export default function CreateEvent({ getEvents, categories }) {
 
     return (
         <>
-            <div className='p-4'>
-                <div className='py-2 mx-4 rounded-t-lg bg-red-600 px-4 text-xl max-w-[500px] text-white '>Create Event</div>
-                <div className='mx-4 rounded-b-lg bg-red-50 max-w-[500px] border-2 border-x-gray-300 border-b-gray-300'>
-                    <form className='space-y-4 md:space-y-4' onSubmit={submitEvent}>
-                        <div className='m-4'>
-                            <label className='block mb-2 text-sm font-medium text-gray-900'>Title</label>
-                            <input
-                                name='title'
-                                id='title'
-                                value={eventInfo.title}
+            {(!user || (!user.isAdmin && !user.isOrganiser)) ? (
+                <h1>Unauthorised</h1>
+            ) : ( 
+                <>
+                <div className='p-4'>
+                    <div className='py-2 mx-4 rounded-t-lg bg-red-600 px-4 text-xl max-w-[500px] text-white '>Create Event</div>
+                    <div className='mx-4 rounded-b-lg bg-red-50 max-w-[500px] border-2 border-x-gray-300 border-b-gray-300'>
+                        <form className='space-y-4 md:space-y-4' onSubmit={submitEvent}>
+                            <div className='m-4'>
+                                <label className='block mb-2 text-sm font-medium text-gray-900'>Title</label>
+                                <input
+                                    name='title'
+                                    id='title'
+                                    value={eventInfo.title}
+                                    onChange={changeHandler}
+                                    className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
+                                    placeholder=''
+                                    required=''
+                                />
+                            </div>
+                            <div className='m-4'>
+                                <label className='block mb-2 text-sm font-medium text-gray-900 '>Description</label>
+                                <textarea
+                                    name='description'
+                                    id='description'
+                                    value={eventInfo.description}
+                                    onChange={changeHandler}
+                                    className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 h-40'
+                                    placeholder=''
+                                    required=''
+                                />
+                            </div>
+                            <select
+                                name='category'
                                 onChange={changeHandler}
-                                className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
-                                placeholder=''
-                                required=''
-                            />
-                        </div>
-                        <div className='m-4'>
-                            <label className='block mb-2 text-sm font-medium text-gray-900 '>Description</label>
-                            <textarea
-                                name='description'
-                                id='description'
-                                value={eventInfo.description}
-                                onChange={changeHandler}
-                                className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 h-40'
-                                placeholder=''
-                                required=''
-                            />
-                        </div>
-                        <select
-                            name='category'
-                            onChange={changeHandler}
-                            className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 m-4'>
-                            <option value='' disabled selected>
-                                Select a category
-                            </option>
-                            {categories.map((category) => (
-                                <option name='category' id='category' key={category._id} value={category._id}>
-                                    {category.name}
+                                className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 m-4'>
+                                <option value='' disabled selected>
+                                    Select a category
                                 </option>
-                            ))}
-                        </select>
-                        <div className='m-4'>
-                            <label className='block mb-2 text-sm font-medium text-gray-900'>Venue</label>
-                            <input
-                                name='venue'
-                                id='venue'
-                                value={eventInfo.venue}
-                                onChange={changeHandler}
-                                className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
-                                placeholder=''
-                                required=''
-                            />
-                        </div>
-                        <div className='m-4'>
-                            <label className='block mb-2 text-sm font-medium text-gray-900'>Date</label>
-                            <input
-                                type='date'
-                                name='date'
-                                id='date'
-                                pattern='\d{4}-\d{2}-\d{2}'
-                                value={eventInfo.date}
-                                onChange={changeHandler}
-                                className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
-                                placeholder=''
-                                required=''
-                            />
-                        </div>
-                        <div className='m-4'>
-                            <label className='block mb-2 text-sm font-medium text-gray-900'>Anime</label>
-                            <input 
-                                type="text" 
-                                value={searchTerm} 
-                                onChange={handleSearchChange}
-                                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                            />
-                            {isLoading && <p>Loading...</p>}
-                            {searchResults.length > 0 && (
-                                <ul className="search-results">
-                                {searchResults.map(anime => (
-                                    <li key={anime.mal_id} onClick={() => handleSelectAnime(anime)}>
-                                    {anime.title}
-                                    </li>
+                                {categories.map((category) => (
+                                    <option name='category' id='category' key={category._id} value={category._id}>
+                                        {category.name}
+                                    </option>
                                 ))}
-                                </ul>
-                            )}
-                        </div>
-                        <div className='m-4'>
-                            <label className='block mb-2 text-sm font-medium text-gray-900'>Organiser</label>
-                            <input
-                                name='organiser'
-                                id='organiser'
-                                value={eventInfo.organiser}
-                                onChange={changeHandler}
-                                className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
-                                placeholder=''
-                                required=''
-                            />
-                        </div>
-                        <div className='m-4'>
-                            <label className='block mb-2 text-sm font-medium text-gray-900'>Price</label>
-                            <input
-                                name='price'
-                                id='price'
-                                value={eventInfo.price}
-                                onChange={changeHandler}
-                                className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
-                                placeholder=''
-                                required=''
-                            />
-                        </div>
-
-                        <button
-                            type='submit'
-                            className='text-white bg-indigo-600 hover:bg-primary-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center m-4'>
-                            Create Event
-                        </button>
-                    </form>
+                            </select>
+                            <div className='m-4'>
+                                <label className='block mb-2 text-sm font-medium text-gray-900'>Venue</label>
+                                <input
+                                    name='venue'
+                                    id='venue'
+                                    value={eventInfo.venue}
+                                    onChange={changeHandler}
+                                    className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
+                                    placeholder=''
+                                    required=''
+                                />
+                            </div>
+                            <div className='m-4'>
+                                <label className='block mb-2 text-sm font-medium text-gray-900'>Date</label>
+                                <input
+                                    type='date'
+                                    name='date'
+                                    id='date'
+                                    pattern='\d{4}-\d{2}-\d{2}'
+                                    value={eventInfo.date}
+                                    onChange={changeHandler}
+                                    className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
+                                    placeholder=''
+                                    required=''
+                                />
+                            </div>
+                            <div className='m-4'>
+                                <label className='block mb-2 text-sm font-medium text-gray-900'>Anime</label>
+                                <input 
+                                    type="text" 
+                                    value={searchTerm} 
+                                    onChange={handleSearchChange}
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                />
+                                {isLoading && <p>Loading...</p>}
+                                {searchResults.length > 0 && (
+                                    <ul className="search-results">
+                                    {searchResults.map(anime => (
+                                        <li key={anime.mal_id} onClick={() => handleSelectAnime(anime)}>
+                                        {anime.title}
+                                        </li>
+                                    ))}
+                                    </ul>
+                                )}
+                            </div>
+                            <div className='m-4'>
+                                <label className='block mb-2 text-sm font-medium text-gray-900'>Organiser</label>
+                                <input
+                                    name='organiser'
+                                    id='organiser'
+                                    value={eventInfo.organiser}
+                                    onChange={changeHandler}
+                                    className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
+                                    placeholder=''
+                                    required=''
+                                />
+                            </div>
+                            <div className='m-4'>
+                                <label className='block mb-2 text-sm font-medium text-gray-900'>Price</label>
+                                <input
+                                    name='price'
+                                    id='price'
+                                    value={eventInfo.price}
+                                    onChange={changeHandler}
+                                    className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
+                                    placeholder=''
+                                    required=''
+                                />
+                            </div>
+    
+                            <button
+                                type='submit'
+                                className='text-white bg-indigo-600 hover:bg-primary-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center m-4'>
+                                Create Event
+                            </button>
+                        </form>
+                    </div>
                 </div>
-            </div>
+                </>
+            )}
         </>
     )
 }
