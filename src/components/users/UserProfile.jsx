@@ -1,9 +1,10 @@
 import { useState } from 'react'
+import axios from 'axios'
 
 const UserProfilePage = ({ user }) => {
     const [profilePicture, setProfilePicture] = useState(null) // State for profile picture
     const [favoriteAnime, setFavoriteAnime] = useState([]) // State for favorite anime list
-    const [favoriteCharacters, setFavoriteCharacters] = useState([]) // State for favorite characters list
+    const [favoriteCharacters, setFavoriteCharacters] = useState(user.favoriteCharacters || []); // State for favorite characters list
 
     // Function to handle profile picture change
     const handleProfilePictureChange = (event) => {
@@ -20,13 +21,30 @@ const UserProfilePage = ({ user }) => {
     }
 
     // Function to handle adding a favorite character
-    const handleAddFavoriteCharacter = (event) => {
-        event.preventDefault()
-        const character = event.target.elements.character.value
-        setFavoriteCharacters(prevState => [...prevState, character])
-        event.target.reset()
+    const handleAddFavoriteCharacter = async (event) => {
+        event.preventDefault();
+        const character = event.target.elements.character.value;
+
+        try {
+            const updatedUser = await updateUserFavoriteCharacters([...favoriteCharacters, character]);
+            setFavoriteCharacters(updatedUser.favoriteCharacters);
+        } catch (error) {
+            console.error('Error updating favorite characters:', error);
+        }
+
+        event.target.reset();
     };
-    console.log("User in UserProfilePage:", user)
+
+    // Function to update favorite characters via API
+    const updateUserFavoriteCharacters = async (characters) => {
+        try {
+            // const response = await axios.put(import.meta.env.VITE_BACKEND_API_URL+`/users/${user._id}/characters`, { favoriteCharacters: characters });
+            const response = await axios.put(`http://localhost:4000/users/${user._id}/characters`, characters);
+            return response.data.user
+        } catch (error) {
+            throw error
+        }
+    };
 
     return (
         <>
