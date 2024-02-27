@@ -14,6 +14,7 @@ import Unauthorised from "./components/auth/Unauthorised.jsx"
 import Home from "./components/Home.jsx"
 import ProfileDropdown from "./components/navigation/ProfileDropdown.jsx"
 import UserProfilePage from "./components/users/UserProfile.jsx"
+import UpdateEvent from "./components/events/UpdateEvent.jsx"
 
 function App() {
     // Variable / states for isLoggedIn and username
@@ -99,6 +100,11 @@ function App() {
         return <EventInfo events={events} id={id} />
     }
 
+    function UpdateEventWrapper({ getEvents, categories }) {
+        const { id } = useParams()
+        return <UpdateEvent getEvents={getEvents} categories={categories} id={id}/>
+    }
+
     return (
         <>
             <BrowserRouter>
@@ -116,6 +122,7 @@ function App() {
                     <Route path='/poll' element={<PollContainer />} />
                     <Route path='/profile' element={<UserProfilePage user={user}/>} />
                     <Route path='/unauth' element={<Unauthorised />} />
+                    <Route path='/events/edit/:id' element={<UpdateEventWrapper getEvents={getEvents} categories={ categories }/>} />
                     <Route path='*' element={<Unauthorised />} />
                 </Routes>
             </BrowserRouter>

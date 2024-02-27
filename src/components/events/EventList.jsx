@@ -1,6 +1,9 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 export default function EventList({ events, max }) {
+
+    const navigate = useNavigate()
+
     return (
         <>
             <ul>
@@ -14,6 +17,9 @@ export default function EventList({ events, max }) {
                                 <p>{event.date}</p>
                             </div>
                         </Link>
+                        <button className='bg-red-600 py-1 px-2 rounded-md text-white' onClick={() => navigate(`edit/${event._id}`)}>
+                                    Edit Event
+                        </button>
                     </li>
                 ))}
             </ul>

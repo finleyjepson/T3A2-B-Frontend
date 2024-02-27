@@ -48,6 +48,7 @@ export default function Navbar({ user, isLoggedin }) {
                                     Contact Us
                                 </button>
                             </li>
+
                             {(isLoggedin && userState.isAdmin) && (
                                 <li>
                                     <Link to='/users'>
@@ -69,6 +70,11 @@ export default function Navbar({ user, isLoggedin }) {
                                     </Link>
                                 </li>
                             )}
+                            <li>
+                                <a href='/events/edit' className='text-gray-900 dark:text-white hover:underline animate-in fade-in duration-2s'>
+                                    Edit Event
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
