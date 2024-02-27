@@ -49,11 +49,14 @@ export default function UserList({ users }) {
         <>
             <ul>
                 {users.map((user, index) => (
-                    <li key={index} className='px-4 py-2 odd:bg-gray-200'>
-                        <div className='flex justify-between'>
-                            <p>{user.username}</p>
-                            <p>{user._id}</p>
-
+                    <li key={index} className='px-4 py-2 odd:bg-gray-200 flex flex-row justify-between'>
+                        <div className='flex flex-col'>
+                            <p>ObjectId: {user._id}</p>
+                            <p>Username: {user.username}</p>
+                            <p> Organiser: {user.isOrganiser.toString()}</p>
+                            <p> Admin: {user.isAdmin.toString()}</p>
+                        </div>
+                        <div className='order-last'>
                             {/* Ternary operator for whether user is organiser vs not. Only show one button, not both. */}
                             {user.isOrganiser ? (
                                 // <button className="bg-green-600 py-1 px-2 rounded-md text-white" value={ user._id } onClick={ addOrganiser }>+ Organiser</button>
@@ -68,10 +71,6 @@ export default function UserList({ users }) {
                                     + Organiser
                                 </button>
                             )}
-                        </div>
-                        <div className='flex justify-between py-1'>
-                            <p> Organiser: {user.isOrganiser.toString()}</p>
-                            <p> Admin: {user.isAdmin.toString()}</p>
                         </div>
                     </li>
                 ))}
