@@ -17,7 +17,7 @@ export default function EventList({ events, max }) {
                                 <p>{event.date}</p>
                             </div>
                         </Link>
-                        <button className='bg-red-600 py-1 px-2 rounded-md text-white' onClick={() => navigate(`edit/${event._id}`)}>
+                        <button className='bg-red-600 py-1 px-2 rounded-md text-white' onClick={() => navigate(`/events/edit/${event._id}`)}>
                                     Edit Event
                         </button>
                     </li>

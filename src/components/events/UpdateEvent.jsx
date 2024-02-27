@@ -188,7 +188,7 @@ export default function UpdateEvent({ getEvents, categories, id}) {
                                 onChange={changeHandler}
                                 className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 m-4'>
                                 <option value='' disabled selected>
-                                    Select a category
+                                    Confirm Event Type
                                 </option>
                                 {categories.map((category) => (
                                     <option name='category' id='category' key={category._id} value={category._id}>
@@ -218,7 +218,7 @@ export default function UpdateEvent({ getEvents, categories, id}) {
                                     value={updateEvent.date}
                                     onChange={changeHandler}
                                     className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
-                                    placeholder=""
+                                    // placeholder={updateEvent.date.toISOString().substring(0,10)}
                                     required=''
                                 />
                             </div>
