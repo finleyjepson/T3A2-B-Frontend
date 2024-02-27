@@ -77,7 +77,7 @@ export default function CreateEvent({ getEvents, categories}) {
 
         // Console log coordinates on submit from the coordinates state
         console.log(coords)
-        console.log(eventInfo)
+        // console.log(eventInfo)
         try {
             // User token handling
             const accessToken = sessionStorage.getItem("accessToken") // Retrieve the session's access token
@@ -99,7 +99,7 @@ export default function CreateEvent({ getEvents, categories}) {
                     date: eventInfo.date,
                     venue: eventInfo.venue,
                     // Commenting out coords as this is breaking event creation. Something to do with the mapping.
-                    // coords: coords,
+                    coords: coords,
                     anime: eventInfo.anime,
                     // createdBy:
                     createdBy: user._id,
@@ -126,8 +126,8 @@ export default function CreateEvent({ getEvents, categories}) {
                 const data = await response.json()
                 // Extract lat and long and set to coords state
                 let lat = data.results[0].geometry.location.lat
-                let lon = data.results[0].geometry.location.lng
-                setCoords([lat, lon])
+                let lng = data.results[0].geometry.location.lng
+                setCoords({lat: lat, lng: lng})
             } catch (error) {
                 // This is the hacky bit; disguising error as 'listening for location'
                 console.log("Listening for location")
