@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
-const UserProfilePage = ({ user }) => {
+const UserProfilePage = ({ user, setUser }) => {
     const [profilePicture, setProfilePicture] = useState(null) // State for profile picture
     const [favoriteAnime, setFavoriteAnime] = useState([]) // State for favorite anime list
     const [favoriteCharacters, setFavoriteCharacters] = useState(user.favoriteCharacters || []); // State for favorite characters list
@@ -29,6 +29,12 @@ const UserProfilePage = ({ user }) => {
     const handleProfilePictureChange = async (event) => {
         event.preventDefault()
         await uploadProfilePicture(event)
+        const updateUser = await axios.get(`http://localhost:4000/users/${user._id}`, {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
+            }
+        })
+        setUser(updateUser.data.user)
     }
 
     useEffect(() => {
