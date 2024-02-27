@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import Axios from "axios"
 
 export default function CreateEvent({ getEvents, categories}) {
-    const [coords, setCoords] = useState({})
+    const [coords, setCoords] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
     const [searchResults, setSearchResults] = useState([])
     const [isLoading, setIsLoading] = useState(false)
@@ -124,9 +124,10 @@ export default function CreateEvent({ getEvents, categories}) {
                 // Make call to Google Maps Geocode, taking in 'venue' as parameter
                 const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${venue}&key=${api}`)
                 const data = await response.json()
-                console.log("Long / Lat:", data.results[0].geometry.location)
                 // Extract lat and long and set to coords state
-                setCoords(data.results[0].geometry.location)
+                let lat = data.results[0].geometry.location.lat
+                let lon = data.results[0].geometry.location.lng
+                setCoords([lat, lon])
             } catch (error) {
                 // This is the hacky bit; disguising error as 'listening for location'
                 console.log("Listening for location")

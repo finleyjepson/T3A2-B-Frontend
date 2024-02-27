@@ -16,6 +16,15 @@ export default {
                 "2s": "2s",
                 "3s": "3s",
                 "5s": "5s",
+            },
+            keyframes: {
+                wipe: {
+                    '0%': { width: '0%'},
+                    '100%': {width: '100%'}
+                }
+            },
+            animation: {
+                wipe: 'wipe 1s ease-in'
             }
         }
     },

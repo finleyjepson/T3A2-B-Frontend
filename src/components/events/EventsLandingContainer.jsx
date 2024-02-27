@@ -40,15 +40,17 @@ function EventsLandingContainer({ events, getEvents }) {
     }, [])
 
     return (
-        <>
-            <input type='text' placeholder='🔎 Search Anime and Events' onChange={changeHandler} value={search} className='w-96 px-4 py-2 mt-4 mx-8 bg-gray-200 rounded-lg animate-in slide-in-from-top fade-in-25 ease-out duration-1000'></input>
-            <div className='p-4 animate-in slide-in-from-left ease-out duration-1000'>
-                <div className='py-2 mx-4 rounded-t-lg bg-blue-600 px-4 text-xl max-w-[800px] text-white '>Events</div>
-                <div className='mx-4 rounded-b-lg bg-blue-50 max-w-[800px] border-2 border-x-gray-300 border-b-gray-300'>
-                    <EventList events={filteredEvents} />
+        <div className="flex justify-center">
+            <div>
+                <input type='text' placeholder='🔎 Search Anime and Events' onChange={changeHandler} value={search} className='w-96 px-4 py-2 mt-4 mx-8 bg-gray-200 rounded-lg animate-in slide-in-from-top fade-in-25 ease-out duration-1000'></input>
+                <div className='p-4 animate-in slide-in-from-left ease-out fade-in-25 duration-1000 '>
+                    <div className='text-[42px] py-6 mx-4 rounded-t-lg bg-blue-600 px-4 text-xl max-w-[800px] text-white shadow-lg'>Events</div>
+                    <div className='mx-4 rounded-b-lg bg-blue-50 max-w-[800px] border-2 border-x-gray-300 border-b-gray-300 shadow-lg'>
+                        <EventList events={filteredEvents} />
+                    </div>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 
