@@ -98,7 +98,7 @@ function App() {
                     <Route path='/signup' element={<SignUp setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />} />
                     <Route path='/login' element={<Login setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />} />
                     <Route path='/poll' element={<PollContainer />} />
-                    <Route path='/profile' element={<UserProfilePage user={user}/>} />
+                    <Route path='/profile' element={<UserProfilePage user={user} setUser={setUser}/>} />
                     <Route path='/unauth' element={<Unauthorised />} />
                     <Route path='/events/edit/:id' element={<UpdateEventWrapper getEvents={getEvents} categories={ categories }/>} />
                     <Route path='*' element={<Unauthorised />} />
