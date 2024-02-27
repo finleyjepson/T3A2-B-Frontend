@@ -72,7 +72,7 @@ function ProfileDropdown({ isLoggedIn, user, username, setIsLoggedIn }) {
                             className={`absolute top-full right-0 mt-2 z-50 ${isMenuOpen ? "" : "hidden"} my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow`}
                             id='user-dropdown'>
                             <div className='px-4 py-3'>
-                                <span className='block text-sm text-gray-500 truncate dark:text-gray-400'>{username}</span>
+                                <span className='block text-sm text-gray-500 truncate dark:text-gray-400'>{user.username}</span>
                             </div>
                             <ul className='py-2' aria-labelledby='user-menu-button'>
                                 <li>
