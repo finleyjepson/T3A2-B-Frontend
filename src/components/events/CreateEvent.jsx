@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import Axios from "axios"
 
 export default function CreateEvent({ getEvents, categories}) {
-    const [coords, setCoords] = useState([])
+    const [coords, setCoords] = useState({lat: 0, lng: 0})
     const [searchTerm, setSearchTerm] = useState('')
     const [searchResults, setSearchResults] = useState([])
     const [isLoading, setIsLoading] = useState(false)
@@ -41,7 +41,7 @@ export default function CreateEvent({ getEvents, categories}) {
                     setIsLoading(false)
                     console.log(res.data.data)
                     })
-                    .catch(err => console.error(err)); 
+                    .catch(err => console.error(err))
                 } else {
                 setSearchResults([]) // Clear results if no search term
                 }
@@ -64,6 +64,29 @@ export default function CreateEvent({ getEvents, categories}) {
         setSkipSearch(true) // Skip search on select
         setSearchTerm(anime.title) // Set the input value
         setSearchResults([]) // Clear results
+    }
+
+    // Geocode getter function
+    async function getGeo(venue) {
+        // Import API_KEY from .env file
+        const api = import.meta.env.VITE_GOOGLE_API_KEY
+        const parsedVenue = venue.replace(/ /g, "%20")
+        if (venue) {
+            try {
+                // Make call to Google Maps Geocode, taking in 'venue' as parameter
+                const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${parsedVenue}&key=${api}`)
+                console.log("Response:", response)
+                const data = await response.json()
+                // Extract lat and long and set to coords state
+                let lat = data.results[0].geometry.location.lat
+                let lng = data.results[0].geometry.location.lng
+                setCoords({lat: lat, lng: lng})
+            } catch (error) {
+                // This is the hacky bit; disguising error as 'listening for location'
+                console.log("Listening for location")
+                console.log("Error fetching geocode, address not valid:", error)
+            }
+        }
     }
 
     // Use effect to re-run getGeo on venue input change
@@ -99,7 +122,13 @@ export default function CreateEvent({ getEvents, categories}) {
                     date: eventInfo.date,
                     venue: eventInfo.venue,
                     // Commenting out coords as this is breaking event creation. Something to do with the mapping.
-                    coords: coords,
+                    coords: coords ? {
+                        lat: coords.lat,
+                        lng: coords.lng,
+                    } : {
+                        lat: 0,
+                        lng: 0
+                    },
                     anime: eventInfo.anime,
                     // createdBy:
                     createdBy: user._id,
@@ -112,27 +141,6 @@ export default function CreateEvent({ getEvents, categories}) {
             // Catch response:
         } catch (error) {
             console.error("Problem creating event", error.message)
-        }
-    }
-
-    // Geocode getter function
-    async function getGeo(venue) {
-        // Import API_KEY from .env file
-        const api = import.meta.env.VITE_GOOGLE_API_KEY
-        if (venue) {
-            try {
-                // Make call to Google Maps Geocode, taking in 'venue' as parameter
-                const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${venue}&key=${api}`)
-                const data = await response.json()
-                // Extract lat and long and set to coords state
-                let lat = data.results[0].geometry.location.lat
-                let lng = data.results[0].geometry.location.lng
-                setCoords({lat: lat, lng: lng})
-            } catch (error) {
-                // This is the hacky bit; disguising error as 'listening for location'
-                console.log("Listening for location")
-                console.log("Error fetching geocode, address not valid:", error)
-            }
         }
     }
 
