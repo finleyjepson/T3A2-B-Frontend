@@ -2,7 +2,7 @@ import EventList from "./EventList"
 import { Link } from "react-router-dom"
 
 // Events container on home page
-function UpcomingEventsContainer({ events }) {
+function UpcomingEventsContainer({ events, user, isLoggedIn }) {
     return (
         <>
             <div className='py-4 animate-in slide-in-from-top ease-out duration-1000 '>
@@ -12,7 +12,7 @@ function UpcomingEventsContainer({ events }) {
                 </div>
                 <div className='mx-4 rounded-b-lg bg-orange-50 max-w-[500px] border-2 border-x-gray-300 border-b-gray-300 shadow-lg'>
                     {/* Pass in number of items to show as 'max'  */}
-                    <EventList events={events} max={5} />
+                    <EventList events={events} max={5} isLoggedIn={isLoggedIn} user={user} />
                 </div>
             </div>
         </>

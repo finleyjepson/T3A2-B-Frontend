@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
-function ProfileDropdown({ isLoggedIn, user, username, setIsLoggedIn }) {
+function ProfileDropdown({ isLoggedIn, user, setIsLoggedIn }) {
     console.log("Navbar username:", user.username)
     // State to track visibility of profile dropdown menu
     const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -55,6 +55,7 @@ function ProfileDropdown({ isLoggedIn, user, username, setIsLoggedIn }) {
                 {/* Profile/Logout : Login/Signup, based on login state */}
                 {isLoggedIn ? (
                     <div className='flex items-center space-x-3 md:space-x-0 rtl:space-x-reverse relative'>
+                        <span className='p-1 font-bold'>Welcome {user.username}!</span>
                         {/* Profile photo button */}
                         <button
                             type='button'
@@ -65,7 +66,7 @@ function ProfileDropdown({ isLoggedIn, user, username, setIsLoggedIn }) {
                             data-dropdown-toggle='user-dropdown'
                             data-dropdown-placement='bottom'>
                             <span className='sr-only'>Open user menu</span>
-                            <img className='w-8 h-8 rounded-full' src='https://emoji.beeimg.com/🍔/apple' alt='user photo' />
+                            <img className='w-8 h-8 rounded-full' src={user.pictureUrl} alt='user photo' />
                         </button>
                         {/* Dropdown menu */}
                         <div

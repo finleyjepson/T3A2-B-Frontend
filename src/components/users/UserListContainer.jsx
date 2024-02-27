@@ -10,27 +10,28 @@ export default function UserListContainer() {
     const [search, setSearch] = useState("")
     const [filteredUsers, setFilteredUsers] = useState(users)
 
+    async function getUsers() {
+        try {
+            let response = await fetch(
+                import.meta.env.VITE_BACKEND_API_URL+"/users/all", {
+                    headers: {
+                        Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`
+                    }
+                }
+            )
+            // Check response status, if 401 (unauthorised) redirect user to unauthorised page
+            if (response.status === 401) {
+                navigate("/unauth")
+            }
+            let data = await response.json()
+            setUsers(data.user)
+        } catch (err) {
+            console.log("Failed to fetch list")
+        }
+    }
+
     // Use effect to fetch user list on mount
     useEffect(() => {
-        async function getUsers() {
-            try {
-                let response = await fetch(
-                    import.meta.env.VITE_BACKEND_API_URL+"/users/all"
-                    // Uncomment the below line once bearer token is available from session storage. Token goes into '{token}'
-                    // , {headers: {Authorization: 'Bearer {token}'}}
-                )
-
-                // Check response status, if 401 (unauthorised) redirect user to unauthorised page
-                if (response.status === 401) {
-                    navigate("/unauth")
-                }
-
-                let data = await response.json()
-                setUsers(data.user)
-            } catch (err) {
-                console.log("Failed to fetch list")
-            }
-        }
         getUsers()
     }, [filteredUsers])
 
@@ -62,7 +63,7 @@ export default function UserListContainer() {
             <div className='py-4'>
                 <div className='py-2 mx-4 rounded-t-lg bg-black px-4 text-xl max-w-[500px] text-white '>Users</div>
                 <div className=' mx-4 rounded-b-lg bg-slate-100 max-w-[500px] border-2 border-x-gray-300 border-b-gray-300'>
-                    <UserList users={filteredUsers} setFilteredUsers={setFilteredUsers} />
+                    <UserList users={filteredUsers} setFilteredUsers={setFilteredUsers}  />
                 </div>
             </div>
         </>

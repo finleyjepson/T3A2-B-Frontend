@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route, useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
-import axios from 'axios' // Used for making HTTP requests
 // components
 import Navbar from "./components/navigation/Navbar.jsx"
 import EventInfo from "./components/events/EventInfo.jsx"
@@ -55,6 +54,7 @@ function App() {
         let response = await fetch(import.meta.env.VITE_BACKEND_API_URL+"/events/all")
         response = await response.json()
         // setEvents(response)
+        sessionStorage.setItem('events', JSON.stringify(response))
         const currentEvents = response.filter(event => new Date(event.date) - new Date > 0)
         const sortedCurrentEvents = currentEvents.sort((a, b) => new Date(a.date) - new Date(b.date))
         setEvents(sortedCurrentEvents)
@@ -87,11 +87,11 @@ function App() {
         <>
             <BrowserRouter>
                 {/* Navbar tracks logged in status through a prop */}
-                <ProfileDropdown isLoggedIn={isLoggedIn} username={username} user={user} setIsLoggedIn={setIsLoggedIn} />
-                <Navbar user={user} isLoggedin={isLoggedIn} />
+                <ProfileDropdown isLoggedIn={isLoggedIn} user={user} setIsLoggedIn={setIsLoggedIn} />
+                <Navbar user={user} isLoggedIn={isLoggedIn} />
                 <Routes>
-                    <Route path='/' element={<Home events={events} />} />
-                    <Route path='/events' element={<EventsLandingContainer events={events} categories={ categories } getEvents={ getEvents }/>} />
+                    <Route path='/' element={<Home events={events} user={user} isLoggedIn={isLoggedIn} />} />
+                    <Route path='/events' element={<EventsLandingContainer events={events} categories={ categories } getEvents={ getEvents } user={user} isLoggedIn={isLoggedIn}/>} />
                     <Route path='/users' element={<UserListContainer />} />
                     <Route path='/events/:id' element={<EventInfoWrapper events={events} />} />
                     <Route path='events/new' element={<CreateEvent getEvents={getEvents} categories={ categories }/>} />
