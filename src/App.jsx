@@ -45,28 +45,6 @@ function App() {
         }
         console.log('Stored user ID:', storedUser?._id) // Ensure storedUser is not null before accessing _id
     }, [isLoggedIn])
-    
-    useEffect(() => {
-        // Call fetchUserData only if userId is set
-        if (userId) {
-            fetchUserData(userId)
-        }
-    }, [userId])
-
-    // Function to fetch user data from the backend
-    const fetchUserData = async (userId) => {
-        try {
-            const response = await axios.get(import.meta.env.VITE_BACKEND_API_URL+`/users/${userId}`, {
-                headers: {
-                    Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`, // Assuming token is stored in sessionStorage
-                },
-            })
-            console.log('User Data:', response.data)
-            setUser(response.data.user)            
-        } catch (error) {
-            console.error('Error fetching user data:', error)
-        }
-    }
 
     // Event state
     const [events, setEvents] = useState([])

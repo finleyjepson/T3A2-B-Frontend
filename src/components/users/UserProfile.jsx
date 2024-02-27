@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 
 const UserProfilePage = ({ user }) => {
@@ -6,11 +6,34 @@ const UserProfilePage = ({ user }) => {
     const [favoriteAnime, setFavoriteAnime] = useState([]) // State for favorite anime list
     const [favoriteCharacters, setFavoriteCharacters] = useState(user.favoriteCharacters || []); // State for favorite characters list
 
-    // Function to handle profile picture change
-    const handleProfilePictureChange = (event) => {
-        const file = event.target.files[0] // Index 0 for first file selected
-        setProfilePicture(file)
+    const uploadProfilePicture = async (event) => {
+        const file = event.target.elements.image.files[0]
+        const formData = new FormData()
+        formData.append('image', file)
+
+        // Send the image to the server
+        try {
+            const response = await axios.post('http://localhost:4000/images/pfp', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
+                }
+            })
+            console.log('Profile picture uploaded:', response.data)
+        } catch (error) {
+            console.error('Error uploading profile picture:', error)
+        }
     }
+
+    // Function to handle profile picture change
+    const handleProfilePictureChange = async (event) => {
+        event.preventDefault()
+        await uploadProfilePicture(event)
+    }
+
+    useEffect(() => {
+        setProfilePicture(user.pictureUrl)
+    }, [user])
 
     // Function to handle adding a favorite anime
     const handleAddFavoriteAnime = (event) => {
@@ -37,13 +60,9 @@ const UserProfilePage = ({ user }) => {
 
     // Function to update favorite characters via API
     const updateUserFavoriteCharacters = async (characters) => {
-        try {
-            // const response = await axios.put(import.meta.env.VITE_BACKEND_API_URL+`/users/${user._id}/characters`, { favoriteCharacters: characters });
-            const response = await axios.put(`http://localhost:4000/users/${user._id}/characters`, characters);
-            return response.data.user
-        } catch (error) {
-            throw error
-        }
+        // const response = await axios.put(import.meta.env.VITE_BACKEND_API_URL+`/users/${user._id}/characters`, { favoriteCharacters: characters });
+        const response = await axios.put(`http://localhost:4000/users/${user._id}/characters`, characters);
+        return response.data.user
     };
 
     return (
@@ -65,20 +84,25 @@ const UserProfilePage = ({ user }) => {
         
                         {/* Profile Picture Box */}
                         <div className="bg-indigo-100 rounded-lg overflow-hidden col-span-2">
+                            <form onSubmit={handleProfilePictureChange}>
                             <div className="p-6">
                                 <h2 className="text-lg font-semibold mb-4">Profile Picture</h2>
                                 <div className="flex items-center justify-center bg-gray-200 h-40">
                                     {/* If profile picture is not null, show the profile picture */}
                                     {profilePicture ? (
                                         // Need to figure out how this links with the AWS image host
-                                        <img src={URL.createObjectURL(profilePicture)} alt="Profile Picture" className="h-full object-cover" />
+                                        <img src={profilePicture} alt="Profile Picture" className="h-full object-cover" />
                                         // If null, show 'no profile picture'
                                     ) : (
                                         <span>No profile picture</span>
                                     )}
                                 </div>
-                                <input type="file" accept="image/*" onChange={handleProfilePictureChange} className="mt-4" />
+                                <input type="file" accept="image/*" name='image' className="mt-4" />
                             </div>
+                            <div className='flex justify-center p-2'>
+                                <button type='submit' className='bg-indigo-400 hover:bg-indigo-300 text-white font-semibold py-2 px-4 rounded'>Save</button>
+                            </div>
+                            </form>
                         </div>
         
                         {/* My Upcoming Events Box */}
