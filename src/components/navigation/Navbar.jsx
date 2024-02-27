@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom"
 import { useState, useEffect } from "react"
 
-export default function Navbar({ user, isLoggedin }) {
+export default function Navbar({ user, isLoggedIn }) {
     const [isLoggedInState, setIsLoggedInState] = useState()
     const [userState, setUserState] = useState({})
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
-        setIsLoggedInState(isLoggedin)
+        setIsLoggedInState(isLoggedIn)
         setUserState(user)
-    }, [isLoggedin, user])
+    }, [isLoggedIn, user])
 
     const handleContactClick = () => {
         setShowModal(true);
@@ -49,32 +49,27 @@ export default function Navbar({ user, isLoggedin }) {
                                 </button>
                             </li>
 
-                            {(isLoggedin && userState.isAdmin) && (
+                            {(isLoggedIn && userState.isAdmin) && (
                                 <li>
                                     <Link to='/users'>
                                         <p className='text-gray-900 dark:text-white hover:underline animate-in fade-in duration-2s'>Users</p>
                                     </Link>
                                 </li>
                             )}
-                            {(isLoggedin && (userState.isAdmin || userState.isOrganiser)) && (
+                            {(isLoggedIn && (userState.isAdmin || userState.isOrganiser)) && (
                                 <li>
                                     <Link to='/events/new'>
                                         <p className='text-gray-900 dark:text-white hover:underline animate-in fade-in duration-2s'>Create Event</p>
                                     </Link>
                                 </li>
                             )}
-                            {isLoggedin && (
+                            {isLoggedIn && (
                                 <li>
                                     <Link to='/profile'>
                                         <p className='text-gray-900 dark:text-white hover:underline animate-in fade-in duration-2s'>Profile</p>
                                     </Link>
                                 </li>
                             )}
-                            <li>
-                                <a href='/events/edit' className='text-gray-900 dark:text-white hover:underline animate-in fade-in duration-2s'>
-                                    Edit Event
-                                </a>
-                            </li>
                         </ul>
                     </div>
                 </div>
