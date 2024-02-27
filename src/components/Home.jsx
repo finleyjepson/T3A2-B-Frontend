@@ -4,15 +4,12 @@ import PollContainer from "./PollContainer"
 import Calendar from "./Calendar"
 import Map from "./Maps"
 
-export default function Home({ events }) {
+export default function Home({ events, user, isLoggedIn }) {
     return (
         <div className='flex flex-wrap justify-center'>
             <div>
-                <Map events={ events } />
-            </div>
-            <div>
-                <Calendar events={ events }/>
-                <UpcomingEventsContainer events={events} />
+                <Calendar events={ events } />
+                <UpcomingEventsContainer events={events} user={user} isLoggedIn={isLoggedIn} />
             </div>
             <div>
             <UpcomingAnimeContainer events={events} />
