@@ -48,7 +48,7 @@ export default function UpdateEvent({ getEvents, categories, id}) {
             const delayTimer = setTimeout(() => {
                 if (searchTerm) { // Only search if there's input
                 setIsLoading(true)
-                Axios.get(`https://api.jikan.moe/v4/anime?q=${searchTerm}`)
+                axios.get(`https://api.jikan.moe/v4/anime?q=${searchTerm}`)
                     .then(res => {
                     setSearchResults(res.data.data.slice(0,5)) // Limit to top 5 results
                     setIsLoading(false)
