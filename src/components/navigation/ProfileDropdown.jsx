@@ -80,11 +80,11 @@ function ProfileDropdown({ isLoggedIn, user, username, setIsLoggedIn }) {
                                         Profile
                                     </Link>
                                 </li>
-                                <li>
+                                {/* <li>
                                     <a href='#' className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 '>
                                         Settings
                                     </a>
-                                </li>
+                                </li> */}
                                 <li>
                                     <button type='button' onClick={handleLogout} className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'>
                                         Sign out
