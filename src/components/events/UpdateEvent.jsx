@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react"
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import axios from "axios"
+import getGeo from '../../utils/getGeo'
 
-export default function UpdateEvent({ getEvents, categories, id}) {
+export default function UpdateEvent({ categories, user }) {
+    const { id } = useParams()
     const [coords, setCoords] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
     const [searchResults, setSearchResults] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [skipSearch, setSkipSearch] = useState(false)
-
 	const [updateEvent, setUpdateEvent] = useState([{}])
     
     const navigate = useNavigate()
@@ -22,8 +23,6 @@ export default function UpdateEvent({ getEvents, categories, id}) {
 	useEffect(() => {
 		getOneEvent()
 	},[])
-
-    const user = JSON.parse(sessionStorage.getItem("user"))
 
     function changeHandler(event) {
         const { name, value } = event.target
@@ -43,7 +42,6 @@ export default function UpdateEvent({ getEvents, categories, id}) {
                     .then(res => {
                     setSearchResults(res.data.data.slice(0,5)) // Limit to top 5 results
                     setIsLoading(false)
-                    console.log(res.data.data)
                     })
                     .catch(err => console.error(err)); 
                 } else {
@@ -73,7 +71,7 @@ export default function UpdateEvent({ getEvents, categories, id}) {
     // Use effect to re-run getGeo on venue input change
     useEffect(() => {
         // Re-run getGeo function every time event venue is updated
-        getGeo(updateEvent.venue)
+        getGeo(updateEvent.venue, setCoords)
     }, [updateEvent.venue])
 
     async function submitEvent(event) {
@@ -147,27 +145,6 @@ export default function UpdateEvent({ getEvents, categories, id}) {
             // Catch response:
         } catch (error) {
             console.error("Problem deleting event", error.message)
-        }
-    }
-
-    // Geocode getter function
-    async function getGeo(venue) {
-        // Import API_KEY from .env file
-        const api = import.meta.env.VITE_GOOGLE_API_KEY
-        if (venue) {
-            try {
-                // Make call to Google Maps Geocode, taking in 'venue' as parameter
-                const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${venue}&key=${api}`)
-                const data = await response.json()
-                // Extract lat and long and set to coords state
-                let lat = data.results[0].geometry.location.lat
-                let lng = data.results[0].geometry.location.lng
-                setCoords({lat: lat, lng: lng})
-            } catch (error) {
-                // This is the hacky bit; disguising error as 'listening for location'
-                console.log("Listening for location")
-                console.log("Error fetching geocode, address not valid:", error)
-            }
         }
     }
 

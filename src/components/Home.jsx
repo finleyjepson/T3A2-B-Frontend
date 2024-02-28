@@ -2,7 +2,6 @@ import UpcomingAnimeContainer from "./UpcomingAnimeContainer"
 import UpcomingEventsContainer from "./events/UpcomingEventsContainer"
 import PollContainer from "./PollContainer"
 import Calendar from "./Calendar"
-import Map from "./events/Maps"
 
 export default function Home({ events, user, isLoggedIn }) {
     return (

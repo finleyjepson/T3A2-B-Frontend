@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from 'react-router-dom'
 import Axios from "axios"
+import getGeo from '../../utils/getGeo.js'
 
-export default function CreateEvent({ getEvents, categories}) {
+export default function CreateEvent({ getEvents, categories }) {
     const [coords, setCoords] = useState({lat: 0, lng: 0})
     const [searchTerm, setSearchTerm] = useState('')
     const [searchResults, setSearchResults] = useState([])
@@ -70,33 +71,10 @@ export default function CreateEvent({ getEvents, categories}) {
         setSearchResults([]) // Clear results
     }
 
-    // Geocode getter function
-    async function getGeo(venue) {
-        // Import API_KEY from .env file
-        const api = import.meta.env.VITE_GOOGLE_API_KEY
-        const parsedVenue = venue.replace(/ /g, "%20")
-        if (venue) {
-            try {
-                // Make call to Google Maps Geocode, taking in 'venue' as parameter
-                const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${parsedVenue}&key=${api}`)
-                console.log("Response:", response)
-                const data = await response.json()
-                // Extract lat and long and set to coords state
-                let lat = data.results[0].geometry.location.lat
-                let lng = data.results[0].geometry.location.lng
-                setCoords({lat: lat, lng: lng})
-            } catch (error) {
-                // This is the hacky bit; disguising error as 'listening for location'
-                console.log("Listening for location")
-                console.log("Error fetching geocode, address not valid:", error)
-            }
-        }
-    }
-
     // Use effect to re-run getGeo on venue input change
     useEffect(() => {
         // Re-run getGeo function every time event venue is updated
-        getGeo(eventInfo.venue)
+        getGeo(eventInfo.venue, setCoords)
     }, [eventInfo.venue])
 
     async function submitEvent(event) {
