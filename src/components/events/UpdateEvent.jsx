@@ -154,8 +154,8 @@ export default function UpdateEvent({ getEvents, categories, id}) {
             {(!user || (!user.isAdmin && !user.isOrganiser)) ? (
                 <h1>Unauthorised</h1>
             ) : ( 
-                <>
-                <div className='p-4'>
+                <div className="flex justify-center">
+                <div className='p-4 w-[500px] animate-in slide-in-from-top duration-1s'>
                     <div className='py-2 mx-4 rounded-t-lg bg-green-600 px-4 text-xl max-w-[500px] text-white '>Edit Event</div>
                     <div className='mx-4 rounded-b-lg bg-green-50 max-w-[500px] border-2 border-x-gray-300 border-b-gray-300'>
                         <form className='space-y-4 md:space-y-4' onSubmit={submitEvent}>
@@ -265,17 +265,18 @@ export default function UpdateEvent({ getEvents, categories, id}) {
                                     placeholder={updateEvent.price}
                                     required=''
                                 />
-                            </div>
-    
-                            <button
+                                <button
                                 type='submit'
-                                className='text-white bg-indigo-600 hover:bg-primary-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center m-4'>
+                                className='text-white bg-green-600 hover:bg-green-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center my-4 duration-300'>
                                 Save Event Details
                             </button>
+                            </div>
+    
+ 
                         </form>
                     </div>
                 </div>
-                </>
+                </div>
             )}
         </>
     )

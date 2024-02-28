@@ -1,4 +1,5 @@
 import EventList from "./EventList"
+import UpcomingEvents from "./UpcomingEvents"
 import { Link } from "react-router-dom"
 
 // Events container on home page
@@ -12,7 +13,7 @@ function UpcomingEventsContainer({ events, user, isLoggedIn }) {
                 </div>
                 <div className='mx-4 rounded-b-lg bg-orange-50 max-w-[500px] border-2 border-x-gray-300 border-b-gray-300 shadow-lg'>
                     {/* Pass in number of items to show as 'max'  */}
-                    <EventList events={events} max={5} isLoggedIn={isLoggedIn} user={user} />
+                    <UpcomingEvents events={events} max={5} isLoggedIn={isLoggedIn} user={user} />
                 </div>
             </div>
         </>

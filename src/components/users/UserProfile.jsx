@@ -84,12 +84,12 @@ const UserProfilePage = ({ user, setUser }) => {
                         {/* Display the username if user data is available */}
                         {user && (
                             <div className="col-span-10 text-center">
-                                <h1 className="text-2xl font-bold mb-4">Welcome, {user.username}!</h1>
+                                <h1 className="text-2xl font-bold mb-4 animate-in fade-in duration-500">Welcome, {user.username}!</h1>
                             </div>
                         )}
         
                         {/* Profile Picture Box */}
-                        <div className="bg-indigo-100 rounded-lg overflow-hidden col-span-2">
+                        <div className="bg-indigo-100 rounded-lg overflow-hidden col-span-2 animate-in slide-in-from-left fade-in duration-1s">
                             <form onSubmit={handleProfilePictureChange}>
                             <div className="p-6">
                                 <h2 className="text-lg font-semibold mb-4">Profile Picture</h2>
@@ -112,7 +112,7 @@ const UserProfilePage = ({ user, setUser }) => {
                         </div>
         
                         {/* My Upcoming Events Box */}
-                        <div className="bg-indigo-900 rounded-lg overflow-hidden col-span-8">
+                        <div className="bg-indigo-900 rounded-lg overflow-hidden col-span-8 animate-in slide-in-from-right fade-in duration-1s">
                             <div className="p-6">
                                 <h2 className="text-lg text-white font-semibold mb-4">My Upcoming Events</h2>
                                 <p className="text-white/50">List your upcoming events here...</p>
@@ -120,7 +120,7 @@ const UserProfilePage = ({ user, setUser }) => {
                         </div>
         
                         {/* My Favourite Anime Box */}
-                        <div className="bg-indigo-900 rounded-lg overflow-hidden col-span-4">
+                        <div className="bg-indigo-900 rounded-lg overflow-hidden col-span-4 animate-in slide-in-from-left fade-in duration-1s">
                             <div className="p-6">
                                 <h2 className="text-lg text-white font-semibold mb-4">My Favourite Anime</h2>
                                 <form onSubmit={handleAddFavoriteAnime}>
@@ -138,7 +138,7 @@ const UserProfilePage = ({ user, setUser }) => {
                         </div>
         
                         {/* My Favourite Characters Box */}
-                        <div className="bg-indigo-900 rounded-lg overflow-hidden col-span-6">
+                        <div className="bg-indigo-900 rounded-lg overflow-hidden col-span-6 animate-in slide-in-from-right fade-in duration-1s">
                             <div className="p-6">
                                 <h2 className="text-lg text-white font-semibold mb-4">My Favourite Characters</h2>
                                 <form onSubmit={handleAddFavoriteCharacter}>
