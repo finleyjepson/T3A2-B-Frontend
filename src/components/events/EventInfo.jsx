@@ -11,7 +11,9 @@ export default function EventInfo({ events, id }) {
                 <div className="flex">
                     <div className="mx-8 my-8 ">
                     <div className="h-[300px] w-[200px] bg-slate-500 animate-in slide-in-from-left fade-in-25 ease-out duration-1000 my-4">Image</div>
-                    <Maps coords={ events[id].coords }/>
+                    <div className="animate-in slide-in-from-left fade-in-25 ease-out duration-1000 my-4">
+                        <Maps coords={ events[id].coords }/>
+                    </div>
                     </div>
                     <div className="my-8 mr-8 animate-in slide-in-from-top fade-in-25 ease-out duration-1000">
                         <button className='bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 m-4 border-b-4 border-green-700 hover:border-green-500 rounded'>Interested</button>
