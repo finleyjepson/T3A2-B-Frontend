@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, useParams } from "react-router-dom"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 // components
 import Navbar from "./components/navigation/Navbar.jsx"
 import EventInfo from "./components/events/EventInfo.jsx"
@@ -18,9 +18,9 @@ import UpdateEvent from "./components/events/UpdateEvent.jsx"
 function App() {
     // Variable / states for isLoggedIn and username
     const [isLoggedIn, setIsLoggedIn] = useState(false)
-    const [username, setUsername] = useState("")
     const [user, setUser] = useState("") // State to hold user data
-    const [userId, setUserId] = useState(null) // State for userId
+    const [events, setEvents] = useState([])
+    const [categories, setCategories] = useState([])
 
     // console.log("Username value in app.jsx:", username)
     // console.log("Username value in app.jsx (jon):", user.username)
@@ -38,19 +38,13 @@ function App() {
         console.log('Stored user:', storedUser)
         console.log('Stored accessToken:', storedAccessToken)
         if (storedUser) {
-            setUserId(storedUser._id)
             // Set the user state directly
             setUser(storedUser)
         }
         console.log('Stored user ID:', storedUser?._id) // Ensure storedUser is not null before accessing _id
     }, [isLoggedIn])
 
-    // Event state
-    const [events, setEvents] = useState([])
-    // Categories state
-    const [categories, setCategories] = useState([])
-
-    async function getEvents() {
+    const getEvents = useCallback(async () =>{
         let response = await fetch(import.meta.env.VITE_BACKEND_API_URL+"/events/all")
         response = await response.json()
         // setEvents(response)
@@ -58,7 +52,7 @@ function App() {
         const currentEvents = response.filter(event => new Date(event.date) - new Date > 0)
         const sortedCurrentEvents = currentEvents.sort((a, b) => new Date(a.date) - new Date(b.date))
         setEvents(sortedCurrentEvents)
-    }
+    }, [setEvents])
 
     async function getCategories() {
         let response = await fetch(import.meta.env.VITE_BACKEND_API_URL+"/categories")
@@ -70,13 +64,7 @@ function App() {
     useEffect(() => {
         getEvents()
         getCategories()
-    }, [])
-
-    // Higher order component for single event info
-    function EventInfoWrapper({ events }) {
-        const { id } = useParams()
-        return <EventInfo events={events} id={id} />
-    }
+    }, [getEvents])
 
     function UpdateEventWrapper({ getEvents, categories }) {
         const { id } = useParams()
@@ -93,10 +81,10 @@ function App() {
                     <Route path='/' element={<Home events={events} user={user} isLoggedIn={isLoggedIn} />} />
                     <Route path='/events' element={<EventsLandingContainer events={events} categories={ categories } getEvents={ getEvents } user={user} isLoggedIn={isLoggedIn}/>} />
                     <Route path='/users' element={<UserListContainer />} />
-                    <Route path='/events/:id' element={<EventInfoWrapper events={events} />} />
+                    <Route path='/events/:id' element={<EventInfo events={events} getEvents={getEvents} />} />
                     <Route path='events/new' element={<CreateEvent getEvents={getEvents} categories={ categories }/>} />
-                    <Route path='/signup' element={<SignUp setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />} />
-                    <Route path='/login' element={<Login setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />} />
+                    <Route path='/signup' element={<SignUp setIsLoggedIn={setIsLoggedIn} />} />
+                    <Route path='/login' element={<Login setIsLoggedIn={setIsLoggedIn} />} />
                     <Route path='/poll' element={<PollContainer />} />
                     <Route path='/profile' element={<UserProfilePage user={user} setUser={setUser}/>} />
                     <Route path='/unauth' element={<Unauthorised />} />

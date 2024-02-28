@@ -1,6 +1,19 @@
 import Maps from "./Maps"
+import { useParams } from "react-router-dom"
+import { useEffect, useState } from "react"
 
-export default function EventInfo({ events, id }) {
+export default function EventInfo({ events, getEvents }) {
+    const { id } = useParams()
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        getEvents().then(() => setLoading(false))
+    }, [getEvents])
+
+    if (loading) {
+        return <div>Loading...</div>
+    }
+
     return (
         <div className="flex justify-center py-4">
             <div className='py-4 mx-4 border-2  rounded-xl shadow-lg bg-white animate-in slide-in-from-top fade-in-25 ease-out duration-1.25s max-w-[600px]'>
