@@ -28,7 +28,7 @@ const Maps = ({ coords }) => {
     <div>
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
-        zoom={10}
+        zoom={13}
         center={coords}
         options={{ gestureHandling: 'none', disableDefaultUI: true}}
       >
