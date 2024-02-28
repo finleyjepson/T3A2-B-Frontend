@@ -4,7 +4,7 @@ export default function EventInfo({ events, id }) {
     console.log(events)
     return (
         <div className="flex justify-center py-4">
-            <div className='py-4 mx-4 border-2  rounded-xl shadow-lg bg-white animate-in slide-in-from-top fade-in-25 ease-out duration-1.25s'>
+            <div className='py-4 mx-4 border-2  rounded-xl shadow-lg bg-white animate-in slide-in-from-top fade-in-25 ease-out duration-1.25s max-w-[600px]'>
                 <div className="bg-amber-300">
                 <h1 className='text-[32px] py-4 animate-in slide-in-from-top fade-in-25 ease-out duration-1.25s mx-8'>{events[id].title}</h1>
                 </div>
