@@ -3,9 +3,11 @@ import axios from 'axios'
 
 const UserProfilePage = ({ user, setUser }) => {
     const [profilePicture, setProfilePicture] = useState(null) // State for profile picture
-    const [favoriteAnime, setFavoriteAnime] = useState([]) // State for favorite anime list
-    const [favoriteCharacters, setFavoriteCharacters] = useState(user.favoriteCharacters || []); // State for favorite characters list
+    const [favouriteAnime, setFavouriteAnime] = useState([]) // State for favourite anime list
+    const [favouriteCharacters, setFavouriteCharacters] = useState([]) // State for favourite characters list
+    const [isDataFetched, setIsDataFetched] = useState(false);
 
+    // Function to upload profile picture
     const uploadProfilePicture = async (event) => {
         const file = event.target.elements.image.files[0]
         const formData = new FormData()
@@ -37,39 +39,103 @@ const UserProfilePage = ({ user, setUser }) => {
         setUser(updateUser.data.user)
     }
 
+    // Fetch Profile picture
     useEffect(() => {
         setProfilePicture(user.pictureUrl)
     }, [user])
 
-    // Function to handle adding a favorite anime
-    const handleAddFavoriteAnime = (event) => {
+    // Fetch favourite characters
+    useEffect(() => {
+        console.log("useEffect triggered");
+        console.log("User:", user);
+        console.log("Session token:", sessionStorage.getItem('accessToken'));
+        
+        // Check if user and user ID are available. isDataFetched prevents constant GET requests 
+        if (user && user._id && !isDataFetched) {
+            // Fetch user's data including favourite characters when component mounts
+            const fetchData = async () => {
+                try {
+                    const response = await axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/users/${user._id}`, {
+                        headers: {
+                            Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
+                        }
+                    })
+                    console.log("Response:", response.data);
+                    // Extract user data from the response
+                    const userData = response.data.user
+                    console.log("User data:", userData);
+                    // Update the user state with the fetched user data
+                    setUser(userData)
+                    // Check if the user data includes favourite characters
+                    if (userData.characters) { 
+                        console.log("Favourite characters:", userData.characters);
+                        setFavouriteCharacters(userData.characters) // If favourite characters exist, update the local state with them
+                    }
+                    setIsDataFetched(true);
+                } catch (error) {
+                    console.error('Error fetching user data:', error)
+                }
+            };
+            fetchData()
+        }
+    }, [user, setUser, isDataFetched]);
+    // }, [])
+
+    // Function to handle adding a favourite anime
+    const handleAddFavouriteAnime = (event) => {
         event.preventDefault()
         const anime = event.target.elements.anime.value
-        setFavoriteAnime(prevState => [...prevState, anime])
+        setFavouriteAnime(prevState => [...prevState, anime])
         event.target.reset()
     }
 
-    // Function to handle adding a favorite character
-    const handleAddFavoriteCharacter = async (event) => {
-        event.preventDefault();
-        const character = event.target.elements.character.value;
-
+    // Function to handle adding a favourite character
+    const handleAddFavouriteCharacter = async (event) => {
+        event.preventDefault()
+        const character = event.target.elements.character.value
+        // Update local state with the new character
+        const updatedCharacters = [...favouriteCharacters, character]
         try {
-            const updatedUser = await updateUserFavoriteCharacters([...favoriteCharacters, character]);
-            setFavoriteCharacters(updatedUser.favoriteCharacters);
+            // Update the backend with the complete list of characters
+            await updateUserFavouriteCharacters(updatedCharacters)
+            // Update the local state with the new complete list of characters
+            setFavouriteCharacters(updatedCharacters)
         } catch (error) {
-            console.error('Error updating favorite characters:', error);
+            console.error('Error updating favourite characters:', error)
         }
-
-        event.target.reset();
+        event.target.reset()
+    }
+    
+    // Function to update user's favourite characters on the backend
+    const updateUserFavouriteCharacters = async (characters) => {
+        const accessToken = sessionStorage.getItem('accessToken');
+    
+        try {
+            const response = await axios.put(
+                `${import.meta.env.VITE_BACKEND_API_URL}/users/${user._id}/characters`,
+                { characters }, // Send updated favourite characters to the backend
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                }
+            );
+    
+            console.log('Update characters response:', response); // Log the response
+    
+            if (response && response.data && response.data.user) {
+                setUser(response.data.user);
+            } else {
+                console.error('Error updating favourite characters: Response or response data is undefined');
+            }
+        } catch (error) {
+            console.error('Error updating favourite characters:', error);
+            throw new Error(error.response ? error.response.data.message : 'Unknown error occurred');
+        }
     };
-
-    // Function to update favorite characters via API
-    const updateUserFavoriteCharacters = async (characters) => {
-        // const response = await axios.put(import.meta.env.VITE_BACKEND_API_URL+`/users/${user._id}/characters`, { favoriteCharacters: characters });
-        const response = await axios.put(`${import.meta.env.VITE_BACKEND_API_URL}/users/${user._id}/characters`, characters);
-        return response.data.user
-    };
+    
+    
+    
 
     return (
         <>
@@ -123,15 +189,15 @@ const UserProfilePage = ({ user, setUser }) => {
                         <div className="bg-indigo-900 rounded-lg overflow-hidden col-span-4 animate-in slide-in-from-left fade-in duration-1s">
                             <div className="p-6">
                                 <h2 className="text-lg text-white font-semibold mb-4">My Favourite Anime</h2>
-                                <form onSubmit={handleAddFavoriteAnime}>
+                                <form onSubmit={handleAddFavouriteAnime}>
                                     <input type="text" name="anime" placeholder="Enter favourite anime" className="w-full border rounded py-2 px-3 mb-2" />
                                     <button type="submit" className="bg-indigo-400 hover:bg-indigo-300 text-white font-semibold py-2 px-4 rounded">
                                         Add
                                     </button>
                                 </form>
                                 <ul className="mt-4">
-                                    {favoriteAnime.map((anime, index) => (
-                                        <li key={index}>{anime}</li>
+                                    {favouriteAnime.map((animes, index) => (
+                                        <li key={index}>{animes}</li>
                                     ))}
                                 </ul>
                             </div>
@@ -141,15 +207,15 @@ const UserProfilePage = ({ user, setUser }) => {
                         <div className="bg-indigo-900 rounded-lg overflow-hidden col-span-6 animate-in slide-in-from-right fade-in duration-1s">
                             <div className="p-6">
                                 <h2 className="text-lg text-white font-semibold mb-4">My Favourite Characters</h2>
-                                <form onSubmit={handleAddFavoriteCharacter}>
+                                <form onSubmit={handleAddFavouriteCharacter}>
                                     <input type="text" name="character" placeholder="Enter favourite character" className="w-full border rounded py-2 px-3 mb-2" />
                                     <button type="submit" className="bg-indigo-400 hover:bg-indigo-300 text-white font-semibold py-2 px-4 rounded">
                                         Add
                                     </button>
                                 </form>
                                 <ul className="mt-4">
-                                    {favoriteCharacters.map((character, index) => (
-                                        <li key={index}>{character}</li>
+                                    {favouriteCharacters.map((characters, index) => (
+                                        <li key={index}>{characters}</li>
                                     ))}
                                 </ul>
                             </div>
