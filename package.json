@@ -14,13 +14,15 @@
     "@fullcalendar/interaction": "^6.1.11",
     "@fullcalendar/react": "^6.1.11",
     "@fullcalendar/timegrid": "^6.1.11",
+    "@react-google-maps/api": "^2.19.3",
     "axios": "^1.6.7",
     "date-fns": "^3.3.1",
     "dotenv": "^16.4.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.1",
-    "tippy.js": "^6.3.7"
+    "tippy.js": "^6.3.7",
+    "use-places-autocomplete": "^4.0.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.55",
