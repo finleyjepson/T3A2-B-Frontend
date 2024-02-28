@@ -13,7 +13,7 @@ const UserProfilePage = ({ user, setUser }) => {
 
         // Send the image to the server
         try {
-            const response = await axios.post('http://localhost:4000/images/pfp', formData, {
+            const response = await axios.post(import.meta.VITE_BACKEND_API_URL+'/images/pfp', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
@@ -29,7 +29,7 @@ const UserProfilePage = ({ user, setUser }) => {
     const handleProfilePictureChange = async (event) => {
         event.preventDefault()
         await uploadProfilePicture(event)
-        const updateUser = await axios.get(`http://localhost:4000/users/${user._id}`, {
+        const updateUser = await axios.get(import.meta.VITE_BACKEND_API_URL+`/users/${user._id}`, {
             headers: {
                 Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
             }
@@ -67,7 +67,7 @@ const UserProfilePage = ({ user, setUser }) => {
     // Function to update favorite characters via API
     const updateUserFavoriteCharacters = async (characters) => {
         // const response = await axios.put(import.meta.env.VITE_BACKEND_API_URL+`/users/${user._id}/characters`, { favoriteCharacters: characters });
-        const response = await axios.put(`http://localhost:4000/users/${user._id}/characters`, characters);
+        const response = await axios.put(import.meta.VITE_BACKEND_API_URL`/users/${user._id}/characters`, characters);
         return response.data.user
     };
 
