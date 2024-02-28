@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 function ProfileDropdown({ isLoggedIn, user, setIsLoggedIn }) {
-    console.log("Navbar username:", user.username)
+    // console.log("Navbar username:", user.username)
     // State to track visibility of profile dropdown menu
     const [isMenuOpen, setIsMenuOpen] = useState(false)
 

@@ -10,7 +10,8 @@ const mapContainerStyle = {
 const Maps = ({ coords }) => {
 
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: import.meta.env.VITE_MAPS_API_KEY,
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_API_KEY,
+
     version: 3.55,
     libraries,
   });

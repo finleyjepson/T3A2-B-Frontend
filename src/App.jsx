@@ -22,8 +22,8 @@ function App() {
     const [user, setUser] = useState("") // State to hold user data
     const [userId, setUserId] = useState(null) // State for userId
 
-    console.log("Username value in app.jsx:", username)
-    console.log("Username value in app.jsx (jon):", user.username)
+    // console.log("Username value in app.jsx:", username)
+    // console.log("Username value in app.jsx (jon):", user.username)
 
     // Check login status on component mount
     useEffect(() => {
