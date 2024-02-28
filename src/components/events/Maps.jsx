@@ -11,6 +11,7 @@ const Maps = ({ coords }) => {
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_MAPS_API_KEY,
+    version: 3.55,
     libraries,
   });
 

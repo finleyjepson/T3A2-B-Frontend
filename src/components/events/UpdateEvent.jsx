@@ -9,7 +9,7 @@ export default function UpdateEvent({ getEvents, categories, id}) {
     const [isLoading, setIsLoading] = useState(false)
     const [skipSearch, setSkipSearch] = useState(false)
 
-	const [updateEvent, setUpdateEvent] = useState("")
+	const [updateEvent, setUpdateEvent] = useState([{}])
     
     const navigate = useNavigate()
 
@@ -80,7 +80,7 @@ export default function UpdateEvent({ getEvents, categories, id}) {
         event.preventDefault()
 
         // Console log coordinates on submit from the coordinates state
-        console.log(updateEvent)
+        console.log(updateEvent.coords)
         try {
             // User token handling
             const accessToken = sessionStorage.getItem("accessToken") // Retrieve the session's access token
@@ -101,9 +101,9 @@ export default function UpdateEvent({ getEvents, categories, id}) {
                     category: updateEvent.category,
                     date: updateEvent.date,
                     venue: updateEvent.venue,
-                    coords: coords ? {
-                        lat: coords.lat,
-                        lng: coords.lng,
+                    coords: updateEvent.coords ? {
+                        lat: updateEvent.coords.lat,
+                        lng: updateEvent.coords.lng,
                     } : {
                         lat: 0,
                         lng: 0
