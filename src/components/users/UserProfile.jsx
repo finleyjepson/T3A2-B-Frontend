@@ -5,7 +5,7 @@ const UserProfilePage = ({ user, setUser }) => {
     const [profilePicture, setProfilePicture] = useState(null) // State for profile picture
     const [favouriteAnime, setFavouriteAnime] = useState([]) // State for favourite anime list
     const [favouriteCharacters, setFavouriteCharacters] = useState([]) // State for favourite characters list
-    const [isDataFetched, setIsDataFetched] = useState(false);
+    const [isDataFetched, setIsDataFetched] = useState(false)
 
     // Function to upload profile picture
     const uploadProfilePicture = async (event) => {
@@ -45,14 +45,10 @@ const UserProfilePage = ({ user, setUser }) => {
     }, [user])
 
     // Fetch favourite characters
-    useEffect(() => {
-        console.log("useEffect triggered");
-        console.log("User:", user);
-        console.log("Session token:", sessionStorage.getItem('accessToken'));
-        
+    useEffect(() => {        
         // Check if user and user ID are available. isDataFetched prevents constant GET requests 
         if (user && user._id && !isDataFetched) {
-            // Fetch user's data including favourite characters when component mounts
+            // Fetch user's data including favourite characters/anime when component mounts
             const fetchData = async () => {
                 try {
                     const response = await axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/users/${user._id}`, {
@@ -60,33 +56,71 @@ const UserProfilePage = ({ user, setUser }) => {
                             Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
                         }
                     })
-                    console.log("Response:", response.data);
+
                     // Extract user data from the response
                     const userData = response.data.user
-                    console.log("User data:", userData);
+
                     // Update the user state with the fetched user data
                     setUser(userData)
                     // Check if the user data includes favourite characters
                     if (userData.characters) { 
-                        console.log("Favourite characters:", userData.characters);
                         setFavouriteCharacters(userData.characters) // If favourite characters exist, update the local state with them
                     }
-                    setIsDataFetched(true);
+                    // Check if the user data includes favourite anime
+                    if (userData.animes) { 
+                    setFavouriteAnime(userData.animes) // If favourite anime exist, update the local state with them
+                    }
+                    setIsDataFetched(true)
                 } catch (error) {
                     console.error('Error fetching user data:', error)
                 }
-            };
+            }
             fetchData()
         }
-    }, [user, setUser, isDataFetched]);
+    }, [user, setUser, isDataFetched])
     // }, [])
 
     // Function to handle adding a favourite anime
-    const handleAddFavouriteAnime = (event) => {
+    const handleAddFavouriteAnime = async (event) => {
         event.preventDefault()
-        const anime = event.target.elements.anime.value
-        setFavouriteAnime(prevState => [...prevState, anime])
+        const anime = event.target.elements.animes.value
+        // Update local state with the new anime
+        const updatedAnimes = [...favouriteAnime, anime]
+        try {
+            // Update the backend with the complete list of animes
+            await updateUserFavouriteAnimes(updatedAnimes)
+            // Update the local state with the new complete list of animes
+            setFavouriteAnime(updatedAnimes)
+        } catch (error) {
+            console.error('Error updating favourite animes:', error)
+        }
         event.target.reset()
+    }
+
+    // Function to update user's favourite animes on the backend
+    const updateUserFavouriteAnimes = async (animes) => {
+        const accessToken = sessionStorage.getItem('accessToken')
+    
+        try {
+            const response = await axios.put(
+                `${import.meta.env.VITE_BACKEND_API_URL}/users/${user._id}/animes`,
+                { animes }, // Send updated favourite animes to the backend
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                }
+            )
+    
+            if (response && response.data && response.data.user) {
+                setUser(response.data.user)
+            } else {
+                console.error('Error updating favourite animes: Response or response data is undefined')
+            }
+        } catch (error) {
+            console.error('Error updating favourite animes:', error)
+            throw new Error(error.response ? error.response.data.message : 'Unknown error occurred')
+        }
     }
 
     // Function to handle adding a favourite character
@@ -108,7 +142,7 @@ const UserProfilePage = ({ user, setUser }) => {
     
     // Function to update user's favourite characters on the backend
     const updateUserFavouriteCharacters = async (characters) => {
-        const accessToken = sessionStorage.getItem('accessToken');
+        const accessToken = sessionStorage.getItem('accessToken')
     
         try {
             const response = await axios.put(
@@ -119,24 +153,19 @@ const UserProfilePage = ({ user, setUser }) => {
                         Authorization: `Bearer ${accessToken}`,
                     },
                 }
-            );
-    
-            console.log('Update characters response:', response); // Log the response
+            )
     
             if (response && response.data && response.data.user) {
-                setUser(response.data.user);
+                setUser(response.data.user)
             } else {
-                console.error('Error updating favourite characters: Response or response data is undefined');
+                console.error('Error updating favourite characters: Response or response data is undefined')
             }
         } catch (error) {
-            console.error('Error updating favourite characters:', error);
-            throw new Error(error.response ? error.response.data.message : 'Unknown error occurred');
+            console.error('Error updating favourite characters:', error)
+            throw new Error(error.response ? error.response.data.message : 'Unknown error occurred')
         }
-    };
+    }
     
-    
-    
-
     return (
         <>
             {!user ? (
@@ -190,7 +219,7 @@ const UserProfilePage = ({ user, setUser }) => {
                             <div className="p-6">
                                 <h2 className="text-lg text-white font-semibold mb-4">My Favourite Anime</h2>
                                 <form onSubmit={handleAddFavouriteAnime}>
-                                    <input type="text" name="anime" placeholder="Enter favourite anime" className="w-full border rounded py-2 px-3 mb-2" />
+                                    <input type="text" name="animes" placeholder="Enter favourite anime" className="w-full border rounded py-2 px-3 mb-2" />
                                     <button type="submit" className="bg-indigo-400 hover:bg-indigo-300 text-white font-semibold py-2 px-4 rounded">
                                         Add
                                     </button>
