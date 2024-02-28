@@ -16,6 +16,7 @@ export default function EventList({ events, max, user, isLoggedIn }) {
         return date.split("T")[0]
     }
 
+
     return (
         <>
             <ul>

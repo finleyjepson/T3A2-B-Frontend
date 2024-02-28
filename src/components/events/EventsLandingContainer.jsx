@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import EventList from "./EventList"
 
-function EventsLandingContainer({ events, user, isLoggedIn }) {
+function EventsLandingContainer({ events, user, isLoggedIn, getEvents }) {
     // State for search
     const [search, setSearch] = useState("")
     const [filteredEvents, setFilteredEvents] = useState(events)
@@ -31,6 +31,10 @@ function EventsLandingContainer({ events, user, isLoggedIn }) {
         // Run filterList function when 'search' state is updated
         filterList(events)
     }, [search, events])
+
+    useEffect(() => {
+        getEvents()
+    }, [])
 
     return (
         <div className="flex justify-center">
