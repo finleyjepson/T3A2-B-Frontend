@@ -70,7 +70,7 @@ export default function UpdateEvent({ getEvents, categories, id}) {
     }
 
     const handleSelectAnime = (anime) => {
-        setEventInfo((previousState) => ({
+        setUpdateEvent((previousState) => ({
             ...previousState,
             anime: anime.title,
         }))
@@ -90,42 +90,47 @@ export default function UpdateEvent({ getEvents, categories, id}) {
 
         // Console log coordinates on submit from the coordinates state
         console.log(updateEvent)
-        // console.log(eventInfo)
-        // try {
-        //     // User token handling
-        //     const accessToken = sessionStorage.getItem("accessToken") // Retrieve the session's access token
-        //     console.log("Access token:", accessToken)
-        //     if (!accessToken) {
-        //         throw new Error("Access token not found. Please login.")
-        //     }
+        console.log(eventInfo)
+        try {
+            // User token handling
+            const accessToken = sessionStorage.getItem("accessToken") // Retrieve the session's access token
+            console.log("Access token:", accessToken)
+            if (!accessToken) {
+                throw new Error("Access token not found. Please login.")
+            }
 
-        //     const response = await fetch(import.meta.env.VITE_BACKEND_API_URL+"/events", {
-        //         method: "POST",
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //             Authorization: `Bearer ${accessToken}`, // Add the token in the request
-        //         },
-        //         body: JSON.stringify({
-        //             title: eventInfo.title,
-        //             description: eventInfo.description,
-        //             category: eventInfo.category,
-        //             date: eventInfo.date,
-        //             venue: eventInfo.venue,
-        //             // Commenting out coords as this is breaking event creation. Something to do with the mapping.
-        //             coords: coords,
-        //             anime: eventInfo.anime,
-        //             // createdBy:
-        //             createdBy: user._id,
-        //             organiser: eventInfo.organiser,
-        //             price: eventInfo.price,
-        //         }),
-        //     })
-        //     console.log(response)
-        //     getEvents()
-        //     // Catch response:
-        // } catch (error) {
-        //     console.error("Problem creating event", error.message)
-        // }
+            const response = await fetch(import.meta.env.VITE_BACKEND_API_URL+`/events/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${accessToken}`, // Add the token in the request
+                },
+                body: JSON.stringify({
+                    title: updateEvent.title,
+                    description: updateEvent.description,
+                    category: updateEvent.category,
+                    date: updateEvent.date,
+                    venue: updateEvent.venue,
+                    coords: coords ? {
+                        lat: coords.lat,
+                        lng: coords.lng,
+                    } : {
+                        lat: 0,
+                        lng: 0
+                    },
+                    anime: updateEvent.anime,
+                    // createdBy:
+                    createdBy: user._id,
+                    organiser: updateEvent.organiser,
+                    price: updateEvent.price,
+                }),
+            })
+            console.log(response)
+            getEvents()
+            // Catch response:
+        } catch (error) {
+            console.error("Problem creating event", error.message)
+        }
     }
 
     // Geocode getter function
