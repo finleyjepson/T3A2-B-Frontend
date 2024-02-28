@@ -121,7 +121,6 @@ export default function CreateEvent({ getEvents, categories}) {
                     category: eventInfo.category,
                     date: eventInfo.date,
                     venue: eventInfo.venue,
-                    // Commenting out coords as this is breaking event creation. Something to do with the mapping.
                     coords: coords ? {
                         lat: coords.lat,
                         lng: coords.lng,
