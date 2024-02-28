@@ -6,6 +6,8 @@ const UserProfilePage = ({ user, setUser }) => {
     const [favouriteAnime, setFavouriteAnime] = useState([]) // State for favourite anime list
     const [favouriteCharacters, setFavouriteCharacters] = useState([]) // State for favourite characters list
     const [isDataFetched, setIsDataFetched] = useState(false)
+    const [showAnimeMaxLimitMessage, setShowAnimeMaxLimitMessage] = useState(false) // State for showing anime max limit message
+    const [showCharacterMaxLimitMessage, setShowCharacterMaxLimitMessage] = useState(false) // State for showing character max limit message
 
     // Function to upload profile picture
     const uploadProfilePicture = async (event) => {
@@ -84,16 +86,24 @@ const UserProfilePage = ({ user, setUser }) => {
     const handleAddFavouriteAnime = async (event) => {
         event.preventDefault()
         const anime = event.target.elements.animes.value
-        // Update local state with the new anime
-        const updatedAnimes = [...favouriteAnime, anime]
-        try {
-            // Update the backend with the complete list of animes
-            await updateUserFavouriteAnimes(updatedAnimes)
-            // Update the local state with the new complete list of animes
-            setFavouriteAnime(updatedAnimes)
-        } catch (error) {
-            console.error('Error updating favourite animes:', error)
+
+        // Check if the number of favourite anime is less than 5
+        if (favouriteAnime.length < 5) {
+            // Update local state with the new anime
+            const updatedAnimes = [...favouriteAnime, anime]
+            try {
+                // Update the backend with the complete list of animes
+                await updateUserFavouriteAnimes(updatedAnimes)
+                // Update the local state with the new complete list of animes
+                setFavouriteAnime(updatedAnimes)
+            } catch (error) {
+                console.error('Error updating favourite animes:', error)
+            }
+        } else {
+            // Show max limit message if the limit is reached
+            setShowAnimeMaxLimitMessage(true)
         }
+
         event.target.reset()
     }
 
@@ -127,16 +137,24 @@ const UserProfilePage = ({ user, setUser }) => {
     const handleAddFavouriteCharacter = async (event) => {
         event.preventDefault()
         const character = event.target.elements.character.value
-        // Update local state with the new character
-        const updatedCharacters = [...favouriteCharacters, character]
-        try {
-            // Update the backend with the complete list of characters
-            await updateUserFavouriteCharacters(updatedCharacters)
-            // Update the local state with the new complete list of characters
-            setFavouriteCharacters(updatedCharacters)
-        } catch (error) {
-            console.error('Error updating favourite characters:', error)
+
+        // Check if the number of favourite characters is less than 5
+        if (favouriteCharacters.length < 5) {
+            // Update local state with the new character
+            const updatedCharacters = [...favouriteCharacters, character]
+            try {
+                // Update the backend with the complete list of characters
+                await updateUserFavouriteCharacters(updatedCharacters)
+                // Update the local state with the new complete list of characters
+                setFavouriteCharacters(updatedCharacters)
+            } catch (error) {
+                console.error('Error updating favourite characters:', error)
+            }
+        } else {
+            // Show max limit message if the limit is reached
+            setShowCharacterMaxLimitMessage(true)
         }
+
         event.target.reset()
     }
     
@@ -175,6 +193,8 @@ const UserProfilePage = ({ user, setUser }) => {
             await updateUserFavouriteAnimes(updatedAnimes)
             // Update the local state with the updated list of animes
             setFavouriteAnime(updatedAnimes)
+            // Hide max limit message if it was shown
+            setShowAnimeMaxLimitMessage(false)            
         } catch (error) {
             console.error('Error removing favourite anime:', error)
         }
@@ -189,6 +209,8 @@ const UserProfilePage = ({ user, setUser }) => {
             await updateUserFavouriteCharacters(updatedCharacters)
             // Update the local state with the updated list of characters
             setFavouriteCharacters(updatedCharacters)
+            // Hide max limit message if it was shown
+            setShowCharacterMaxLimitMessage(false)
         } catch (error) {
             console.error('Error removing favourite character:', error)
         }
@@ -246,13 +268,15 @@ const UserProfilePage = ({ user, setUser }) => {
                         {/* My Favourite Anime Box */}
                         <div className="bg-indigo-900 rounded-lg overflow-hidden col-span-4 animate-in slide-in-from-left fade-in duration-1s">
                             <div className="p-6">
-                                <h2 className="text-lg text-white font-semibold mb-4">My Favourite Anime</h2>
+                                <h2 className="text-lg text-white font-semibold mb-4">Top 5 Anime</h2>
                                 <form className='flex' onSubmit={handleAddFavouriteAnime}>
                                     <input type="text" name="animes" placeholder="Enter favourite anime" className="w-full border rounded py-2 px-3 mr-2" />
                                     <button type="submit" className="bg-indigo-400 hover:bg-indigo-300 text-white font-semibold py-2 px-4 rounded">
                                         Add
                                     </button>
                                 </form>
+                                {/* Render max limit message if reached */}
+                                {showAnimeMaxLimitMessage && <p className="text-red-300 text-sm mt-2">You can only set 5 favourite anime. Remove an entry and try again.</p>}                                
                                 <ul className="mt-4">
                                 {favouriteAnime.map((anime, index) => (
                                     <div key={index} className="flex items-center text-white">
@@ -269,13 +293,15 @@ const UserProfilePage = ({ user, setUser }) => {
                         {/* My Favourite Characters Box */}
                         <div className="bg-indigo-900 rounded-lg overflow-hidden col-span-6 animate-in slide-in-from-right fade-in duration-1s">
                             <div className="p-6">
-                                <h2 className="text-lg text-white font-semibold mb-4">My Favourite Characters</h2>
+                                <h2 className="text-lg text-white font-semibold mb-4">Top 5 Favourite Characters</h2>
                                 <form className='flex' onSubmit={handleAddFavouriteCharacter}>
                                     <input type="text" name="character" placeholder="Enter favourite character" className="w-full border rounded py-2 px-3 mr-2" />
                                     <button type="submit" className="bg-indigo-400 hover:bg-indigo-300 text-white font-semibold py-1 px-4 rounded">
                                         Add
                                     </button>
                                 </form>
+                                {/* Render max limit message if reached */}
+                                {showCharacterMaxLimitMessage && <p className="text-red-300 text-sm mt-2">You can only set 5 favourite characters. Remove an entry and try again.</p>}                    
                                 <ul className="mt-4">
                                 {favouriteCharacters.map((character, index) => (
                                     <div key={index} className="flex items-center text-white">
