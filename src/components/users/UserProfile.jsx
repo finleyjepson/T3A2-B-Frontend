@@ -68,7 +68,7 @@ const UserProfilePage = ({ user, setUser }) => {
                     }
                     // Check if the user data includes favourite anime
                     if (userData.animes) { 
-                    setFavouriteAnime(userData.animes) // If favourite anime exist, update the local state with them
+                        setFavouriteAnime(userData.animes) // If favourite anime exist, update the local state with them
                     }
                     setIsDataFetched(true)
                 } catch (error) {
@@ -115,7 +115,7 @@ const UserProfilePage = ({ user, setUser }) => {
             if (response && response.data && response.data.user) {
                 setUser(response.data.user)
             } else {
-                console.error('Error updating favourite animes: Response or response data is undefined')
+                // console.error('Error updating favourite animes: Response or response data is undefined')
             }
         } catch (error) {
             console.error('Error updating favourite animes:', error)
@@ -158,7 +158,7 @@ const UserProfilePage = ({ user, setUser }) => {
             if (response && response.data && response.data.user) {
                 setUser(response.data.user)
             } else {
-                console.error('Error updating favourite characters: Response or response data is undefined')
+                // console.error('Error updating favourite characters: Response or response data is undefined')
             }
         } catch (error) {
             console.error('Error updating favourite characters:', error)
@@ -166,6 +166,35 @@ const UserProfilePage = ({ user, setUser }) => {
         }
     }
     
+    // Function to handle removing a favourite anime
+    const handleRemoveFavoriteAnime = async (index) => {
+        const updatedAnimes = [...favouriteAnime]
+        updatedAnimes.splice(index, 1)
+        try {
+            // Update the backend with the updated list of animes
+            await updateUserFavouriteAnimes(updatedAnimes)
+            // Update the local state with the updated list of animes
+            setFavouriteAnime(updatedAnimes)
+        } catch (error) {
+            console.error('Error removing favourite anime:', error)
+        }
+    }
+
+    // Function to handle removing a favourite character
+    const handleRemoveFavoriteCharacter = async (index) => {
+        const updatedCharacters = [...favouriteCharacters]
+        updatedCharacters.splice(index, 1)
+        try {
+            // Update the backend with the updated list of characters
+            await updateUserFavouriteCharacters(updatedCharacters)
+            // Update the local state with the updated list of characters
+            setFavouriteCharacters(updatedCharacters)
+        } catch (error) {
+            console.error('Error removing favourite character:', error)
+        }
+    }
+
+
     return (
         <>
             {!user ? (
@@ -218,16 +247,21 @@ const UserProfilePage = ({ user, setUser }) => {
                         <div className="bg-indigo-900 rounded-lg overflow-hidden col-span-4 animate-in slide-in-from-left fade-in duration-1s">
                             <div className="p-6">
                                 <h2 className="text-lg text-white font-semibold mb-4">My Favourite Anime</h2>
-                                <form onSubmit={handleAddFavouriteAnime}>
-                                    <input type="text" name="animes" placeholder="Enter favourite anime" className="w-full border rounded py-2 px-3 mb-2" />
+                                <form className='flex' onSubmit={handleAddFavouriteAnime}>
+                                    <input type="text" name="animes" placeholder="Enter favourite anime" className="w-full border rounded py-2 px-3 mr-2" />
                                     <button type="submit" className="bg-indigo-400 hover:bg-indigo-300 text-white font-semibold py-2 px-4 rounded">
                                         Add
                                     </button>
                                 </form>
                                 <ul className="mt-4">
-                                    {favouriteAnime.map((animes, index) => (
-                                        <li key={index}>{animes}</li>
-                                    ))}
+                                {favouriteAnime.map((anime, index) => (
+                                    <div key={index} className="flex items-center text-white">
+                                        <li>{anime}</li>
+                                        <button onClick={() => handleRemoveFavoriteAnime(index)} className="ml-2 w-4 h-4 flex items-center justify-center bg-red-500 text-white rounded-full hover:bg-red-600">
+                                            <span className="text-xs font-bold">-</span>
+                                        </button>
+                                    </div>
+                                ))}
                                 </ul>
                             </div>
                         </div>
@@ -236,16 +270,22 @@ const UserProfilePage = ({ user, setUser }) => {
                         <div className="bg-indigo-900 rounded-lg overflow-hidden col-span-6 animate-in slide-in-from-right fade-in duration-1s">
                             <div className="p-6">
                                 <h2 className="text-lg text-white font-semibold mb-4">My Favourite Characters</h2>
-                                <form onSubmit={handleAddFavouriteCharacter}>
-                                    <input type="text" name="character" placeholder="Enter favourite character" className="w-full border rounded py-2 px-3 mb-2" />
-                                    <button type="submit" className="bg-indigo-400 hover:bg-indigo-300 text-white font-semibold py-2 px-4 rounded">
+                                <form className='flex' onSubmit={handleAddFavouriteCharacter}>
+                                    <input type="text" name="character" placeholder="Enter favourite character" className="w-full border rounded py-2 px-3 mr-2" />
+                                    <button type="submit" className="bg-indigo-400 hover:bg-indigo-300 text-white font-semibold py-1 px-4 rounded">
                                         Add
                                     </button>
                                 </form>
                                 <ul className="mt-4">
-                                    {favouriteCharacters.map((characters, index) => (
-                                        <li key={index}>{characters}</li>
-                                    ))}
+                                {favouriteCharacters.map((character, index) => (
+                                    <div key={index} className="flex items-center text-white">
+                                        <li>{character}</li>
+                                        <button onClick={() => handleRemoveFavoriteCharacter(index)} className="ml-2 w-4 h-4 flex items-center justify-center bg-red-500 text-white rounded-full hover:bg-red-600">
+                                            <span className="text-xs font-bold">-</span>
+                                        </button>
+                                    </div>
+                                ))}
+
                                 </ul>
                             </div>
                         </div>
