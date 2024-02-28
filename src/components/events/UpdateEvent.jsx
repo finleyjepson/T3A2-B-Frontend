@@ -101,9 +101,9 @@ export default function UpdateEvent({ getEvents, categories, id}) {
                     category: updateEvent.category,
                     date: updateEvent.date,
                     venue: updateEvent.venue,
-                    coords: updateEvent.coords ? {
-                        lat: updateEvent.coords.lat,
-                        lng: updateEvent.coords.lng,
+                    coords: coords ? {
+                        lat: coords.lat,
+                        lng: coords.lng,
                     } : {
                         lat: 0,
                         lng: 0
