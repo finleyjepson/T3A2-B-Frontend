@@ -5,7 +5,9 @@ const UserProfilePage = ({ user, setUser }) => {
     const [profilePicture, setProfilePicture] = useState(null) // State for profile picture
     const [favouriteAnime, setFavouriteAnime] = useState([]) // State for favourite anime list
     const [favouriteCharacters, setFavouriteCharacters] = useState([]) // State for favourite characters list
-    const [isDataFetched, setIsDataFetched] = useState(false);
+    const [isDataFetched, setIsDataFetched] = useState(false)
+    const [showAnimeMaxLimitMessage, setShowAnimeMaxLimitMessage] = useState(false) // State for showing anime max limit message
+    const [showCharacterMaxLimitMessage, setShowCharacterMaxLimitMessage] = useState(false) // State for showing character max limit message
 
     // Function to upload profile picture
     const uploadProfilePicture = async (event) => {
@@ -45,14 +47,10 @@ const UserProfilePage = ({ user, setUser }) => {
     }, [user])
 
     // Fetch favourite characters
-    useEffect(() => {
-        console.log("useEffect triggered");
-        console.log("User:", user);
-        console.log("Session token:", sessionStorage.getItem('accessToken'));
-        
+    useEffect(() => {        
         // Check if user and user ID are available. isDataFetched prevents constant GET requests 
         if (user && user._id && !isDataFetched) {
-            // Fetch user's data including favourite characters when component mounts
+            // Fetch user's data including favourite characters/anime when component mounts
             const fetchData = async () => {
                 try {
                     const response = await axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/users/${user._id}`, {
@@ -60,55 +58,109 @@ const UserProfilePage = ({ user, setUser }) => {
                             Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
                         }
                     })
-                    console.log("Response:", response.data);
+
                     // Extract user data from the response
                     const userData = response.data.user
-                    console.log("User data:", userData);
+
                     // Update the user state with the fetched user data
                     setUser(userData)
                     // Check if the user data includes favourite characters
                     if (userData.characters) { 
-                        console.log("Favourite characters:", userData.characters);
                         setFavouriteCharacters(userData.characters) // If favourite characters exist, update the local state with them
                     }
-                    setIsDataFetched(true);
+                    // Check if the user data includes favourite anime
+                    if (userData.animes) { 
+                        setFavouriteAnime(userData.animes) // If favourite anime exist, update the local state with them
+                    }
+                    setIsDataFetched(true)
                 } catch (error) {
                     console.error('Error fetching user data:', error)
                 }
-            };
+            }
             fetchData()
         }
-    }, [user, setUser, isDataFetched]);
+    }, [user, setUser, isDataFetched])
     // }, [])
 
     // Function to handle adding a favourite anime
-    const handleAddFavouriteAnime = (event) => {
+    const handleAddFavouriteAnime = async (event) => {
         event.preventDefault()
-        const anime = event.target.elements.anime.value
-        setFavouriteAnime(prevState => [...prevState, anime])
+        const anime = event.target.elements.animes.value
+
+        // Check if the number of favourite anime is less than 5
+        if (favouriteAnime.length < 5) {
+            // Update local state with the new anime
+            const updatedAnimes = [...favouriteAnime, anime]
+            try {
+                // Update the backend with the complete list of animes
+                await updateUserFavouriteAnimes(updatedAnimes)
+                // Update the local state with the new complete list of animes
+                setFavouriteAnime(updatedAnimes)
+            } catch (error) {
+                console.error('Error updating favourite animes:', error)
+            }
+        } else {
+            // Show max limit message if the limit is reached
+            setShowAnimeMaxLimitMessage(true)
+        }
+
         event.target.reset()
+    }
+
+    // Function to update user's favourite animes on the backend
+    const updateUserFavouriteAnimes = async (animes) => {
+        const accessToken = sessionStorage.getItem('accessToken')
+    
+        try {
+            const response = await axios.put(
+                `${import.meta.env.VITE_BACKEND_API_URL}/users/${user._id}/animes`,
+                { animes }, // Send updated favourite animes to the backend
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                }
+            )
+    
+            if (response && response.data && response.data.user) {
+                setUser(response.data.user)
+            } else {
+                // console.error('Error updating favourite animes: Response or response data is undefined')
+            }
+        } catch (error) {
+            console.error('Error updating favourite animes:', error)
+            throw new Error(error.response ? error.response.data.message : 'Unknown error occurred')
+        }
     }
 
     // Function to handle adding a favourite character
     const handleAddFavouriteCharacter = async (event) => {
         event.preventDefault()
         const character = event.target.elements.character.value
-        // Update local state with the new character
-        const updatedCharacters = [...favouriteCharacters, character]
-        try {
-            // Update the backend with the complete list of characters
-            await updateUserFavouriteCharacters(updatedCharacters)
-            // Update the local state with the new complete list of characters
-            setFavouriteCharacters(updatedCharacters)
-        } catch (error) {
-            console.error('Error updating favourite characters:', error)
+
+        // Check if the number of favourite characters is less than 5
+        if (favouriteCharacters.length < 5) {
+            // Update local state with the new character
+            const updatedCharacters = [...favouriteCharacters, character]
+            try {
+                // Update the backend with the complete list of characters
+                await updateUserFavouriteCharacters(updatedCharacters)
+                // Update the local state with the new complete list of characters
+                setFavouriteCharacters(updatedCharacters)
+            } catch (error) {
+                console.error('Error updating favourite characters:', error)
+            }
+        } else {
+            // Show max limit message if the limit is reached
+            setShowCharacterMaxLimitMessage(true)
         }
+
         event.target.reset()
     }
     
     // Function to update user's favourite characters on the backend
     const updateUserFavouriteCharacters = async (characters) => {
-        const accessToken = sessionStorage.getItem('accessToken');
+        const accessToken = sessionStorage.getItem('accessToken')
     
         try {
             const response = await axios.put(
@@ -119,23 +171,51 @@ const UserProfilePage = ({ user, setUser }) => {
                         Authorization: `Bearer ${accessToken}`,
                     },
                 }
-            );
-    
-            console.log('Update characters response:', response); // Log the response
+            )
     
             if (response && response.data && response.data.user) {
-                setUser(response.data.user);
+                setUser(response.data.user)
             } else {
-                console.error('Error updating favourite characters: Response or response data is undefined');
+                // console.error('Error updating favourite characters: Response or response data is undefined')
             }
         } catch (error) {
-            console.error('Error updating favourite characters:', error);
-            throw new Error(error.response ? error.response.data.message : 'Unknown error occurred');
+            console.error('Error updating favourite characters:', error)
+            throw new Error(error.response ? error.response.data.message : 'Unknown error occurred')
         }
-    };
+    }
     
-    
-    
+    // Function to handle removing a favourite anime
+    const handleRemoveFavoriteAnime = async (index) => {
+        const updatedAnimes = [...favouriteAnime]
+        updatedAnimes.splice(index, 1)
+        try {
+            // Update the backend with the updated list of animes
+            await updateUserFavouriteAnimes(updatedAnimes)
+            // Update the local state with the updated list of animes
+            setFavouriteAnime(updatedAnimes)
+            // Hide max limit message if it was shown
+            setShowAnimeMaxLimitMessage(false)            
+        } catch (error) {
+            console.error('Error removing favourite anime:', error)
+        }
+    }
+
+    // Function to handle removing a favourite character
+    const handleRemoveFavoriteCharacter = async (index) => {
+        const updatedCharacters = [...favouriteCharacters]
+        updatedCharacters.splice(index, 1)
+        try {
+            // Update the backend with the updated list of characters
+            await updateUserFavouriteCharacters(updatedCharacters)
+            // Update the local state with the updated list of characters
+            setFavouriteCharacters(updatedCharacters)
+            // Hide max limit message if it was shown
+            setShowCharacterMaxLimitMessage(false)
+        } catch (error) {
+            console.error('Error removing favourite character:', error)
+        }
+    }
+
 
     return (
         <>
@@ -188,17 +268,24 @@ const UserProfilePage = ({ user, setUser }) => {
                         {/* My Favourite Anime Box */}
                         <div className="bg-indigo-900 rounded-lg overflow-hidden col-span-4 animate-in slide-in-from-left fade-in duration-1s">
                             <div className="p-6">
-                                <h2 className="text-lg text-white font-semibold mb-4">My Favourite Anime</h2>
-                                <form onSubmit={handleAddFavouriteAnime}>
-                                    <input type="text" name="anime" placeholder="Enter favourite anime" className="w-full border rounded py-2 px-3 mb-2" />
+                                <h2 className="text-lg text-white font-semibold mb-4">Top 5 Anime</h2>
+                                <form className='flex' onSubmit={handleAddFavouriteAnime}>
+                                    <input type="text" name="animes" placeholder="Enter favourite anime" className="w-full border rounded py-2 px-3 mr-2" />
                                     <button type="submit" className="bg-indigo-400 hover:bg-indigo-300 text-white font-semibold py-2 px-4 rounded">
                                         Add
                                     </button>
                                 </form>
+                                {/* Render max limit message if reached */}
+                                {showAnimeMaxLimitMessage && <p className="text-red-300 text-sm mt-2">You can only set 5 favourite anime. Remove an entry and try again.</p>}                                
                                 <ul className="mt-4">
-                                    {favouriteAnime.map((animes, index) => (
-                                        <li key={index}>{animes}</li>
-                                    ))}
+                                {favouriteAnime.map((anime, index) => (
+                                    <div key={index} className="flex items-center text-white">
+                                        <li>{anime}</li>
+                                        <button onClick={() => handleRemoveFavoriteAnime(index)} className="ml-2 w-4 h-4 flex items-center justify-center bg-red-500 text-white rounded-full hover:bg-red-600">
+                                            <span className="text-xs font-bold">-</span>
+                                        </button>
+                                    </div>
+                                ))}
                                 </ul>
                             </div>
                         </div>
@@ -206,17 +293,25 @@ const UserProfilePage = ({ user, setUser }) => {
                         {/* My Favourite Characters Box */}
                         <div className="bg-indigo-900 rounded-lg overflow-hidden col-span-6 animate-in slide-in-from-right fade-in duration-1s">
                             <div className="p-6">
-                                <h2 className="text-lg text-white font-semibold mb-4">My Favourite Characters</h2>
-                                <form onSubmit={handleAddFavouriteCharacter}>
-                                    <input type="text" name="character" placeholder="Enter favourite character" className="w-full border rounded py-2 px-3 mb-2" />
-                                    <button type="submit" className="bg-indigo-400 hover:bg-indigo-300 text-white font-semibold py-2 px-4 rounded">
+                                <h2 className="text-lg text-white font-semibold mb-4">Top 5 Favourite Characters</h2>
+                                <form className='flex' onSubmit={handleAddFavouriteCharacter}>
+                                    <input type="text" name="character" placeholder="Enter favourite character" className="w-full border rounded py-2 px-3 mr-2" />
+                                    <button type="submit" className="bg-indigo-400 hover:bg-indigo-300 text-white font-semibold py-1 px-4 rounded">
                                         Add
                                     </button>
                                 </form>
+                                {/* Render max limit message if reached */}
+                                {showCharacterMaxLimitMessage && <p className="text-red-300 text-sm mt-2">You can only set 5 favourite characters. Remove an entry and try again.</p>}                    
                                 <ul className="mt-4">
-                                    {favouriteCharacters.map((characters, index) => (
-                                        <li key={index}>{characters}</li>
-                                    ))}
+                                {favouriteCharacters.map((character, index) => (
+                                    <div key={index} className="flex items-center text-white">
+                                        <li>{character}</li>
+                                        <button onClick={() => handleRemoveFavoriteCharacter(index)} className="ml-2 w-4 h-4 flex items-center justify-center bg-red-500 text-white rounded-full hover:bg-red-600">
+                                            <span className="text-xs font-bold">-</span>
+                                        </button>
+                                    </div>
+                                ))}
+
                                 </ul>
                             </div>
                         </div>
