@@ -33,7 +33,7 @@ export default function EventList({ events, max, user, isLoggedIn }) {
                                     <p>{event.description}</p>
                                 </Link>
                                 <div className="flex justify-end">
-                                    {isLoggedInState && (userState.isAdmin || (userState.isOrganiser && user._id === events.organiserId)) && (
+                                    {isLoggedInState && (userState.isAdmin || (userState.isOrganiser && user._id === event.createdBy)) && (
                                     <button className='bg-red-600 py-1 px-2 hover:bg-red-500 rounded-md text-white hover:rounded-md' onClick={() => navigate(`/events/edit/${event._id}`)}>
                                         Edit Event
                                     </button>
