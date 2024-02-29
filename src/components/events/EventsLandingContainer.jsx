@@ -43,7 +43,7 @@ function EventsLandingContainer({ events, user, isLoggedIn, getEvents }) {
                 <div className='p-4 animate-in slide-in-from-left ease-out fade-in-25 duration-1000 '>
                     <div className='py-2 mx-4 rounded-t-lg bg-blue-600 px-4 text-[32px] w-[500px] text-white '>Events</div>
                     <div className='mx-4 rounded-b-lg bg-blue-50 w-[500px] border-2 border-x-gray-300 border-b-gray-300 shadow-lg'>
-                        <EventList events={filteredEvents} user={user} isLoggedIn={isLoggedIn} />
+                        <EventList fullEvents={events} events={filteredEvents} user={user} isLoggedIn={isLoggedIn} />
                     </div>
                 </div>
             </div>
