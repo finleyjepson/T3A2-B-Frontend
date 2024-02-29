@@ -27,7 +27,6 @@ export default function EventList({ fullEvents, events, max, user, isLoggedIn })
         })
         return index
     }
-
     return (
         <>
             <ul>
@@ -36,7 +35,7 @@ export default function EventList({ fullEvents, events, max, user, isLoggedIn })
                         
                             <div className='p-4 transition-all delay-150 hover:-translate-y-1 hover:scale-105 hover:rounded-lg  hover:bg-blue-100 hover:shadow-lg'>
                                 <div>{findIndex(event)}</div>
-                                <Link to={{}}>
+                                <Link to={`/events/${findIndex(event)}`}>
                                     <div className="flex justify-between">
                                         <p className="text-sm">{event.anime}</p>
                                         <p className="text-sm">{dateMod(event.date)}</p>
@@ -52,8 +51,6 @@ export default function EventList({ fullEvents, events, max, user, isLoggedIn })
                                     )}
                                 </div>
                             </div>
-
-
                     </li>
                 ))}
             </ul>

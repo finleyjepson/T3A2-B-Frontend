@@ -107,6 +107,8 @@ export default function EventInfo({ events, getEvents, user }) {
         await uploadEventPicture(event, events[id]._id)
     }
 
+    getRSVP(events[id]._id)
+
     return (
         <div className="flex justify-center py-4">
             
