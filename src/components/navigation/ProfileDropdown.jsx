@@ -18,9 +18,11 @@ function ProfileDropdown({ isLoggedIn, user, setIsLoggedIn }) {
 
     // Defining handleLogout function
     const handleLogout = () => {
+        const refreshToken = sessionStorage.getItem('refreshToken')
         // Remove tokens from session storage
         axios.delete(import.meta.env.VITE_BACKEND_API_URL + '/auth/logout', {
-            token: sessionStorage.getItem('accessToken')
+            // token: sessionStorage.getItem('accessToken')
+            data: { token: refreshToken }
         })
             .then(response => {
                 console.log('Logout successful:', response.data)
