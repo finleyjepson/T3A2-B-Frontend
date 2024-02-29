@@ -1,4 +1,3 @@
-import EventList from "./EventList"
 import UpcomingEvents from "./UpcomingEvents"
 import { Link } from "react-router-dom"
 

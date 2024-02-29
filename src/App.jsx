@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useParams } from "react-router-dom"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { useCallback, useEffect, useState } from "react"
 // components
 import Navbar from "./components/navigation/Navbar.jsx"
@@ -22,9 +22,6 @@ function App() {
     const [events, setEvents] = useState([])
     const [categories, setCategories] = useState([])
 
-    // console.log("Username value in app.jsx:", username)
-    // console.log("Username value in app.jsx (jon):", user.username)
-
     // Check login status on component mount
     useEffect(() => {
         const accessToken = sessionStorage.getItem("accessToken")
@@ -34,20 +31,15 @@ function App() {
     useEffect(() => {
         // Retrieve userId from sessionStorage when the component mounts
         const storedUser = JSON.parse(sessionStorage.getItem('user'))
-        const storedAccessToken = sessionStorage.getItem('accessToken')
-        console.log('Stored user:', storedUser)
-        console.log('Stored accessToken:', storedAccessToken)
         if (storedUser) {
             // Set the user state directly
             setUser(storedUser)
         }
-        console.log('Stored user ID:', storedUser?._id) // Ensure storedUser is not null before accessing _id
     }, [isLoggedIn])
 
     const getEvents = useCallback(async () =>{
         let response = await fetch(import.meta.env.VITE_BACKEND_API_URL+"/events/all")
         response = await response.json()
-        // setEvents(response)
         sessionStorage.setItem('events', JSON.stringify(response))
         const currentEvents = response.filter(event => new Date(event.date) - new Date > -86400000)
         const sortedCurrentEvents = currentEvents.sort((a, b) => new Date(a.date) - new Date(b.date))
@@ -59,17 +51,12 @@ function App() {
         response = await response.json()
         setCategories(response)
     }
-
+    
     // Load events from database to Events state
     useEffect(() => {
         getEvents()
         getCategories()
     }, [getEvents])
-
-    function UpdateEventWrapper({ getEvents, categories }) {
-        const { id } = useParams()
-        return <UpdateEvent getEvents={getEvents} categories={categories} id={id}/>
-    }
 
     return (
         <>
@@ -88,7 +75,7 @@ function App() {
                     <Route path='/poll' element={<PollContainer />} />
                     <Route path='/profile' element={<UserProfilePage user={user} setUser={setUser}/>} />
                     <Route path='/unauth' element={<Unauthorised />} />
-                    <Route path='/events/edit/:id' element={<UpdateEventWrapper getEvents={getEvents} categories={ categories }/>} />
+                    <Route path='/events/edit/:id' element={<UpdateEvent categories={ categories } user={user} />} />
                     <Route path='*' element={<Unauthorised />} />
                 </Routes>
             </BrowserRouter>
