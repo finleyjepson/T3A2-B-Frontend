@@ -5,15 +5,61 @@ import { useEffect, useState } from "react"
 export default function EventInfo({ events, getEvents, user }) {
     const { id } = useParams()
     const [loading, setLoading] = useState(true)
+    const [rsvpCount, setRsvpCount] = useState(0)
+    const accessToken = sessionStorage.getItem("accessToken")
+
+    console.log("EventInfo events:", id)
 
     const navigate = useNavigate()
 
     useEffect(() => {
         getEvents().then(() => setLoading(false))
+        getRSVP(events[id]._id)
     }, [getEvents])
 
     if (loading) {
         return <div>Loading...</div>
+    }
+
+    async function addRSVP(eventId, accessToken) {
+        if (!accessToken) {
+            throw new Error("Access token not found. Please login.")
+        }
+        await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/events/${eventId}/rsvp-add`, {
+            method: "POST",
+            headers: {
+                contentType: "application/json",
+                Authorization: `Bearer ${accessToken}`
+            }
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+    }
+
+    async function removeRSVP(eventId, accessToken) {
+        if (!accessToken) {
+            throw new Error("Access token not found. Please login.")
+        }
+        await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/events/${eventId}/rsvp-remove`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`, // Add the token in the request
+            },
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+    }
+
+    async function getRSVP(eventId) {
+        await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/events/${eventId}/rsvp-count`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        .then(response => response.json())
+        .then(data => setRsvpCount(data.count))
     }
 
     return (
@@ -41,8 +87,8 @@ export default function EventInfo({ events, getEvents, user }) {
                     </div>
                     </div>
                     <div className="my-8 mr-8 animate-in slide-in-from-top fade-in-25 ease-out duration-1000">
-                        <button className='bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 m-4 border-b-4 border-green-700 hover:border-green-500 rounded'>Interested</button>
-                        <button className='bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 m-4 border-b-4 border-red-700 hover:border-red-500 rounded'>Not for me</button>
+                        <button onClick={() => addRSVP(events[id]._id, accessToken)}  className='bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 m-4 border-b-4 border-green-700 hover:border-green-500 rounded'>Interested</button>
+                        <button onClick={() => removeRSVP(events[id]._id, accessToken)} className='bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 m-4 border-b-4 border-red-700 hover:border-red-500 rounded'>Not for me</button>
                         <ul>
                             <li>
                                 <div className='p-4 max-w-[500px] rounded-md border-2 border-gray-300 bg-white'>
@@ -66,8 +112,9 @@ export default function EventInfo({ events, getEvents, user }) {
                                         <p>Organiser:</p>
                                         <p>{events[id].organiser}</p>
                                     </div>
-                                    <div className="text-md text-gray-500 mt-8">
-                                        {console.log(events[id].coords)}
+                                    <div className='text-lg font-bold'>
+                                        <h3 className='text-lg font-bold'>RSVP count</h3>
+                                        <p>{rsvpCount}</p>
                                     </div>
                                 </div>
                             </li>
@@ -75,9 +122,7 @@ export default function EventInfo({ events, getEvents, user }) {
                     </div>
                     
                 </div>
-
             </div>
-
         </div>
     )
 }
