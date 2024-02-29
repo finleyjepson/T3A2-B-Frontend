@@ -14,7 +14,6 @@ export default function EventInfo({ events, getEvents, user }) {
 
     useEffect(() => {
         getEvents().then(() => setLoading(false))
-        getRSVP(events[id]._id)
     }, [getEvents])
 
     if (loading) {
@@ -32,7 +31,10 @@ export default function EventInfo({ events, getEvents, user }) {
                 Authorization: `Bearer ${accessToken}`
             }
         })
-        .then(response => response.json())
+        .then(response => {
+            response.json()
+            getEvents(eventId)
+        })
         .then(data => console.log(data))
     }
 
@@ -47,8 +49,12 @@ export default function EventInfo({ events, getEvents, user }) {
                 Authorization: `Bearer ${accessToken}`, // Add the token in the request
             },
         })
-        .then(response => response.json())
+        .then(response => {
+            response.json()
+            getEvents(eventId)
+        })
         .then(data => console.log(data))
+        .catch(err => console.error(err))
     }
 
     async function getRSVP(eventId) {
@@ -59,8 +65,11 @@ export default function EventInfo({ events, getEvents, user }) {
             },
         })
         .then(response => response.json())
-        .then(data => setRsvpCount(data.count))
+        .then(data => setRsvpCount(data.count ?? 0))
+        .catch(err => console.error(err))
     }
+
+    getRSVP(events[id]._id)
 
     return (
         <div className="flex justify-center py-4">
