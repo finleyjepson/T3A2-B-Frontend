@@ -58,14 +58,16 @@ export default function UserListContainer() {
     }, [search, users])
 
     return (
-        <>
-            <input type='text' placeholder='🔎 Search Users' onChange={changeHandler} value={search} className='w-72 px-4 py-2 mt-4 mx-4 bg-gray-200 rounded-lg'></input>
-            <div className='py-4'>
-                <div className='py-2 mx-4 rounded-t-lg bg-black px-4 text-xl max-w-[500px] text-white '>Users</div>
-                <div className=' mx-4 rounded-b-lg bg-slate-100 max-w-[500px] border-2 border-x-gray-300 border-b-gray-300'>
-                    <UserList users={filteredUsers} setFilteredUsers={setFilteredUsers}  />
+        <div className="flex justify-center animate-in slide-in-from-top duration-1s">
+            <div>
+                <input type='text' placeholder='🔎 Search Users' onChange={changeHandler} value={search} className='w-72 px-4 py-2 mt-4 mx-4 bg-gray-200 rounded-lg'></input>
+                <div className='py-4'>
+                    <div className='py-2 mx-4 rounded-t-lg bg-black px-4 text-xl max-w-[500px] text-white '>Users</div>
+                    <div className=' mx-4 rounded-b-lg bg-slate-100 max-w-[500px] border-2 border-x-gray-300 border-b-gray-300'>
+                        <UserList users={filteredUsers} setFilteredUsers={setFilteredUsers}  />
+                    </div>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
