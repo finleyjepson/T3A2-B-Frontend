@@ -1,11 +1,13 @@
 import Maps from "./Maps"
 import { useParams, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
+import axios from "axios"
 
 export default function EventInfo({ events, getEvents, user }) {
     const { id } = useParams()
     const [loading, setLoading] = useState(true)
     const [rsvpCount, setRsvpCount] = useState(0)
+    const [eventPicture, setEventPicture] = useState(null)
     const accessToken = sessionStorage.getItem("accessToken")
 
     console.log("EventInfo events:", id)
@@ -14,8 +16,15 @@ export default function EventInfo({ events, getEvents, user }) {
 
     useEffect(() => {
         getEvents().then(() => setLoading(false))
-        getRSVP(events[id]._id)
     }, [getEvents])
+
+    useEffect(() => {
+        if (events[id]) {
+            setEventPicture(events[id].pictureUrl)
+        } else {
+            setEventPicture(null)
+        }
+    }, [events, id])
 
     if (loading) {
         return <div>Loading...</div>
@@ -32,7 +41,10 @@ export default function EventInfo({ events, getEvents, user }) {
                 Authorization: `Bearer ${accessToken}`
             }
         })
-        .then(response => response.json())
+        .then(response => {
+            response.json()
+            getEvents(eventId)
+        })
         .then(data => console.log(data))
     }
 
@@ -47,8 +59,12 @@ export default function EventInfo({ events, getEvents, user }) {
                 Authorization: `Bearer ${accessToken}`, // Add the token in the request
             },
         })
-        .then(response => response.json())
+        .then(response => {
+            response.json()
+            getEvents(eventId)
+        })
         .then(data => console.log(data))
+        .catch(err => console.error(err))
     }
 
     async function getRSVP(eventId) {
@@ -59,7 +75,36 @@ export default function EventInfo({ events, getEvents, user }) {
             },
         })
         .then(response => response.json())
-        .then(data => setRsvpCount(data.count))
+        .then(data => setRsvpCount(data.count ?? 0))
+        .catch(err => console.error(err))
+    }
+
+    getRSVP(events[id]._id)
+
+    // Function to upload profile picture
+    const uploadEventPicture = async (event, eventId) => {
+        const file = event.target.elements.image.files[0]
+        const formData = new FormData()
+        formData.append('image', file)
+
+        // Send the image to the server
+        try {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/images/event/${eventId}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
+                }
+            })
+            console.log('Event picture uploaded:', response.data)
+        } catch (error) {
+            console.error('Error uploading event picture:', error)
+        }
+    }
+
+    // Function to handle profile picture change
+    const handleEventPictureChange = async (event) => {
+        event.preventDefault()
+        await uploadEventPicture(event, events[id]._id)
     }
 
     return (
@@ -80,8 +125,27 @@ export default function EventInfo({ events, getEvents, user }) {
                     </div>
                 </div>
                 <div className="flex">
-                    <div className="mx-8 my-8 ">
-                    <div className="h-[300px] w-[200px] bg-slate-500 animate-in slide-in-from-left fade-in-25 ease-out duration-1000 my-4">Image</div>
+                <div className="mx-8 my-8 ">
+                    {/* Profile Picture Box */}
+                        <div >
+                            <div className="h-[300px] w-[200px] bg-slate-500 animate-in slide-in-from-left fade-in-25 ease-out duration-1000 my-4">
+                                {/* If profile picture is not null, show the profile picture */}
+                                {eventPicture ? (
+                                    // Need to figure out how this links with the AWS image host
+                                    <img src={eventPicture} alt="Profile Picture" className="h-full object-cover" />
+                                    // If null, show 'no profile picture'
+                                ) : (
+                                    <span>No profile picture</span>
+                                )}
+                            </div>
+                            <form onSubmit={handleEventPictureChange}>
+                                <input type="file" accept="image/*" name='image' />
+                                <div >
+                                    <button type='submit' >Upload</button>
+                                </div>
+                            </form>
+                        </div>
+                    
                     <div className="animate-in slide-in-from-left fade-in-25 ease-out duration-1000 my-4">
                         <Maps coords={ events[id].coords }/>
                     </div>
