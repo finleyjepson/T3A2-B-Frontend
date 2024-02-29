@@ -49,7 +49,7 @@ function App() {
         response = await response.json()
         // setEvents(response)
         sessionStorage.setItem('events', JSON.stringify(response))
-        const currentEvents = response.filter(event => new Date(event.date) - new Date > 0)
+        const currentEvents = response.filter(event => new Date(event.date) - new Date > -86400000)
         const sortedCurrentEvents = currentEvents.sort((a, b) => new Date(a.date) - new Date(b.date))
         setEvents(sortedCurrentEvents)
     }, [setEvents])
