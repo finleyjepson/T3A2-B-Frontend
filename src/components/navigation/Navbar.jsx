@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 import { useState, useEffect } from "react"
 
 export default function Navbar({ user, isLoggedIn }) {
@@ -22,55 +22,41 @@ export default function Navbar({ user, isLoggedIn }) {
     return (
         <>
             {/* Navigation bar */}
-            <nav className='bg-gray-50 dark:bg-gray-800'>
-                <div className='px-5 py-3'>
+            <nav className=''>
+                <div className='px-5'>
                     <div className='flex items-center'>
-                        <ul className='flex flex-row font-medium mt-0 space-x-8 text-sm'>
-                            <li>
-                                {/* aria-current="page" is for screen readers to comprehend the current page as the Home page */}
-                                <Link to='/'>
-                                    <p className='text-gray-900 dark:text-white hover:underline animate-in fade-in duration-2s'>Home</p>
-                                </Link>
-                                {/* <a href="#" className="text-gray-900 dark:text-white hover:underline" aria-current="page">Home</a> */}
-                            </li>
-                            <li>
-                                <Link to='/events'>
-                                    <p className='text-gray-900 dark:text-white hover:underline animate-in fade-in duration-2s'>Events</p>
-                                </Link>
-                            </li>
-                            <li>
-                                <a href='#' className='text-gray-900 dark:text-white hover:underline animate-in fade-in duration-2s'>
-                                    About
-                                </a>
-                            </li>
-                            <li>
-                                <button onClick={handleContactClick} className='text-gray-900 dark:text-white hover:underline animate-in fade-in duration-2s'>
-                                    Contact Us
-                                </button>
-                            </li>
+                        <div className="text-sm font-medium text-center text-gray-500 border-b border-gray-200 w-full">
+                            <ul className='flex flex-wrap -mb-px'>
+                                <li className="me-2">
+                                    <NavLink exact to='/' style={({ isActive }) => ({ borderColor: isActive ? '#4f46e5' : '#6b7280', color: isActive ? '#4f46e5' : '#6b7280', borderStyle: isActive ? '' : '' })} className='inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 animate-in fade-in duration-2s'>Home</NavLink>
+                                </li>
+                                <li className="me-2">
+                                    <NavLink to='/events' className='inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 animate-in fade-in duration-2s'>Events</NavLink>
+                                </li>
+                                {/* <li className="me-2">
+                                    <a href='#' className='inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 animate-in fade-in duration-2s'>About</a>
+                                </li> */}
+                                <li className="me-2">
+                                    <button onClick={handleContactClick} className='inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 animate-in fade-in duration-2s'>Contact Us</button>
+                                </li>
 
-                            {(isLoggedIn && userState.isAdmin) && (
-                                <li>
-                                    <Link to='/users'>
-                                        <p className='text-gray-900 dark:text-white hover:underline animate-in fade-in duration-2s'>Users</p>
-                                    </Link>
-                                </li>
-                            )}
-                            {(isLoggedIn && (userState.isAdmin || userState.isOrganiser)) && (
-                                <li>
-                                    <Link to='/events/new'>
-                                        <p className='text-gray-900 dark:text-white hover:underline animate-in fade-in duration-2s'>Create Event</p>
-                                    </Link>
-                                </li>
-                            )}
-                            {isLoggedIn && (
-                                <li>
-                                    <Link to='/profile'>
-                                        <p className='text-gray-900 dark:text-white hover:underline animate-in fade-in duration-2s'>Profile</p>
-                                    </Link>
-                                </li>
-                            )}
-                        </ul>
+                                {(isLoggedIn && userState.isAdmin) && (
+                                    <li className="me-2">
+                                        <NavLink to='/users' className='inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 animate-in fade-in duration-2s'>Users</NavLink>
+                                    </li>
+                                )}
+                                {(isLoggedIn && (userState.isAdmin || userState.isOrganiser)) && (
+                                    <li className="me-2">
+                                        <NavLink to='/events/new' className='inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 animate-in fade-in duration-2s'>Create Event</NavLink>
+                                    </li>
+                                )}
+                                {isLoggedIn && (
+                                    <li className="me-2">
+                                        <NavLink to='/profile' className='inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 animate-in fade-in duration-2s'>Profile</NavLink>
+                                    </li>
+                                )}
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </nav>
