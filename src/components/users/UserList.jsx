@@ -1,52 +1,37 @@
 import { useNavigate } from 'react-router-dom'
 
 export default function UserList({ users }) {
-    // async function addOrganiser(event){
-
-    // 	await fetch(`http://localhost:4000/users/toggle/${event.target.value}`, {
-    // 		method: 'PUT',
-    // 		headers: {
-    // 			'Content-Type': 'application/json'
-    // 		},
-    // 		body: JSON.stringify({
-    // 			isOrganiser: true
-    // 		})
-    // 	})
-    // 	.then(response => response.json())
-    // 	.then(data => console.log(data))
-    // }
-
-    // async function removeOrganiser(event){
-
-    // 	await fetch(`http://localhost:4000/users/toggle/${event.target.value}`, {
-    // 		method: 'PUT',
-    // 		headers: {
-    // 			'Content-Type': 'application/json'
-    // 		},
-    // 		body: JSON.stringify({
-    // 			isOrganiser: false
-    // 		})
-    // 	})
-    // 	.then(response => response.json())
-    // 	.then(data => console.log(data))
-    // }
-
-    // Consolidate into a toggle function call to directly accept userId as a param, instead of using an event handler
-
+ 
     const navigate = useNavigate()
 
     async function toggleOrganiser(userId, isOrganiser) {
-        await fetch(import.meta.env.VITE_BACKEND_API_URL+`/users/toggle/${userId}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                isOrganiser: isOrganiser,
-            }),
-        })
-            .then((response) => response.json())
-            .then((data) => console.log(data))
+
+        try {
+            // User token handling
+            const accessToken = sessionStorage.getItem("accessToken") // Retrieve the session's access token
+            console.log("Access token:", accessToken)
+            if (!accessToken) {
+                throw new Error("Access token not found. Please login.")
+            }
+
+            await fetch(import.meta.env.VITE_BACKEND_API_URL+`/users/toggle/${userId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${accessToken}`
+                },
+                body: JSON.stringify({
+                    isOrganiser: isOrganiser,
+                }),
+                })
+                .then((response) => response.json())
+                .then((data) => console.log(data))
+            // Catch response:
+        } catch (error) {
+            console.error("Problem updating user", error.message)
+        }
+        
+
     }
 
     async function deleteUser(userId) {
@@ -68,7 +53,7 @@ export default function UserList({ users }) {
             navigate('/users')
             // Catch response:
         } catch (error) {
-            console.error("Problem deleting event", error.message)
+            console.error("Problem deleting user", error.message)
         }
     }
 
