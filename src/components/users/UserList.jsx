@@ -69,7 +69,7 @@ export default function UserList({ users }) {
                             <p> Admin: {user.isAdmin.toString()}</p>
                         </div>
                         <div className='order-last inline-flex justify-items-end'>
-                            <button className='bg-red-600 mb-2 py-1 px-2 rounded-md text-white h-8 mx-2' onClick={() => deleteUser(user._id)}>
+                            <button className='bg-red-600 hover:bg-red-500 mb-2 py-1 px-2 rounded-md text-white h-8 mx-2' onClick={() => deleteUser(user._id)}>
                                 - Delete
                             </button>
                             {/* Ternary operator for whether user is organiser vs not. Only show one button, not both. */}
@@ -78,14 +78,14 @@ export default function UserList({ users }) {
 
                                 // If the user is NOT an organiser...
                                 <div className="">
-                                <button className='bg-red-600 py-1 px-2 rounded-md text-white h-8' onClick={() => toggleOrganiser(user._id, false)}>
+                                <button className='bg-red-600 py-1 hover:bg-red-500 px-2 rounded-md text-white h-8' onClick={() => toggleOrganiser(user._id, false)}>
                                     - Organiser
                                 </button>
 
                                 </div>
                             ) : (
                                 // If the user IS an organiser...
-                                <button className='bg-green-600 py-1 px-2 rounded-md text-white h-8' onClick={() => toggleOrganiser(user._id, true)}>
+                                <button className='bg-green-600 hover:bg-green-500 py-1 px-2 rounded-md text-white h-8' onClick={() => toggleOrganiser(user._id, true)}>
                                     + Organiser
                                 </button>
                             )}
