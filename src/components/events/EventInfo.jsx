@@ -1,10 +1,12 @@
 import Maps from "./Maps"
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 
-export default function EventInfo({ events, getEvents }) {
+export default function EventInfo({ events, getEvents, user }) {
     const { id } = useParams()
     const [loading, setLoading] = useState(true)
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         getEvents().then(() => setLoading(false))
@@ -16,11 +18,21 @@ export default function EventInfo({ events, getEvents }) {
 
     return (
         <div className="flex justify-center py-4">
+            
             <div className='py-4 mx-4 border-2  rounded-xl shadow-lg bg-white animate-in slide-in-from-top fade-in-25 ease-out duration-1.25s max-w-[600px]'>
                 <div className="bg-amber-300">
                 <h1 className='text-[32px] py-4 animate-in slide-in-from-top fade-in-25 ease-out duration-1.25s mx-8'>{events[id].title}</h1>
                 </div>
+                <div className="flex justify-between">
                 <h3 className='text-lg  pt-2 animate-in slide-in-from-top fade-in-25 ease-out duration-1.25s mx-8'>{events[id].anime}</h3>
+                    <div className="flex justify-end p-2">
+                    {(user.isAdmin || (user.isOrganiser && user._id === events[id].createdBy)) && (
+                    <button className='bg-red-600 py-1 px-2 hover:bg-red-500 rounded-md text-white hover:rounded-md' onClick={() => navigate(`/events/edit/${events[id]._id}`)}>
+                        Edit Event
+                    </button>
+                    )}
+                    </div>
+                </div>
                 <div className="flex">
                     <div className="mx-8 my-8 ">
                     <div className="h-[300px] w-[200px] bg-slate-500 animate-in slide-in-from-left fade-in-25 ease-out duration-1000 my-4">Image</div>
@@ -61,6 +73,7 @@ export default function EventInfo({ events, getEvents }) {
                             </li>
                         </ul>
                     </div>
+                    
                 </div>
 
             </div>

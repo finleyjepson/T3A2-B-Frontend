@@ -68,7 +68,7 @@ function App() {
                     <Route path='/' element={<Home events={events} user={user} isLoggedIn={isLoggedIn} />} />
                     <Route path='/events' element={<EventsLandingContainer events={events} categories={ categories } getEvents={ getEvents } user={user} isLoggedIn={isLoggedIn}/>} />
                     <Route path='/users' element={<UserListContainer />} />
-                    <Route path='/events/:id' element={<EventInfo events={events} getEvents={getEvents} />} />
+                    <Route path='/events/:id' element={<EventInfo events={events} getEvents={getEvents} user={ user } isLoggedIn={isLoggedIn}/>} />
                     <Route path='events/new' element={<CreateEvent getEvents={getEvents} categories={ categories }/>} />
                     <Route path='/signup' element={<SignUp setIsLoggedIn={setIsLoggedIn} />} />
                     <Route path='/login' element={<Login setIsLoggedIn={setIsLoggedIn} />} />
