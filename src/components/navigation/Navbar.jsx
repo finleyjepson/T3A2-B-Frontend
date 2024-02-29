@@ -31,7 +31,7 @@ export default function Navbar({ user, isLoggedIn }) {
                                     <NavLink to='/' className='inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 animate-in fade-in duration-2s' style={({ isActive }) => ({ borderColor: isActive ? '#4f46e5' : null, color: isActive ? '#4f46e5' : null, borderStyle: isActive ? 'solid' : null })} >Home</NavLink>
                                 </li>
                                 <li className="me-2">
-                                    <NavLink to='/events' className='inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 animate-in fade-in duration-2s' style={({ isActive }) => ({ borderColor: isActive ? '#4f46e5' : null, color: isActive ? '#4f46e5' : null, borderStyle: isActive ? 'solid' : null })}>Events</NavLink>
+                                    <NavLink to='/events' end className='inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 animate-in fade-in duration-2s' style={({ isActive }) => ({ borderColor: isActive ? '#4f46e5' : null, color: isActive ? '#4f46e5' : null, borderStyle: isActive ? 'solid' : null })}>Events</NavLink>
                                 </li>
                                 {/* <li className="me-2">
                                     <a href='#' className='inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 animate-in fade-in duration-2s'>About</a>
@@ -47,7 +47,7 @@ export default function Navbar({ user, isLoggedIn }) {
                                 )}
                                 {(isLoggedIn && (userState.isAdmin || userState.isOrganiser)) && (
                                     <li className="me-2">
-                                        <NavLink to='/events/new' className='inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 animate-in fade-in duration-2s' style={({ isActive }) => ({ borderColor: isActive ? '#4f46e5' : null, color: isActive ? '#4f46e5' : null, borderStyle: isActive ? 'solid' : null })}>Create Event</NavLink>
+                                        <NavLink to='/events/new' end className='inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 animate-in fade-in duration-2s' style={({ isActive }) => ({ borderColor: isActive ? '#4f46e5' : null, color: isActive ? '#4f46e5' : null, borderStyle: isActive ? 'solid' : null })}>Create Event</NavLink>
                                     </li>
                                 )}
                                 {isLoggedIn && (
