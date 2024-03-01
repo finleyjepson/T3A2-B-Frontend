@@ -1,7 +1,7 @@
 async function refreshTokenIfNeeded() {
     // Check if the access token is expired
     const accessToken = sessionStorage.getItem("accessToken")
-    if (isTokenExpired(accessToken)) {
+    if (isTokenExpired(accessToken) === true) {
         // If the access token is expired, get the refresh token
         const refreshToken = sessionStorage.getItem("refreshToken")
         if (!refreshToken) {
@@ -20,17 +20,15 @@ async function refreshTokenIfNeeded() {
         // If the response is not ok, throw an error
         if (!response.ok) {
             throw new Error("Failed to refresh access token.")
+        } else {
+            // If the response is ok, get the new access token from the response
+            const data = await response.json()
+            const newAccessToken = data.accessToken            
+            // Store the new access token in the session storage
+            sessionStorage.setItem("accessToken", newAccessToken)
         }
-
-        // If the response is ok, get the new access token from the response
-        const data = await response.json()
-        const newAccessToken = data.accessToken
-
-        // Store the new access token in the session storage
-        sessionStorage.setItem("accessToken", newAccessToken)
     } else {
         // If the access token is not expired, do nothing
-        return
     }
 }
 
@@ -44,10 +42,9 @@ async function isTokenExpired(token) {
     })
     .then(response => {
         if (response.status === 200) {
-            console.log("Token is not expired")
-            return true
-        } else {
             return false
+        } else {
+            return true
         }
     })
 }

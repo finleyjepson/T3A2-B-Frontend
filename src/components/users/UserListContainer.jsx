@@ -39,7 +39,7 @@ export default function UserListContainer() {
     // Use effect to fetch user list on mount
     useEffect(() => {
         getUsers()
-    }, [filteredUsers])
+    }, [])
 
     // onChange handler function listening to input box
     function changeHandler(event) {

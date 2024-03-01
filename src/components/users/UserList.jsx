@@ -35,8 +35,6 @@ export default function UserList({ users }) {
         } catch (error) {
             console.error("Problem updating user", error.message)
         }
-        
-
     }
 
     async function deleteUser(userId) {
