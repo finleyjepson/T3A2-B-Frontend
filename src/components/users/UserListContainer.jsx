@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import UserList from "./UserList"
 import { useNavigate } from "react-router-dom"
+import { refreshTokenIfNeeded } from "../auth/refreshToken.js"
 
 export default function UserListContainer() {
     const navigate = useNavigate()
@@ -9,6 +10,11 @@ export default function UserListContainer() {
     const [users, setUsers] = useState([])
     const [search, setSearch] = useState("")
     const [filteredUsers, setFilteredUsers] = useState(users)
+
+    // Check if the access token is expired
+    useEffect(() => {
+        refreshTokenIfNeeded()
+    }, [])
 
     async function getUsers() {
         try {
@@ -33,7 +39,7 @@ export default function UserListContainer() {
     // Use effect to fetch user list on mount
     useEffect(() => {
         getUsers()
-    }, [filteredUsers])
+    }, [])
 
     // onChange handler function listening to input box
     function changeHandler(event) {

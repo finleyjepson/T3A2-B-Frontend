@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { useNavigate } from 'react-router-dom'
 import Axios from "axios"
 import getGeo from '../../utils/getGeo.js'
+import { refreshTokenIfNeeded } from "../auth/refreshToken.js"
 
 export default function CreateEvent({ getEvents, categories }) {
     const [coords, setCoords] = useState({lat: 0, lng: 0})
@@ -9,6 +10,11 @@ export default function CreateEvent({ getEvents, categories }) {
     const [searchResults, setSearchResults] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [skipSearch, setSkipSearch] = useState(false)
+
+    // Check if the access token is expired
+    useEffect(() => {
+        refreshTokenIfNeeded()
+    }, [])
 
     const user = JSON.parse(sessionStorage.getItem("user"))
 
@@ -119,12 +125,41 @@ export default function CreateEvent({ getEvents, categories }) {
                     price: eventInfo.price,
                 }),
             })
-            console.log(response)
-            navigate('/events')
+            let data = await response.json()
+            let eventId = data._id
+            console.log(event.target[2].value)
+            handleEventPictureChange(event,eventId),
+            navigate("/events")
             getEvents()
             // Catch response:
         } catch (error) {
             console.error("Problem creating event", error.message)
+        }
+    }
+
+    // Function to handle profile picture change
+    async function handleEventPictureChange(event, eventId) {
+        event.preventDefault()
+        await uploadEventPicture(event, eventId)
+    }
+
+    // Function to upload profile picture
+    const uploadEventPicture = async (event, eventId) => {
+        const file = event.target.elements.image.files[0]
+        const formData = new FormData()
+        formData.append('image', file)
+
+        // Send the image to the server
+        try {
+            const response = await Axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/images/event/${eventId}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
+                }
+            })
+            console.log('Event picture uploaded:', response.data)
+        } catch (error) {
+            console.error('Error uploading event picture:', error)
         }
     }
 
@@ -161,6 +196,11 @@ export default function CreateEvent({ getEvents, categories }) {
                                         placeholder=''
                                         required=''
                                     />
+                                </div>
+                                <div className="mx-4">
+                                    <label className="block mb-2 text-sm font-medium text-gray-900 ">Upload Event image</label>
+                                    <p className="my-2">Images should be uploaded as 200 x 300 px</p>
+                                    <input type="file" accept="image/*" name='image'/>
                                 </div>
                                 <select
                                     name='category'

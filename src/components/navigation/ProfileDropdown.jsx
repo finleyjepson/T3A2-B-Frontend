@@ -1,12 +1,20 @@
 import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import defaultProfilePicture from '../../assets/default-placeholder.png'
+import { refreshTokenIfNeeded } from '../auth/refreshToken.js'
 
 function ProfileDropdown({ isLoggedIn, user, setIsLoggedIn }) {
     // State to track visibility of profile dropdown menu
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const profilePicture = user.pictureUrl ? user.pictureUrl : defaultProfilePicture
+
+    // Check if the access token is expired
+    useEffect(() => {
+        refreshTokenIfNeeded()
+    }, [])
+
     const navigate = useNavigate()
 
     // Function to toggle the profile dropdown menu

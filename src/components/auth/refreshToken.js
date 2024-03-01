@@ -1,9 +1,7 @@
-import * as jose from "jose"
-
 async function refreshTokenIfNeeded() {
     // Check if the access token is expired
     const accessToken = sessionStorage.getItem("accessToken")
-    if (isTokenExpired(accessToken)) {
+    if (isTokenExpired(accessToken) === true) {
         // If the access token is expired, get the refresh token
         const refreshToken = sessionStorage.getItem("refreshToken")
         if (!refreshToken) {
@@ -22,22 +20,33 @@ async function refreshTokenIfNeeded() {
         // If the response is not ok, throw an error
         if (!response.ok) {
             throw new Error("Failed to refresh access token.")
+        } else {
+            // If the response is ok, get the new access token from the response
+            const data = await response.json()
+            const newAccessToken = data.accessToken            
+            // Store the new access token in the session storage
+            sessionStorage.setItem("accessToken", newAccessToken)
         }
-
-        // If the response is ok, get the new access token from the response
-        const data = await response.json()
-        const newAccessToken = data.accessToken
-
-        // Store the new access token in the session storage
-        sessionStorage.setItem("accessToken", newAccessToken)
+    } else {
+        // If the access token is not expired, do nothing
     }
 }
 
 async function isTokenExpired(token) {
-    const decodedToken = await jose.jwtDecrypt(token, { complete: true })
-    console.log("decodedToken:", decodedToken)
-    const expirationTime = decodedToken.exp * 1000
-    return Date.now() >= expirationTime
+    await fetch(import.meta.env.VITE_BACKEND_API_URL + "/auth/decode", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        },
+    })
+    .then(response => {
+        if (response.status === 200) {
+            return false
+        } else {
+            return true
+        }
+    })
 }
 
 export { refreshTokenIfNeeded }

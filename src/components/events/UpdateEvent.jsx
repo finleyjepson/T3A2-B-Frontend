@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from "axios"
 import getGeo from '../../utils/getGeo'
+import { refreshTokenIfNeeded } from "../auth/refreshToken.js"
 
 export default function UpdateEvent({ categories, user }) {
     const { id } = useParams()
@@ -13,6 +14,11 @@ export default function UpdateEvent({ categories, user }) {
 	const [updateEvent, setUpdateEvent] = useState([{}])
     
     const navigate = useNavigate()
+
+    // Check if the access token is expired
+    useEffect(() => {
+        refreshTokenIfNeeded()
+    }, [])
 
     const currentDate = new Date().toISOString().split('T')[0] // Get current date in YYYY-MM-DD format
     
@@ -114,6 +120,8 @@ export default function UpdateEvent({ categories, user }) {
                     price: updateEvent.price,
                 }),
             })
+            console.log(id)
+            handleEventPictureChange(event, id)
             navigate("/events")
             // Catch response:
         } catch (error) {
@@ -144,6 +152,32 @@ export default function UpdateEvent({ categories, user }) {
             // Catch response:
         } catch (error) {
             console.error("Problem deleting event", error.message)
+        }
+    }
+
+    // Function to handle profile picture change
+    async function handleEventPictureChange(event, eventId) {
+        event.preventDefault()
+        await uploadEventPicture(event, eventId)
+    }
+
+    // Function to upload profile picture
+    const uploadEventPicture = async (event, eventId) => {
+        const file = event.target.elements.image.files[0]
+        const formData = new FormData()
+        formData.append('image', file)
+
+        // Send the image to the server
+        try {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/images/event/${eventId}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
+                }
+            })
+            console.log('Event picture uploaded:', response.data)
+        } catch (error) {
+            console.error('Error uploading event picture:', error)
         }
     }
 
@@ -181,6 +215,11 @@ export default function UpdateEvent({ categories, user }) {
                                     required=''
                                 />
                             </div>
+                            <div className="mx-4">
+                                    <label className="block mb-2 text-sm font-medium text-gray-900 ">Upload Event image</label>
+                                    <p className="my-2">Images should be uploaded as 200 x 300 px</p>
+                                    <input type="file" accept="image/*" name='image'/>
+                                </div>
                             <select
                                 name='category'
                                 onChange={changeHandler}

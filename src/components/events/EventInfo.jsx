@@ -2,7 +2,7 @@ import Maps from "./Maps"
 import { useParams, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import axios from "axios"
-// import { refreshTokenIfNeeded } from "../auth/refreshToken.js"
+import { refreshTokenIfNeeded } from "../auth/refreshToken.js"
 
 export default function EventInfo({ events, getEvents, user }) {
     const { id } = useParams()
@@ -11,7 +11,14 @@ export default function EventInfo({ events, getEvents, user }) {
     const [eventPicture, setEventPicture] = useState(null)
     const accessToken = sessionStorage.getItem("accessToken")
 
+    console.log("EventInfo events:", id)
+
     const navigate = useNavigate()
+
+    // Check if the access token is expired
+    useEffect(() => {
+        refreshTokenIfNeeded()
+    }, [])
 
     useEffect(() => {
         getEvents().then(() => setLoading(false))
@@ -33,8 +40,6 @@ export default function EventInfo({ events, getEvents, user }) {
         if (!accessToken) {
             throw new Error("Access token not found. Please login.")
         }
-
-        // await refreshTokenIfNeeded()
 
         await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/events/${eventId}/rsvp-add`, {
             method: "POST",
@@ -65,6 +70,7 @@ export default function EventInfo({ events, getEvents, user }) {
             response.json()
             getEvents(eventId)
         })
+        .then(data => console.log(data))
         .catch(err => console.error(err))
     }
 
@@ -82,32 +88,9 @@ export default function EventInfo({ events, getEvents, user }) {
 
     getRSVP(events[id]._id)
 
-    // Function to upload profile picture
-    const uploadEventPicture = async (event, eventId) => {
-        const file = event.target.elements.image.files[0]
-        const formData = new FormData()
-        formData.append('image', file)
-
-        // Send the image to the server
-        try {
-            await axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/images/event/${eventId}`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
-                }
-            })
-        } catch (error) {
-            console.error('Error uploading event picture:', error)
-        }
+    function dateMod(date) {
+        return date.split("T")[0]
     }
-
-    // Function to handle profile picture change
-    const handleEventPictureChange = async (event) => {
-        event.preventDefault()
-        await uploadEventPicture(event, events[id]._id)
-    }
-
-    getRSVP(events[id]._id)
 
     return (
         <div className="flex justify-center py-4">
@@ -140,14 +123,6 @@ export default function EventInfo({ events, getEvents, user }) {
                                 <span>No profile picture</span>
                             )}
                         </div>
-                        {(user.isAdmin || (user.isOrganiser && user._id === events[id].createdBy)) && (
-                            <form onSubmit={handleEventPictureChange}>
-                                <input type="file" accept="image/*" name='image' />
-                                <div>
-                                    <button type='submit'>Upload</button>
-                                </div>
-                            </form>
-                        )}
                     </div>
                     <div className="animate-in slide-in-from-left fade-in-25 ease-out duration-1000 my-4">
                         <Maps coords={ events[id].coords }/>
@@ -161,7 +136,7 @@ export default function EventInfo({ events, getEvents, user }) {
                                 <div className='p-4 max-w-[500px] rounded-md border-2 border-gray-300 bg-white'>
                                     <div className='mb-4'>
                                         <h3 className='text-lg font-bold'>When is it?</h3>
-                                        <p>{events[id].date}</p>
+                                        <p>{dateMod(events[id].date)}</p>
                                     </div>
                                     <div className='mb-4'>
                                         <h3 className='text-lg font-bold'>Where is it?</h3>
