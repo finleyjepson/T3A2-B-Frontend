@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import defaultProfilePicture from '../../assets/default-placeholder.png'
 
 const UserProfilePage = ({ user, setUser }) => {
     const [profilePicture, setProfilePicture] = useState(null) // State for profile picture
@@ -8,6 +9,7 @@ const UserProfilePage = ({ user, setUser }) => {
     const [isDataFetched, setIsDataFetched] = useState(false)
     const [showAnimeMaxLimitMessage, setShowAnimeMaxLimitMessage] = useState(false) // State for showing anime max limit message
     const [showCharacterMaxLimitMessage, setShowCharacterMaxLimitMessage] = useState(false) // State for showing character max limit message
+    const [upComingEvents, setUpComingEvents] = useState([]) // State for upcoming events
 
     // Function to upload profile picture
     const uploadProfilePicture = async (event) => {
@@ -45,6 +47,10 @@ const UserProfilePage = ({ user, setUser }) => {
     useEffect(() => {
         setProfilePicture(user.pictureUrl)
     }, [user])
+
+    useEffect(() => {
+        getUpComingEvents(user.rsvp)
+    }, [user.rsvp])
 
     // Fetch favourite characters
     useEffect(() => {        
@@ -216,6 +222,22 @@ const UserProfilePage = ({ user, setUser }) => {
         }
     }
 
+    const getUpComingEvents = async (eventList) => {
+        const events = []
+        if (eventList && typeof eventList[Symbol.iterator] === 'function') {
+            for (let eventItem of eventList) {
+                const eventFetched = await axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/events/${eventItem}`)
+                events.push(eventFetched.data)
+            }
+        }
+        console.log('Events:', events)
+        setUpComingEvents(events.map(event => (
+            <div key={event._id}>
+                <h3>{event.title}</h3>
+                {/* Render other event details */}
+            </div>
+        )))
+    }
 
     return (
         <>
@@ -239,14 +261,14 @@ const UserProfilePage = ({ user, setUser }) => {
                             <form onSubmit={handleProfilePictureChange}>
                             <div className="p-6">
                                 <h2 className="text-lg font-semibold mb-4">Profile Picture</h2>
-                                <div className="flex items-center justify-center bg-gray-200 h-40">
+                                <div className="flex items-center justify-center bg-gray-200 h-[200px] w-[200px]">
                                     {/* If profile picture is not null, show the profile picture */}
                                     {profilePicture ? (
                                         // Need to figure out how this links with the AWS image host
                                         <img src={profilePicture} alt="Profile Picture" className="h-full object-cover" />
                                         // If null, show 'no profile picture'
                                     ) : (
-                                        <span>No profile picture</span>
+                                        <img src={defaultProfilePicture} alt="Profile Picture" className="h-full object-cover" />
                                     )}
                                 </div>
                                 <input type="file" accept="image/*" name='image' className="mt-4" />
@@ -261,7 +283,9 @@ const UserProfilePage = ({ user, setUser }) => {
                         <div className="bg-indigo-900 rounded-lg overflow-hidden col-span-8 animate-in slide-in-from-right fade-in duration-1s">
                             <div className="p-6">
                                 <h2 className="text-lg text-white font-semibold mb-4">My Upcoming Events</h2>
-                                <p className="text-white/50">List your upcoming events here...</p>
+                                <div className="grid grid-cols-2 gap-4">
+                                    {upComingEvents}
+                                </div>
                             </div>
                         </div>
         

@@ -2,6 +2,7 @@ import Maps from "./Maps"
 import { useParams, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import axios from "axios"
+// import { refreshTokenIfNeeded } from "../auth/refreshToken.js"
 
 export default function EventInfo({ events, getEvents, user }) {
     const { id } = useParams()
@@ -34,6 +35,9 @@ export default function EventInfo({ events, getEvents, user }) {
         if (!accessToken) {
             throw new Error("Access token not found. Please login.")
         }
+
+        // await refreshTokenIfNeeded()
+
         await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/events/${eventId}/rsvp-add`, {
             method: "POST",
             headers: {
@@ -129,25 +133,26 @@ export default function EventInfo({ events, getEvents, user }) {
                 <div className="flex">
                 <div className="mx-8 my-8 ">
                     {/* Profile Picture Box */}
-                        <div >
-                            <div className="h-[300px] w-[200px] bg-slate-500 animate-in slide-in-from-left fade-in-25 ease-out duration-1000 my-4">
-                                {/* If profile picture is not null, show the profile picture */}
-                                {eventPicture ? (
-                                    // Need to figure out how this links with the AWS image host
-                                    <img src={eventPicture} alt="Profile Picture" className="h-full object-cover" />
-                                    // If null, show 'no profile picture'
-                                ) : (
-                                    <span>No profile picture</span>
-                                )}
-                            </div>
+                    <div >
+                        <div className="h-[300px] w-[200px] bg-slate-500 animate-in slide-in-from-left fade-in-25 ease-out duration-1000 my-4">
+                            {/* If profile picture is not null, show the profile picture */}
+                            {eventPicture ? (
+                                // Need to figure out how this links with the AWS image host
+                                <img src={eventPicture} alt="Profile Picture" className="h-full object-cover" />
+                                // If null, show 'no profile picture'
+                            ) : (
+                                <span>No profile picture</span>
+                            )}
+                        </div>
+                        {user.isAdmin || (user.isOrganiser && user._id === events[id].createdBy) && (
                             <form onSubmit={handleEventPictureChange}>
                                 <input type="file" accept="image/*" name='image' />
-                                <div >
-                                    <button type='submit' >Upload</button>
+                                <div>
+                                    <button type='submit'>Upload</button>
                                 </div>
                             </form>
-                        </div>
-                    
+                        )}
+                    </div>
                     <div className="animate-in slide-in-from-left fade-in-25 ease-out duration-1000 my-4">
                         <Maps coords={ events[id].coords }/>
                     </div>
