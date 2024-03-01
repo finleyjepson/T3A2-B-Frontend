@@ -27,6 +27,8 @@ export default function CreateEvent({ getEvents, categories }) {
         price: 0,
     })
 
+    const currentDate = new Date().toISOString().split('T')[0] // Get current date in YYYY-MM-DD format
+
     function changeHandler(event) {
         const { name, value } = event.target
         setEventInfo((previousState) => ({
@@ -197,6 +199,7 @@ export default function CreateEvent({ getEvents, categories }) {
                                         className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
                                         placeholder=''
                                         required=''
+                                        min={currentDate}
                                     />
                                 </div>
                                 <div className='m-4'>
