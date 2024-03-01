@@ -16,11 +16,6 @@ export default function Login({ setIsLoggedIn }) {
     function handleChange(e) {
         const { name, value } = e.target
 
-        // Testing logging username change state to console
-        if (name === "username") {
-            console.log("Username:", value)
-        }
-
         // Get the target field (name) and update the value in setFormData
         setFormData((previousState) => ({
             ...previousState,
@@ -46,13 +41,10 @@ export default function Login({ setIsLoggedIn }) {
             }
             // Successful login response:
             const data = await response.json()
-            console.log("Successfully logged in", data)
 
             // Retrieve the auth tokens
             const accessToken = data.accessToken
             const refreshToken = data.refreshToken
-            console.log("Access Token:", accessToken)
-            console.log("Refresh Token:", refreshToken)
 
             // Store the tokens securely (change sessionStorage to localStorage as needed)
             sessionStorage.setItem("accessToken", accessToken)

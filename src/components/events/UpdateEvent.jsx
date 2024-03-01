@@ -14,6 +14,8 @@ export default function UpdateEvent({ categories, user }) {
     
     const navigate = useNavigate()
 
+    const currentDate = new Date().toISOString().split('T')[0] // Get current date in YYYY-MM-DD format
+    
 	async function getOneEvent() {
 		await fetch(`http://localhost:4000/events/${id}`)
 		.then(response => response.json())
@@ -82,12 +84,11 @@ export default function UpdateEvent({ categories, user }) {
         try {
             // User token handling
             const accessToken = sessionStorage.getItem("accessToken") // Retrieve the session's access token
-            console.log("Access token:", accessToken)
             if (!accessToken) {
                 throw new Error("Access token not found. Please login.")
             }
 
-            const response = await fetch(import.meta.env.VITE_BACKEND_API_URL+`/events/${id}`, {
+            await fetch(import.meta.env.VITE_BACKEND_API_URL+`/events/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -115,7 +116,7 @@ export default function UpdateEvent({ categories, user }) {
             })
             console.log(id)
             handleEventPictureChange(event, id)
-            navigate("/events/")
+            navigate("/events")
             // Catch response:
         } catch (error) {
             console.error("Problem creating event", error.message)
@@ -135,13 +136,12 @@ export default function UpdateEvent({ categories, user }) {
                 throw new Error("Access token not found. Please login.")
             }
 
-            const response = await fetch(import.meta.env.VITE_BACKEND_API_URL+`/events/${id}`, {
+            await fetch(import.meta.env.VITE_BACKEND_API_URL+`/events/${id}`, {
                 method: "DELETE",
                 headers: {
                     Authorization: `Bearer ${accessToken}`, // Add the token in the request
                 }
             })
-            console.log(response)
             navigate('/events')
             // Catch response:
         } catch (error) {
@@ -251,6 +251,7 @@ export default function UpdateEvent({ categories, user }) {
                                     className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
                                     // placeholder={updateEvent.date.toISOString().substring(0,10)}
                                     required=''
+                                    min={currentDate}
                                 />
                             </div>
                             <div className='m-4'>
