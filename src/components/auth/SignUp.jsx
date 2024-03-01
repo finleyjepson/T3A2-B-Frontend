@@ -50,22 +50,10 @@ export default function Signup({ setIsLoggedIn }) {
             if (!response.ok) {
                 throw new Error("Signup / Login failed after registration")
             }
-
-            // Successful response; Login upon signup and retrieve tokens
-            const data = await response.json()
-            const accessToken = data.accessToken
-            const refreshToken = data.refreshToken
-            // Store tokens securely
-            sessionStorage.setItem("accessToken", accessToken)
-            sessionStorage.setItem("refreshToken", refreshToken)
-            sessionStorage.setItem("user", JSON.stringify(data.user))             
-
             // Update isLoggedIn and username state after successful signup
-            setIsLoggedIn(true)
            
-            console.log("User successfully registered", data)
-            console.log("Signed up user accessToken:", accessToken)
-
+            console.log("User successfully registered")
+            
             // Redirect user back to home after successful sign up:
             navigate("/")
 
