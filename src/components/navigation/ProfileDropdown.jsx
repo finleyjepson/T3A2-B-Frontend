@@ -62,7 +62,7 @@ function ProfileDropdown({ isLoggedIn, user, setIsLoggedIn }) {
                             id='user-menu-button'
                             aria-expanded={isMenuOpen}
                             onClick={toggleMenu}
-                            onBlur={() => setIsMenuOpen(false)} // Close menu when focus is lost
+                            onBlur={() => setTimeout(() => setIsMenuOpen(false), 100)} // Close menu when focus is lost
                             data-dropdown-toggle='user-dropdown'
                             data-dropdown-placement='bottom'>
                             <span className='sr-only'>Open user menu</span>
