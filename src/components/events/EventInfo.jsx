@@ -135,6 +135,7 @@ export default function EventInfo({ events, getEvents, user }) {
                         <Maps coords={ events[id].coords }/>
                     </div>
                     </div>
+                    {/* Event Info box */}
                     <div className="my-8 mr-8 animate-in slide-in-from-top fade-in-25 ease-out duration-1000">
                         <button onClick={() => addRSVP(events[id]._id, accessToken)}  className='bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 m-4 border-b-4 border-green-700 hover:border-green-500 rounded'>Interested</button>
                         <button onClick={() => removeRSVP(events[id]._id, accessToken)} className='bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 m-4 border-b-4 border-red-700 hover:border-red-500 rounded'>Not for me</button>
@@ -164,12 +165,10 @@ export default function EventInfo({ events, getEvents, user }) {
                                         <p>Organiser:</p>
                                         <p>{events[id].organiser}</p>
                                     </div>
-
                                 </div>
                             </li>
                         </ul>
                     </div>
-                    
                 </div>
             </div>
         </div>

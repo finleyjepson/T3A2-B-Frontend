@@ -9,6 +9,7 @@ export default function UpcomingEvents({ events, max }) {
 
     return (
         <>
+            {/* Upcoming Events list */}
             <ul>
                 {events.slice(0, max).map((event, index) => (
                     <li key={index} className='odd:bg-white'>

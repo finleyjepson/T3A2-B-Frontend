@@ -166,6 +166,7 @@ export default function CreateEvent({ getEvents, categories }) {
 
     return (
         <>
+            {/* Check if user is Admin or Organiser */}
             {(!user || (!user.isAdmin && !user.isOrganiser)) ? (
                 <h1>Unauthorised</h1>
             ) : ( 
@@ -173,6 +174,7 @@ export default function CreateEvent({ getEvents, categories }) {
                     <div className='p-4 w-[500px] animate-in slide-in-from-top duration-1s '>
                         <div className='py-2 mx-4 rounded-t-lg bg-red-600 px-4 text-xl max-w-[500px] text-white shadow-lg'>Create Event</div>
                         <div className='mx-4 rounded-b-lg bg-red-50 max-w-[500px] border-2 border-x-gray-300 border-b-gray-300 shadow-lg'>
+                            {/* Create Event form */}
                             <form className='space-y-4 md:space-y-4' onSubmit={submitEvent}>
                                 <div className='m-4'>
                                     <label className='block mb-2 text-sm font-medium text-gray-900'>Title</label>
