@@ -191,6 +191,7 @@ export default function CreateEvent({ getEvents, categories }) {
                                 </div>
                                 <div className="mx-4">
                                     <label className="block mb-2 text-sm font-medium text-gray-900 ">Upload Event image</label>
+                                    <p className="my-2">Images should be uploaded as 200 x 300 px</p>
                                     <input type="file" accept="image/*" name='image'/>
                                 </div>
                                 <select
