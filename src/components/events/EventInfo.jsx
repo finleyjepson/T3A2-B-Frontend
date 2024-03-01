@@ -88,34 +88,9 @@ export default function EventInfo({ events, getEvents, user }) {
 
     getRSVP(events[id]._id)
 
-    // Function to upload profile picture
-    const uploadEventPicture = async (event, eventId) => {
-        const file = event.target.elements.image.files[0]
-        
-        const formData = new FormData()
-        formData.append('image', file)
-
-        // Send the image to the server
-        try {
-            const response = await axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/images/event/${eventId}`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
-                }
-            })
-            console.log('Event picture uploaded:', response.data)
-        } catch (error) {
-            console.error('Error uploading event picture:', error)
-        }
+    function dateMod(date) {
+        return date.split("T")[0]
     }
-
-    // Function to handle profile picture change
-    const handleEventPictureChange = async (event) => {
-        event.preventDefault()
-        await uploadEventPicture(event, events[id]._id)
-    }
-
-    getRSVP(events[id]._id)
 
     return (
         <div className="flex justify-center py-4">
@@ -148,16 +123,6 @@ export default function EventInfo({ events, getEvents, user }) {
                                 <span>No profile picture</span>
                             )}
                         </div>
-                        <div>
-                        {(user.isAdmin || (user.isOrganiser && user._id === events[id].createdBy)) && (
-                            <div>
-                                <label className="text-sm">Choose new Event poster</label>
-                                <form onSubmit={handleEventPictureChange} className="w-[200px]">
-                                    <input type="file" accept="image/*" name='image'/>
-                                </form>
-                            </div>
-                        )}
-                        </div>
                     </div>
                     <div className="animate-in slide-in-from-left fade-in-25 ease-out duration-1000 my-4">
                         <Maps coords={ events[id].coords }/>
@@ -171,7 +136,7 @@ export default function EventInfo({ events, getEvents, user }) {
                                 <div className='p-4 max-w-[500px] rounded-md border-2 border-gray-300 bg-white'>
                                     <div className='mb-4'>
                                         <h3 className='text-lg font-bold'>When is it?</h3>
-                                        <p>{events[id].date}</p>
+                                        <p>{dateMod(events[id].date)}</p>
                                     </div>
                                     <div className='mb-4'>
                                         <h3 className='text-lg font-bold'>Where is it?</h3>
