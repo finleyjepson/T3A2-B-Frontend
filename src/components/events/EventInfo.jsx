@@ -138,6 +138,9 @@ export default function EventInfo({ events, getEvents, user }) {
                     <div className="my-8 mr-8 animate-in slide-in-from-top fade-in-25 ease-out duration-1000">
                         <button onClick={() => addRSVP(events[id]._id, accessToken)}  className='bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 m-4 border-b-4 border-green-700 hover:border-green-500 rounded'>Interested</button>
                         <button onClick={() => removeRSVP(events[id]._id, accessToken)} className='bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 m-4 border-b-4 border-red-700 hover:border-red-500 rounded'>Not for me</button>
+                        <div className='text-lg font-bold mb-2'>
+                                        <p>{rsvpCount} people are interested</p>
+                        </div>
                         <ul>
                             <li>
                                 <div className='p-4 max-w-[500px] rounded-md border-2 border-gray-300 bg-white'>
@@ -161,10 +164,7 @@ export default function EventInfo({ events, getEvents, user }) {
                                         <p>Organiser:</p>
                                         <p>{events[id].organiser}</p>
                                     </div>
-                                    <div className='text-lg font-bold'>
-                                        <h3 className='text-lg font-bold'>RSVP count</h3>
-                                        <p>{rsvpCount}</p>
-                                    </div>
+
                                 </div>
                             </li>
                         </ul>
