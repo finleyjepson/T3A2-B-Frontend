@@ -287,7 +287,7 @@ const UserProfilePage = ({ user, setUser }) => {
                         <div className="bg-indigo-900 rounded-lg overflow-hidden col-span-8 animate-in slide-in-from-right fade-in duration-1s">
                             <div className="p-6">
                                 <h2 className="text-lg text-white font-semibold mb-4">My Upcoming Events</h2>
-                                <div className="grid grid-cols-2 gap-4">
+                                <div className="grid grid-cols-2 gap-4 text-lg text-white">
                                     {upComingEvents}
                                 </div>
                             </div>
