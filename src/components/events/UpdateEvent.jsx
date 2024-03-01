@@ -114,6 +114,8 @@ export default function UpdateEvent({ categories, user }) {
                     price: updateEvent.price,
                 }),
             })
+            console.log(id)
+            handleEventPictureChange(event, id)
             navigate("/events")
             // Catch response:
         } catch (error) {
@@ -144,6 +146,32 @@ export default function UpdateEvent({ categories, user }) {
             // Catch response:
         } catch (error) {
             console.error("Problem deleting event", error.message)
+        }
+    }
+
+    // Function to handle profile picture change
+    async function handleEventPictureChange(event, eventId) {
+        event.preventDefault()
+        await uploadEventPicture(event, eventId)
+    }
+
+    // Function to upload profile picture
+    const uploadEventPicture = async (event, eventId) => {
+        const file = event.target.elements.image.files[0]
+        const formData = new FormData()
+        formData.append('image', file)
+
+        // Send the image to the server
+        try {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/images/event/${eventId}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
+                }
+            })
+            console.log('Event picture uploaded:', response.data)
+        } catch (error) {
+            console.error('Error uploading event picture:', error)
         }
     }
 
@@ -181,6 +209,10 @@ export default function UpdateEvent({ categories, user }) {
                                     required=''
                                 />
                             </div>
+                            <div className="mx-4">
+                                    <label className="block mb-2 text-sm font-medium text-gray-900 ">Upload Event image</label>
+                                    <input type="file" accept="image/*" name='image'/>
+                                </div>
                             <select
                                 name='category'
                                 onChange={changeHandler}
