@@ -1,8 +1,15 @@
 import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
+import { refreshTokenIfNeeded } from '../auth/refreshToken.js'
 
 export default function UserList({ users }) {
  
     const navigate = useNavigate()
+    
+    // Check if the access token is expired
+    useEffect(() => {
+        refreshTokenIfNeeded()
+    }, [])
 
     async function toggleOrganiser(userId, isOrganiser) {
 

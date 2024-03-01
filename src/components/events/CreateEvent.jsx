@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { useNavigate } from 'react-router-dom'
 import Axios from "axios"
 import getGeo from '../../utils/getGeo.js'
+import { refreshTokenIfNeeded } from "../auth/refreshToken.js"
 
 export default function CreateEvent({ getEvents, categories }) {
     const [coords, setCoords] = useState({lat: 0, lng: 0})
@@ -9,6 +10,11 @@ export default function CreateEvent({ getEvents, categories }) {
     const [searchResults, setSearchResults] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [skipSearch, setSkipSearch] = useState(false)
+
+    // Check if the access token is expired
+    useEffect(() => {
+        refreshTokenIfNeeded()
+    }, [])
 
     const user = JSON.parse(sessionStorage.getItem("user"))
 

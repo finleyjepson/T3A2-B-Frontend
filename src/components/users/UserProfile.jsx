@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import defaultProfilePicture from '../../assets/default-placeholder.png'
+import { refreshTokenIfNeeded } from '../auth/refreshToken.js'
 
 const UserProfilePage = ({ user, setUser }) => {
     const [profilePicture, setProfilePicture] = useState(null) // State for profile picture
@@ -10,6 +11,11 @@ const UserProfilePage = ({ user, setUser }) => {
     const [showAnimeMaxLimitMessage, setShowAnimeMaxLimitMessage] = useState(false) // State for showing anime max limit message
     const [showCharacterMaxLimitMessage, setShowCharacterMaxLimitMessage] = useState(false) // State for showing character max limit message
     const [upComingEvents, setUpComingEvents] = useState([]) // State for upcoming events
+
+    // Check if the access token is expired
+    useEffect(() => {
+        refreshTokenIfNeeded()
+    }, [])
 
     // Function to upload profile picture
     const uploadProfilePicture = async (event) => {
