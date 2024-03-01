@@ -145,11 +145,12 @@ export default function CreateEvent({ getEvents, categories }) {
 
     // Function to upload profile picture
     const uploadEventPicture = async (event, eventId) => {
+        // Get image that was added to the form
         const file = event.target.elements.image.files[0]
         const formData = new FormData()
         formData.append('image', file)
 
-        // Send the image to the server
+        // Send the image to the server to the corresponding event by id
         try {
             const response = await Axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/images/event/${eventId}`, formData, {
                 headers: {

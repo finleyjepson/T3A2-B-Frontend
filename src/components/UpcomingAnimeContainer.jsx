@@ -1,7 +1,8 @@
 export default function UpcomingAnimeContainer({ events }) {
-    // Extract only events that have an anime tag (i.e. exclude non-anime screening events)
+    // Extract only events that have an anime tag
     let animeList = []
 
+    // Loop through events and exclude adding events with an anime tag of "Other"
     for (let i = 0; i < events.length; i++) {
         if (events[i].anime && events[i].anime !== "Other") {
             animeList.push(events[i])

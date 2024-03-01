@@ -12,10 +12,12 @@ export default function EventList({ fullEvents, events, max, user, isLoggedIn })
 
     const navigate = useNavigate()
 
+    // Format date function
     function dateMod(date) {
         return date.split("T")[0]
     }
 
+    // Find index of event function (used in <Link> below)
     function findIndex(event) {
         const eventId = event._id
         let index

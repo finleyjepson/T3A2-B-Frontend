@@ -20,10 +20,12 @@ export default function EventInfo({ events, getEvents, user }) {
         refreshTokenIfNeeded()
     }, [])
 
+    // Set loading state to false once events fetched
     useEffect(() => {
         getEvents().then(() => setLoading(false))
     }, [getEvents])
 
+    // Get event picture
     useEffect(() => {
         if (events[id]) {
             setEventPicture(events[id].pictureUrl)
@@ -32,10 +34,12 @@ export default function EventInfo({ events, getEvents, user }) {
         }
     }, [events, id])
 
+    // Display loading comment if events not yet fetched
     if (loading) {
         return <div>Loading...</div>
     }
 
+    // Add RSVP function
     async function addRSVP(eventId, accessToken) {
         if (!accessToken) {
             throw new Error("Access token not found. Please login.")
@@ -55,6 +59,7 @@ export default function EventInfo({ events, getEvents, user }) {
         .then(data => console.log(data))
     }
 
+    // Remove RSVP function
     async function removeRSVP(eventId, accessToken) {
         if (!accessToken) {
             throw new Error("Access token not found. Please login.")
@@ -74,6 +79,7 @@ export default function EventInfo({ events, getEvents, user }) {
         .catch(err => console.error(err))
     }
 
+    // Get RSVP count
     async function getRSVP(eventId) {
         await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/events/${eventId}/rsvp-count`, {
             method: "GET",
@@ -88,6 +94,7 @@ export default function EventInfo({ events, getEvents, user }) {
 
     getRSVP(events[id]._id)
 
+    // Format date function
     function dateMod(date) {
         return date.split("T")[0]
     }

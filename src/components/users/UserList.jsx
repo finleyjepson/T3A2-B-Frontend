@@ -11,6 +11,7 @@ export default function UserList({ users }) {
         refreshTokenIfNeeded()
     }, [])
 
+    // Toggle organiser (+Organiser or -Organiser)
     async function toggleOrganiser(userId, isOrganiser) {
 
         try {
@@ -35,10 +36,9 @@ export default function UserList({ users }) {
         } catch (error) {
             console.error("Problem updating user", error.message)
         }
-        
-
     }
 
+    // Delete user function
     async function deleteUser(userId) {
         try {
             // User token handling
