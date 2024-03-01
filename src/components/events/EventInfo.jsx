@@ -143,12 +143,12 @@ export default function EventInfo({ events, getEvents, user }) {
                         </div>
                         <div>
                         {(user.isAdmin || (user.isOrganiser && user._id === events[id].createdBy)) && (
-                            <form onSubmit={handleEventPictureChange} className="w-[200px]">
-                                <input type="file" accept="image/*" name='image'/>
-                                <div>
-                                    <button type='submit'>Upload</button>
-                                </div>
-                            </form>
+                            <div>
+                                <label className="text-sm">Choose new Event poster</label>
+                                <form onSubmit={handleEventPictureChange} className="w-[200px]">
+                                    <input type="file" accept="image/*" name='image'/>
+                                </form>
+                            </div>
                         )}
                         </div>
                     </div>
