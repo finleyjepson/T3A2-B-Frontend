@@ -68,7 +68,7 @@ export default function Navbar({ user, isLoggedIn }) {
                         {/* <p className="text-xs"><button className="absolute top-4 right-4 text-gray-600" onClick={handleCloseModal}>Close</button></p> */}
                         <h3 className="mb-4 text-xl font-semibold text-gray-900">We'd love to hear from you</h3>
                         <p className="mb-4 text-gray-600">Have any feedback or questions? Need help with an event?<br />Feel free to email us at:</p>
-                        <p className="mb-4 text-primary-500 font-medium">email@example.com</p>
+                        <p className="mb-4 text-primary-500 font-medium">animescreen2024@gmail.com</p>
                     </div>
                 </div>
         </>

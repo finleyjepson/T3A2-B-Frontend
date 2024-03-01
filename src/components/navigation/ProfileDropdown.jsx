@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from 'react'
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
@@ -5,10 +6,8 @@ import defaultProfilePicture from '../../assets/default-placeholder.png'
 import { refreshTokenIfNeeded } from '../auth/refreshToken.js'
 
 function ProfileDropdown({ isLoggedIn, user, setIsLoggedIn }) {
-    // console.log("Navbar username:", user.username)
     // State to track visibility of profile dropdown menu
     const [isMenuOpen, setIsMenuOpen] = useState(false)
-
     const profilePicture = user.pictureUrl ? user.pictureUrl : defaultProfilePicture
 
     // Check if the access token is expired
@@ -71,6 +70,7 @@ function ProfileDropdown({ isLoggedIn, user, setIsLoggedIn }) {
                             id='user-menu-button'
                             aria-expanded={isMenuOpen}
                             onClick={toggleMenu}
+                            onBlur={() => setTimeout(() => setIsMenuOpen(false), 100)} // Close menu when focus is lost
                             data-dropdown-toggle='user-dropdown'
                             data-dropdown-placement='bottom'>
                             <span className='sr-only'>Open user menu</span>
