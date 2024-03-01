@@ -250,8 +250,6 @@ export default function CreateEvent({ getEvents, categories }) {
                                     Create Event
                                 </button>
                                 </div>
-        
-
                             </form>
                         </div>
                     </div>

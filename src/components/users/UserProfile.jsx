@@ -19,13 +19,12 @@ const UserProfilePage = ({ user, setUser }) => {
 
         // Send the image to the server
         try {
-            const response = await axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/images/pfp`, formData, {
+            await axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/images/pfp`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
                 }
             })
-            console.log('Profile picture uploaded:', response.data)
         } catch (error) {
             console.error('Error uploading profile picture:', error)
         }
@@ -230,7 +229,6 @@ const UserProfilePage = ({ user, setUser }) => {
                 events.push(eventFetched.data)
             }
         }
-        console.log('Events:', events)
         setUpComingEvents(events.map(event => (
             <div key={event._id}>
                 <h3>{event.title}</h3>

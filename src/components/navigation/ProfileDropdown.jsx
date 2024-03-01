@@ -14,8 +14,6 @@ function ProfileDropdown({ isLoggedIn, user, setIsLoggedIn }) {
 
     // Function to toggle the profile dropdown menu
     const toggleMenu = () => {
-        console.log("Toggling menu")
-        console.log("isMenuOpen:", isMenuOpen)
         setIsMenuOpen(!isMenuOpen)
     }
 
@@ -27,8 +25,7 @@ function ProfileDropdown({ isLoggedIn, user, setIsLoggedIn }) {
             // token: sessionStorage.getItem('accessToken')
             data: { token: refreshToken }
         })
-            .then(response => {
-                console.log('Logout successful:', response.data)
+            .then(() => {
                 // Clear session storage
                 sessionStorage.clear()
                 setIsLoggedIn(false)
