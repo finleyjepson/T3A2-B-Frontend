@@ -6,11 +6,12 @@ const mapContainerStyle = {
   height: '200px',
 };
 
+// Google Maps widget component
 const Maps = ({ coords }) => {
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_API_KEY,
-
+    // Force version 3.55
     version: 3.55,
     libraries,
   });

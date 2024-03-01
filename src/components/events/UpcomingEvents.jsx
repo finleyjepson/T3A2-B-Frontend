@@ -2,6 +2,7 @@ import { Link } from "react-router-dom"
 
 export default function UpcomingEvents({ events, max }) {
 
+    // Format date function
     function dateMod(date) {
         return date.split("T")[0]
     }

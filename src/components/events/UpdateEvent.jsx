@@ -82,11 +82,9 @@ export default function UpdateEvent({ categories, user }) {
         getGeo(updateEvent.venue, setCoords)
     }, [updateEvent.venue])
 
+    // Submit event function (form submit)
     async function submitEvent(event) {
         event.preventDefault()
-
-        // Console log coordinates on submit from the coordinates state
-        console.log(updateEvent.coords)
         try {
             // User token handling
             const accessToken = sessionStorage.getItem("accessToken") // Retrieve the session's access token
@@ -129,6 +127,7 @@ export default function UpdateEvent({ categories, user }) {
         }
     }
 
+    // Delete event function
     async function deleteEvent(event) {
         event.preventDefault()
 
