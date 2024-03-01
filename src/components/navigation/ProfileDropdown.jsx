@@ -1,15 +1,12 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import defaultProfilePicture from '../../assets/default-placeholder.png'
 
 function ProfileDropdown({ isLoggedIn, user, setIsLoggedIn }) {
-    // console.log("Navbar username:", user.username)
     // State to track visibility of profile dropdown menu
     const [isMenuOpen, setIsMenuOpen] = useState(false)
-
     const profilePicture = user.pictureUrl ? user.pictureUrl : defaultProfilePicture
-
     const navigate = useNavigate()
 
     // Function to toggle the profile dropdown menu
@@ -65,6 +62,7 @@ function ProfileDropdown({ isLoggedIn, user, setIsLoggedIn }) {
                             id='user-menu-button'
                             aria-expanded={isMenuOpen}
                             onClick={toggleMenu}
+                            onBlur={() => setIsMenuOpen(false)} // Close menu when focus is lost
                             data-dropdown-toggle='user-dropdown'
                             data-dropdown-placement='bottom'>
                             <span className='sr-only'>Open user menu</span>
