@@ -62,6 +62,7 @@ export default function UserList({ users }) {
 
     return (
         <>
+            {/* List of users */}
             <ul>
                 {users.map((user, index) => (
                     <li key={index} className='px-4 py-2 odd:bg-gray-200 flex flex-row justify-between'>

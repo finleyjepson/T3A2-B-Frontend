@@ -182,6 +182,7 @@ export default function UpdateEvent({ categories, user }) {
 
     return (
         <>
+            {/* Check if user is Admin or Organiser */}
             {(!user || (!user.isAdmin && !user.isOrganiser)) ? (
                 navigate("/unauth")
             ) : ( 
@@ -189,6 +190,7 @@ export default function UpdateEvent({ categories, user }) {
                 <div className='p-4 w-[500px] animate-in slide-in-from-top duration-1s'>
                     <div className='py-2 mx-4 rounded-t-lg bg-green-600 px-4 text-xl max-w-[500px] text-white  shadow-lg'>Edit Event</div>
                     <div className='mx-4 rounded-b-lg bg-green-50 max-w-[500px] border-2 border-x-gray-300 border-b-gray-300  shadow-lg'>
+                        {/* Edit event container */}
                         <form className='space-y-4 md:space-y-4' onSubmit={submitEvent}>
                             <div className='m-4'>
                                 <label className='block mb-2 text-sm font-medium text-gray-900'>Title</label>

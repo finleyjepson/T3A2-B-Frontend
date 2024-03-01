@@ -64,6 +64,7 @@ export default function UserListContainer() {
     }, [search, users])
 
     return (
+        // User list container
         <div className="flex justify-center animate-in slide-in-from-top duration-1s">
             <div>
                 <input type='text' placeholder='🔎 Search Users' onChange={changeHandler} value={search} className='w-72 px-4 py-2 mt-4 mx-4 bg-gray-200 rounded-lg'></input>

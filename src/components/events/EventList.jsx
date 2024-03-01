@@ -32,6 +32,7 @@ export default function EventList({ fullEvents, events, max, user, isLoggedIn })
     return (
         <>
             <ul>
+                {/* Event list */}
                 {events.slice(0, max).map((event, index) => (
                     <li key={index} className='odd:bg-white'>
                         
