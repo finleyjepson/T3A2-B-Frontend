@@ -16,7 +16,7 @@ function UpcomingEventsContainer({ events, user, isLoggedIn }) {
             </div> */}
 
             {/* <!-- Upcoming Events Container --> */}
-            <div class="max-w-[200rem] px-4 py-2 sm:px-4 lg:py-2 mx-auto animate-in slide-in-from-top ease-out duration-1.5s">
+            <div class="max-w-[85rem] px-14 py-2 sm:px-4 lg:px-4 lg:py-2 mx-auto animate-in slide-in-from-top ease-out duration-1.5s">
                 <div class="flex flex-col">
                     <div class="-m-1.5 overflow-x-auto">
                     <div class="p-1.5 min-w-full inline-block align-middle">
