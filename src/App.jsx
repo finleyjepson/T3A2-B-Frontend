@@ -14,6 +14,7 @@ import Home from "./components/Home.jsx"
 import ProfileDropdown from "./components/navigation/ProfileDropdown.jsx"
 import UserProfilePage from "./components/users/UserProfile.jsx"
 import UpdateEvent from "./components/events/UpdateEvent.jsx"
+import { refreshTokenIfNeeded } from "./components/auth/refreshToken.js"
 
 function App() {
     // Variable / states for isLoggedIn and username
@@ -21,6 +22,11 @@ function App() {
     const [user, setUser] = useState("") // State to hold user data
     const [events, setEvents] = useState([])
     const [categories, setCategories] = useState([])
+
+    // Check if the access token is expired
+    useEffect(() => {
+        refreshTokenIfNeeded()
+    }, [])
 
     // Check login status on component mount
     useEffect(() => {

@@ -1,9 +1,15 @@
 import { useEffect } from "react"
+import { refreshTokenIfNeeded } from "../auth/refreshToken.js"
 
 export default function DropdownList({ setCategories, categories, setSearchCat }) {
     // Get list of categories
     // Convert category names into name string
     // Add to dropdown menu
+
+    // Check if the access token is expired
+    useEffect(() => {
+        refreshTokenIfNeeded()
+    }, [])
 
     useEffect(() => {
         async function getCategories() {

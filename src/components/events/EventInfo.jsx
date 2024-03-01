@@ -2,7 +2,7 @@ import Maps from "./Maps"
 import { useParams, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import axios from "axios"
-// import { refreshTokenIfNeeded } from "../auth/refreshToken.js"
+import { refreshTokenIfNeeded } from "../auth/refreshToken.js"
 
 export default function EventInfo({ events, getEvents, user }) {
     const { id } = useParams()
@@ -12,6 +12,11 @@ export default function EventInfo({ events, getEvents, user }) {
     const accessToken = sessionStorage.getItem("accessToken")
 
     const navigate = useNavigate()
+
+    // Check if the access token is expired
+    useEffect(() => {
+        refreshTokenIfNeeded()
+    }, [])
 
     useEffect(() => {
         getEvents().then(() => setLoading(false))
@@ -33,8 +38,6 @@ export default function EventInfo({ events, getEvents, user }) {
         if (!accessToken) {
             throw new Error("Access token not found. Please login.")
         }
-
-        // await refreshTokenIfNeeded()
 
         await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/events/${eventId}/rsvp-add`, {
             method: "POST",

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from "axios"
 import getGeo from '../../utils/getGeo'
+import { refreshTokenIfNeeded } from "../auth/refreshToken.js"
 
 export default function UpdateEvent({ categories, user }) {
     const { id } = useParams()
@@ -13,6 +14,11 @@ export default function UpdateEvent({ categories, user }) {
 	const [updateEvent, setUpdateEvent] = useState([{}])
     
     const navigate = useNavigate()
+
+    // Check if the access token is expired
+    useEffect(() => {
+        refreshTokenIfNeeded()
+    }, [])
 
     const currentDate = new Date().toISOString().split('T')[0] // Get current date in YYYY-MM-DD format
     

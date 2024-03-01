@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import defaultProfilePicture from '../../assets/default-placeholder.png'
+import { refreshTokenIfNeeded } from '../auth/refreshToken.js'
 
 function ProfileDropdown({ isLoggedIn, user, setIsLoggedIn }) {
     // console.log("Navbar username:", user.username)
@@ -9,6 +10,11 @@ function ProfileDropdown({ isLoggedIn, user, setIsLoggedIn }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
 
     const profilePicture = user.pictureUrl ? user.pictureUrl : defaultProfilePicture
+
+    // Check if the access token is expired
+    useEffect(() => {
+        refreshTokenIfNeeded()
+    }, [])
 
     const navigate = useNavigate()
 
