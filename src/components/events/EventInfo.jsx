@@ -144,7 +144,7 @@ export default function EventInfo({ events, getEvents, user }) {
                                 <span>No profile picture</span>
                             )}
                         </div>
-                        {user.isAdmin || (user.isOrganiser && user._id === events[id].createdBy) && (
+                        {(user.isAdmin || (user.isOrganiser && user._id === events[id].createdBy)) && (
                             <form onSubmit={handleEventPictureChange}>
                                 <input type="file" accept="image/*" name='image' />
                                 <div>
