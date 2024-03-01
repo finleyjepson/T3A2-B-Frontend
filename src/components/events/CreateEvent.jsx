@@ -121,7 +121,7 @@ export default function CreateEvent({ getEvents, categories }) {
             let eventId = data._id
             console.log(event.target[2].value)
             handleEventPictureChange(event,eventId),
-            navigate('/events')
+            navigate("/events")
             getEvents()
             // Catch response:
         } catch (error) {
