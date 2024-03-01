@@ -9,7 +9,6 @@ export default function UserList({ users }) {
         try {
             // User token handling
             const accessToken = sessionStorage.getItem("accessToken") // Retrieve the session's access token
-            console.log("Access token:", accessToken)
             if (!accessToken) {
                 throw new Error("Access token not found. Please login.")
             }
@@ -25,7 +24,6 @@ export default function UserList({ users }) {
                 }),
                 })
                 .then((response) => response.json())
-                .then((data) => console.log(data))
             // Catch response:
         } catch (error) {
             console.error("Problem updating user", error.message)
@@ -38,18 +36,16 @@ export default function UserList({ users }) {
         try {
             // User token handling
             const accessToken = sessionStorage.getItem("accessToken") // Retrieve the session's access token
-            console.log("Access token:", accessToken)
             if (!accessToken) {
                 throw new Error("Access token not found. Please login.")
             }
 
-            const response = await fetch(import.meta.env.VITE_BACKEND_API_URL+`/users/${userId}`, {
+            await fetch(import.meta.env.VITE_BACKEND_API_URL+`/users/${userId}`, {
                 method: "DELETE",
                 headers: {
                     Authorization: `Bearer ${accessToken}`, // Add the token in the request
                 }
             })
-            console.log(response)
             navigate('/users')
             // Catch response:
         } catch (error) {

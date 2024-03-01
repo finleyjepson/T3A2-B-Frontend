@@ -84,12 +84,11 @@ export default function UpdateEvent({ categories, user }) {
         try {
             // User token handling
             const accessToken = sessionStorage.getItem("accessToken") // Retrieve the session's access token
-            console.log("Access token:", accessToken)
             if (!accessToken) {
                 throw new Error("Access token not found. Please login.")
             }
 
-            const response = await fetch(import.meta.env.VITE_BACKEND_API_URL+`/events/${id}`, {
+            await fetch(import.meta.env.VITE_BACKEND_API_URL+`/events/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -115,7 +114,6 @@ export default function UpdateEvent({ categories, user }) {
                     price: updateEvent.price,
                 }),
             })
-            console.log(response)
             navigate("/events")
             // Catch response:
         } catch (error) {
@@ -136,13 +134,12 @@ export default function UpdateEvent({ categories, user }) {
                 throw new Error("Access token not found. Please login.")
             }
 
-            const response = await fetch(import.meta.env.VITE_BACKEND_API_URL+`/events/${id}`, {
+            await fetch(import.meta.env.VITE_BACKEND_API_URL+`/events/${id}`, {
                 method: "DELETE",
                 headers: {
                     Authorization: `Bearer ${accessToken}`, // Add the token in the request
                 }
             })
-            console.log(response)
             navigate('/events')
             // Catch response:
         } catch (error) {
