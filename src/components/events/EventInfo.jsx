@@ -11,6 +11,8 @@ export default function EventInfo({ events, getEvents, user }) {
     const [eventPicture, setEventPicture] = useState(null)
     const accessToken = sessionStorage.getItem("accessToken")
 
+    console.log("EventInfo events:", id)
+
     const navigate = useNavigate()
 
     // Check if the access token is expired
@@ -68,6 +70,7 @@ export default function EventInfo({ events, getEvents, user }) {
             response.json()
             getEvents(eventId)
         })
+        .then(data => console.log(data))
         .catch(err => console.error(err))
     }
 
@@ -94,12 +97,13 @@ export default function EventInfo({ events, getEvents, user }) {
 
         // Send the image to the server
         try {
-            await axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/images/event/${eventId}`, formData, {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/images/event/${eventId}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
                 }
             })
+            console.log('Event picture uploaded:', response.data)
         } catch (error) {
             console.error('Error uploading event picture:', error)
         }
