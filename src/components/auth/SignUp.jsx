@@ -1,7 +1,10 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom" // Used for navigation after login without page reload
 
-export default function Signup({ setIsLoggedIn }) {
+export default function Signup() {
+    const [error, setError] = useState("")
+    const [typingTimeout, setTypingTimeout] = useState(null)
+
     const navigate = useNavigate()
 
     // Utilise useState hook to initialise state that will store the form data
@@ -14,16 +17,40 @@ export default function Signup({ setIsLoggedIn }) {
     // State variable for whether form is submitted (for password check)
     const [formSubmitted, setFormSubmitted] = useState(false)
 
+
     // Synchronise the form data state with user input changes
     function handleChange(e) {
-        const { name, value } = e.target
-        // Get the target field (name) and update the value in setFormData
+        const { name, value } = e.target;
+
+        // Update the form data state with the new input value
         setFormData((previousState) => ({
             ...previousState,
             [name]: value,
         }))
-    }
 
+        // Check if the input field is the password field
+        if (name === "password") {
+            // Clear the previous typing timeout if it exists
+            if (typingTimeout) {
+                clearTimeout(typingTimeout)
+            }
+
+            // Set a new typing timeout to delay the password validation
+            setTypingTimeout(setTimeout(() => {
+                // Regular expression to validate the password
+                const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+                // Check if the password matches the regex and is not empty
+                if (!passwordRegex.test(value) && value !== "") {
+                    // Set an error message if the password is invalid
+                    setError("Password must be at least 8 characters long, at least one uppercase letter & one lowercase letter, one number, and one special character.")
+                    return;
+                } else {
+                    // Clear the error message if the password is valid
+                    setError("")
+                }
+            }, 1000)); // 1000ms delay
+        }
+    }
     // Handle the form submission (Send POST request with form submission)
     async function handleSubmit(e) {
         e.preventDefault() // Prevent browser from reloading page
@@ -101,6 +128,7 @@ export default function Signup({ setIsLoggedIn }) {
                                 className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
                                 required=''
                             />
+                            {error && <p className='text-red-500 text-xs'>{error}</p>}
                         </div>
                         <div>
                             <label htmlFor='confirm-password' className='block mb-2 text-sm font-medium text-gray-900'>

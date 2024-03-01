@@ -14,6 +14,8 @@ export default function UpdateEvent({ categories, user }) {
     
     const navigate = useNavigate()
 
+    const currentDate = new Date().toISOString().split('T')[0] // Get current date in YYYY-MM-DD format
+    
 	async function getOneEvent() {
 		await fetch(`http://localhost:4000/events/${id}`)
 		.then(response => response.json())
@@ -219,6 +221,7 @@ export default function UpdateEvent({ categories, user }) {
                                     className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
                                     // placeholder={updateEvent.date.toISOString().substring(0,10)}
                                     required=''
+                                    min={currentDate}
                                 />
                             </div>
                             <div className='m-4'>
