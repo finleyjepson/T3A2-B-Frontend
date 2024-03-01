@@ -88,6 +88,7 @@ export default function EventInfo({ events, getEvents, user }) {
     // Function to upload profile picture
     const uploadEventPicture = async (event, eventId) => {
         const file = event.target.elements.image.files[0]
+        
         const formData = new FormData()
         formData.append('image', file)
 
@@ -144,14 +145,16 @@ export default function EventInfo({ events, getEvents, user }) {
                                 <span>No profile picture</span>
                             )}
                         </div>
+                        <div>
                         {(user.isAdmin || (user.isOrganiser && user._id === events[id].createdBy)) && (
-                            <form onSubmit={handleEventPictureChange}>
-                                <input type="file" accept="image/*" name='image' />
+                            <form onSubmit={handleEventPictureChange} className="w-[200px]">
+                                <input type="file" accept="image/*" name='image'/>
                                 <div>
                                     <button type='submit'>Upload</button>
                                 </div>
                             </form>
                         )}
+                        </div>
                     </div>
                     <div className="animate-in slide-in-from-left fade-in-25 ease-out duration-1000 my-4">
                         <Maps coords={ events[id].coords }/>
