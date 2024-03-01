@@ -1,5 +1,3 @@
-import * as jose from "jose"
-
 async function refreshTokenIfNeeded() {
     // Check if the access token is expired
     const accessToken = sessionStorage.getItem("accessToken")
@@ -30,14 +28,28 @@ async function refreshTokenIfNeeded() {
 
         // Store the new access token in the session storage
         sessionStorage.setItem("accessToken", newAccessToken)
+    } else {
+        // If the access token is not expired, do nothing
+        return
     }
 }
 
 async function isTokenExpired(token) {
-    const decodedToken = await jose.jwtDecrypt(token, { complete: true })
-    console.log("decodedToken:", decodedToken)
-    const expirationTime = decodedToken.exp * 1000
-    return Date.now() >= expirationTime
+    await fetch(import.meta.env.VITE_BACKEND_API_URL + "/auth/decode", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        },
+    })
+    .then(response => {
+        if (response.status === 200) {
+            console.log("Token is not expired")
+            return true
+        } else {
+            return false
+        }
+    })
 }
 
 export { refreshTokenIfNeeded }
