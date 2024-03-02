@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import { refreshTokenIfNeeded } from '../auth/refreshToken.js'
 
-export default function UserList({ users }) {
+export default function UserList({ users, getUsers }) {
  
     const navigate = useNavigate()
     
@@ -13,7 +13,6 @@ export default function UserList({ users }) {
 
     // Toggle organiser (+Organiser or -Organiser)
     async function toggleOrganiser(userId, isOrganiser) {
-
         try {
             // User token handling
             const accessToken = sessionStorage.getItem("accessToken") // Retrieve the session's access token
@@ -32,6 +31,7 @@ export default function UserList({ users }) {
                 }),
                 })
                 .then((response) => response.json())
+                .then(() => getUsers())
             // Catch response:
         } catch (error) {
             console.error("Problem updating user", error.message)
