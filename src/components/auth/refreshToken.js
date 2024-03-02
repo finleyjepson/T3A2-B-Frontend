@@ -1,52 +1,23 @@
-async function refreshTokenIfNeeded() {
-    // Check if the access token is expired
-    const accessToken = sessionStorage.getItem("accessToken")
-    if (isTokenExpired(accessToken) === true) {
-        // If the access token is expired, get the refresh token
-        const refreshToken = sessionStorage.getItem("refreshToken")
-        if (!refreshToken) {
-            throw new Error("Refresh token not found. Please login again.")
-        }
-
-        // Send a POST request to /auth/token with the refresh token in the body
-        const response = await fetch(import.meta.env.VITE_BACKEND_API_URL + "/auth/token", {
+async function isTokenExpired(token) {
+    try {
+        const response = await fetch(import.meta.env.VITE_BACKEND_API_URL + "/auth/decode", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
             },
-            body: JSON.stringify({ refreshToken }),
         });
 
-        // If the response is not ok, throw an error
-        if (!response.ok) {
-            throw new Error("Failed to refresh access token.")
+        if (response.status === 200) {
+            return false
+        } else if (response.status === 201) {
+            return true
         } else {
-            // If the response is ok, get the new access token from the response
-            const data = await response.json()
-            const newAccessToken = data.accessToken            
-            // Store the new access token in the session storage
-            sessionStorage.setItem("accessToken", newAccessToken)
+            return false
         }
-    } else {
-        // If the access token is not expired, do nothing
+    } catch (error) {
+        return false
     }
 }
 
-async function isTokenExpired(token) {
-    await fetch(import.meta.env.VITE_BACKEND_API_URL + "/auth/decode", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
-        },
-    })
-    .then(response => {
-        if (response.status === 200) {
-            return false
-        } else {
-            return true
-        }
-    })
-}
-
-export { refreshTokenIfNeeded }
+export { isTokenExpired }

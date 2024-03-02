@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from 'react-router-dom'
-import Axios from "axios"
+import axios from "axios"
 import getGeo from '../../utils/getGeo.js'
-import { refreshTokenIfNeeded } from "../auth/refreshToken.js"
+import axiosInstance from "../../utils/axiosInstance.js"
 
 export default function CreateEvent({ getEvents, categories }) {
     const [coords, setCoords] = useState({lat: 0, lng: 0})
@@ -10,11 +10,6 @@ export default function CreateEvent({ getEvents, categories }) {
     const [searchResults, setSearchResults] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [skipSearch, setSkipSearch] = useState(false)
-
-    // Check if the access token is expired
-    useEffect(() => {
-        refreshTokenIfNeeded()
-    }, [])
 
     const user = JSON.parse(sessionStorage.getItem("user"))
 
@@ -48,7 +43,7 @@ export default function CreateEvent({ getEvents, categories }) {
             const delayTimer = setTimeout(() => {
                 if (searchTerm) { // Only search if there's input
                 setIsLoading(true)
-                Axios.get(`https://api.jikan.moe/v4/anime?q=${searchTerm}`)
+                axios.get(`https://api.jikan.moe/v4/anime?q=${searchTerm}`)
                     .then(res => {
                     setSearchResults(res.data.data.slice(0,5)) // Limit to top 5 results
                     setIsLoading(false)
@@ -98,34 +93,26 @@ export default function CreateEvent({ getEvents, categories }) {
             if (!accessToken) {
                 throw new Error("Access token not found. Please login.")
             }
-
-            const response = await fetch(import.meta.env.VITE_BACKEND_API_URL+"/events", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${accessToken}`, // Add the token in the request
+            
+            const response = await axiosInstance.post("/events", {
+                title: eventInfo.title,
+                description: eventInfo.description,
+                category: eventInfo.category,
+                date: eventInfo.date,
+                venue: eventInfo.venue,
+                coords: coords ? {
+                    lat: coords.lat,
+                    lng: coords.lng,
+                } : {
+                    lat: 0,
+                    lng: 0
                 },
-                body: JSON.stringify({
-                    title: eventInfo.title,
-                    description: eventInfo.description,
-                    category: eventInfo.category,
-                    date: eventInfo.date,
-                    venue: eventInfo.venue,
-                    coords: coords ? {
-                        lat: coords.lat,
-                        lng: coords.lng,
-                    } : {
-                        lat: 0,
-                        lng: 0
-                    },
-                    anime: eventInfo.anime,
-                    // createdBy:
-                    createdBy: user._id,
-                    organiser: eventInfo.organiser,
-                    price: eventInfo.price,
-                }),
+                anime: eventInfo.anime,
+                createdBy: user._id,
+                organiser: eventInfo.organiser,
+                price: eventInfo.price,
             })
-            let data = await response.json()
+            let data = await response.data
             let eventId = data._id
             console.log(event.target[2].value)
             handleEventPictureChange(event,eventId),
@@ -152,10 +139,9 @@ export default function CreateEvent({ getEvents, categories }) {
 
         // Send the image to the server to the corresponding event by id
         try {
-            const response = await Axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/images/event/${eventId}`, formData, {
+            const response = await axiosInstance.post(`/images/event/${eventId}`, formData , {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
                 }
             })
             console.log('Event picture uploaded:', response.data)

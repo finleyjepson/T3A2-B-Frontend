@@ -1,15 +1,9 @@
 import { useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
-import { refreshTokenIfNeeded } from '../auth/refreshToken.js'
+import axiosInstance from '../../utils/axiosInstance'
 
 export default function UserList({ users, getUsers }) {
  
     const navigate = useNavigate()
-    
-    // Check if the access token is expired
-    useEffect(() => {
-        refreshTokenIfNeeded()
-    }, [])
 
     // Toggle organiser (+Organiser or -Organiser)
     async function toggleOrganiser(userId, isOrganiser) {
@@ -19,19 +13,11 @@ export default function UserList({ users, getUsers }) {
             if (!accessToken) {
                 throw new Error("Access token not found. Please login.")
             }
-
-            await fetch(import.meta.env.VITE_BACKEND_API_URL+`/users/toggle/${userId}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${accessToken}`
-                },
-                body: JSON.stringify({
-                    isOrganiser: isOrganiser,
-                }),
-                })
-                .then((response) => response.json())
-                .then(() => getUsers())
+            await axiosInstance.put(`/users/toggle/${userId}`, {
+                isOrganiser: isOrganiser
+            })
+            .then((response) => response.data)
+            .then(() => getUsers())
             // Catch response:
         } catch (error) {
             console.error("Problem updating user", error.message)
@@ -46,13 +32,7 @@ export default function UserList({ users, getUsers }) {
             if (!accessToken) {
                 throw new Error("Access token not found. Please login.")
             }
-
-            await fetch(import.meta.env.VITE_BACKEND_API_URL+`/users/${userId}`, {
-                method: "DELETE",
-                headers: {
-                    Authorization: `Bearer ${accessToken}`, // Add the token in the request
-                }
-            })
+            await axiosInstance.delete(`/users/${userId}`)
             navigate('/users')
             // Catch response:
         } catch (error) {

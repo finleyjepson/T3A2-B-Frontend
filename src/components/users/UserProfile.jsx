@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import defaultProfilePicture from '../../assets/default-placeholder.png'
-import { refreshTokenIfNeeded } from '../auth/refreshToken.js'
+import axiosInstance from '../../utils/axiosInstance'
 
 const UserProfilePage = ({ user, setUser }) => {
     const [profilePicture, setProfilePicture] = useState(null) // State for profile picture
@@ -12,23 +11,20 @@ const UserProfilePage = ({ user, setUser }) => {
     const [showCharacterMaxLimitMessage, setShowCharacterMaxLimitMessage] = useState(false) // State for showing character max limit message
     const [upComingEvents, setUpComingEvents] = useState([]) // State for upcoming events
 
-    // Check if the access token is expired
-    useEffect(() => {
-        refreshTokenIfNeeded()
-    }, [])
-
     // Function to upload profile picture
     const uploadProfilePicture = async (event) => {
-        const file = event.target.elements.image.files[0]
+
+        let file = event.target.elements.image.files[0]
+
         const formData = new FormData()
+
         formData.append('image', file)
 
         // Send the image to the server
         try {
-            await axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/images/pfp`, formData, {
+            await axiosInstance.post(`/images/pfp`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
                 }
             })
         } catch (error) {
@@ -40,11 +36,7 @@ const UserProfilePage = ({ user, setUser }) => {
     const handleProfilePictureChange = async (event) => {
         event.preventDefault()
         await uploadProfilePicture(event)
-        const updateUser = await axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/users/${user._id}`, {
-            headers: {
-                Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
-            }
-        })
+        const updateUser = await axiosInstance.get(`/users/${user._id}`)
         setUser(updateUser.data.user)
     }
 
@@ -64,11 +56,7 @@ const UserProfilePage = ({ user, setUser }) => {
             // Fetch user's data including favourite characters/anime when component mounts
             const fetchData = async () => {
                 try {
-                    const response = await axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/users/${user._id}`, {
-                        headers: {
-                            Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
-                        }
-                    })
+                    const response = await axiosInstance.get(`/users/${user._id}`)
 
                     // Extract user data from the response
                     const userData = response.data.user
@@ -120,17 +108,10 @@ const UserProfilePage = ({ user, setUser }) => {
 
     // Function to update user's favourite animes on the backend
     const updateUserFavouriteAnimes = async (animes) => {
-        const accessToken = sessionStorage.getItem('accessToken')
     
         try {
-            const response = await axios.put(
-                `${import.meta.env.VITE_BACKEND_API_URL}/users/${user._id}/animes`,
+            const response = await axiosInstance.put(`/users/${user._id}/animes`,
                 { animes }, // Send updated favourite animes to the backend
-                {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                    },
-                }
             )
     
             if (response && response.data && response.data.user) {
@@ -171,17 +152,10 @@ const UserProfilePage = ({ user, setUser }) => {
     
     // Function to update user's favourite characters on the backend
     const updateUserFavouriteCharacters = async (characters) => {
-        const accessToken = sessionStorage.getItem('accessToken')
-    
         try {
-            const response = await axios.put(
-                `${import.meta.env.VITE_BACKEND_API_URL}/users/${user._id}/characters`,
+            const response = await axiosInstance.put(
+                `/users/${user._id}/characters`,
                 { characters }, // Send updated favourite characters to the backend
-                {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                    },
-                }
             )
     
             if (response && response.data && response.data.user) {
@@ -231,7 +205,7 @@ const UserProfilePage = ({ user, setUser }) => {
         const events = []
         if (eventList && typeof eventList[Symbol.iterator] === 'function') {
             for (let eventItem of eventList) {
-                const eventFetched = await axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/events/${eventItem}`)
+                const eventFetched = await axiosInstance.get(`/events/${eventItem}`)
                 events.push(eventFetched.data)
             }
         }

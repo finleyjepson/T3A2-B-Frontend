@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import UserList from "./UserList"
 import { useNavigate } from "react-router-dom"
-import { refreshTokenIfNeeded } from "../auth/refreshToken.js"
+import axiosInstance from "../../utils/axiosInstance"
 
 export default function UserListContainer() {
     const navigate = useNavigate()
@@ -11,34 +11,26 @@ export default function UserListContainer() {
     const [search, setSearch] = useState("")
     const [filteredUsers, setFilteredUsers] = useState(users)
 
-    // Check if the access token is expired
-    useEffect(() => {
-        refreshTokenIfNeeded()
-    }, [])
-
     async function getUsers() {
         try {
-            let response = await fetch(
-                import.meta.env.VITE_BACKEND_API_URL+"/users/all", {
-                    headers: {
-                        Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`
-                    }
-                }
-            )
+            let response = await axiosInstance.get("/users/all")
             // Check response status, if 401 (unauthorised) redirect user to unauthorised page
             if (response.status === 401) {
                 navigate("/unauth")
             }
-            let data = await response.json()
+            let data = response.data
             setUsers(data.user)
+            filterList(data.user)
         } catch (err) {
-            console.log("Failed to fetch list")
+            console.log(err)
         }
     }
 
-    // Use effect to fetch user list on mount
     useEffect(() => {
-        getUsers()
+        const fetchUsers = async () => {
+            await getUsers()
+        }
+        fetchUsers()
     }, [])
 
     // onChange handler function listening to input box
@@ -56,12 +48,6 @@ export default function UserListContainer() {
         // Set filteredUsers to filtered users; which will now be passed to the UserList component to render
         setFilteredUsers(filtered)
     }
-
-    // Use effect to re-filter users
-    useEffect(() => {
-        // Run filterList function when 'search' or 'users' state is updated
-        filterList(users)
-    }, [search, users])
 
     return (
         // User list container

@@ -1,18 +1,12 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import axios from 'axios'
 import defaultProfilePicture from '../../assets/default-placeholder.png'
-import { refreshTokenIfNeeded } from '../auth/refreshToken.js'
+import axiosInstance from '../../utils/axiosInstance.js'
 
 function ProfileDropdown({ isLoggedIn, user, setIsLoggedIn }) {
     // State to track visibility of profile dropdown menu
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const profilePicture = user.pictureUrl ? user.pictureUrl : defaultProfilePicture
-
-    // Check if the access token is expired
-    useEffect(() => {
-        refreshTokenIfNeeded()
-    }, [])
 
     const navigate = useNavigate()
 
@@ -22,22 +16,19 @@ function ProfileDropdown({ isLoggedIn, user, setIsLoggedIn }) {
     }
 
     // Defining handleLogout function
-    const handleLogout = () => {
+    const handleLogout = async () => {
         const refreshToken = sessionStorage.getItem('refreshToken')
-        // Remove tokens from session storage
-        axios.delete(import.meta.env.VITE_BACKEND_API_URL + '/auth/logout', {
-            // token: sessionStorage.getItem('accessToken')
+        axiosInstance.delete('/auth/logout', {
             data: { token: refreshToken }
         })
-            .then(() => {
-                // Clear session storage
-                sessionStorage.clear()
-                setIsLoggedIn(false)
-            })
-            .catch(error => {
-                console.error('Logout failed:', error)
-            })
-
+        .then(() => {
+            // Clear session storage
+            sessionStorage.clear()
+            setIsLoggedIn(false)
+        })
+        .catch(error => {
+            console.error('Logout failed:', error)
+        })
         navigate('/')
     }
 

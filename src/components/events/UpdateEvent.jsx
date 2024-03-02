@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from "axios"
 import getGeo from '../../utils/getGeo'
-import { refreshTokenIfNeeded } from "../auth/refreshToken.js"
+import axiosInstance from "../../utils/axiosInstance"
 
 export default function UpdateEvent({ categories, user }) {
     const { id } = useParams()
@@ -15,17 +15,12 @@ export default function UpdateEvent({ categories, user }) {
     
     const navigate = useNavigate()
 
-    // Check if the access token is expired
-    useEffect(() => {
-        refreshTokenIfNeeded()
-    }, [])
-
     const currentDate = new Date().toISOString().split('T')[0] // Get current date in YYYY-MM-DD format
     
 	async function getOneEvent() {
-		await fetch(`http://localhost:4000/events/${id}`)
-		.then(response => response.json())
-		.then(data => setUpdateEvent(data))
+        await axios.get(import.meta.env.VITE_BACKEND_API_URL+`/events/${id}`)
+        .then(response => setUpdateEvent(response.data))
+        .catch(err => console.error(err))
 	}
 
 	useEffect(() => {
@@ -91,32 +86,22 @@ export default function UpdateEvent({ categories, user }) {
             if (!accessToken) {
                 throw new Error("Access token not found. Please login.")
             }
-
-            await fetch(import.meta.env.VITE_BACKEND_API_URL+`/events/${id}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${accessToken}`, // Add the token in the request
+            await axiosInstance.put(`/events/${id}`, {
+                title: updateEvent.title,
+                description: updateEvent.description,
+                category: updateEvent.category,
+                date: updateEvent.date,
+                venue: updateEvent.venue,
+                coords: coords ? {
+                    lat: coords.lat,
+                    lng: coords.lng,
+                } : {
+                    lat: 0,
+                    lng: 0
                 },
-                body: JSON.stringify({
-                    title: updateEvent.title,
-                    description: updateEvent.description,
-                    category: updateEvent.category,
-                    date: updateEvent.date,
-                    venue: updateEvent.venue,
-                    coords: coords ? {
-                        lat: coords.lat,
-                        lng: coords.lng,
-                    } : {
-                        lat: 0,
-                        lng: 0
-                    },
-                    anime: updateEvent.anime,
-                    // createdBy:
-                    createdBy: user._id,
-                    organiser: updateEvent.organiser,
-                    price: updateEvent.price,
-                }),
+                anime: updateEvent.anime,
+                organiser: updateEvent.organiser,
+                price: updateEvent.price,
             })
             console.log(id)
             handleEventPictureChange(event, id)
@@ -140,13 +125,7 @@ export default function UpdateEvent({ categories, user }) {
             if (!accessToken) {
                 throw new Error("Access token not found. Please login.")
             }
-
-            await fetch(import.meta.env.VITE_BACKEND_API_URL+`/events/${id}`, {
-                method: "DELETE",
-                headers: {
-                    Authorization: `Bearer ${accessToken}`, // Add the token in the request
-                }
-            })
+            await axiosInstance.delete(`/events/${id}`)
             navigate('/events')
             // Catch response:
         } catch (error) {
@@ -168,10 +147,15 @@ export default function UpdateEvent({ categories, user }) {
 
         // Send the image to the server
         try {
-            const response = await axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/images/event/${eventId}`, formData, {
+            // const response = await axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/images/event/${eventId}`, formData, {
+            //     headers: {
+            //         'Content-Type': 'multipart/form-data',
+            //         Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
+            //     }
+            // })
+            const response = await axiosInstance.post(`/images/event/${eventId}`, formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data',
-                    Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
+                    'Content-Type': 'multipart/form-data'
                 }
             })
             console.log('Event picture uploaded:', response.data)
