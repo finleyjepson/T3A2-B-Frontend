@@ -14,7 +14,7 @@ import Home from "./components/Home.jsx"
 import ProfileDropdown from "./components/navigation/ProfileDropdown.jsx"
 import UserProfilePage from "./components/users/UserProfile.jsx"
 import UpdateEvent from "./components/events/UpdateEvent.jsx"
-import { refreshTokenIfNeeded } from "./components/auth/refreshToken.js"
+import axiosInstance from "./utils/axiosInstance.js"
 
 function App() {
     // Variable / states for isLoggedIn and username
@@ -22,11 +22,6 @@ function App() {
     const [user, setUser] = useState("") // State to hold user data
     const [events, setEvents] = useState([])
     const [categories, setCategories] = useState([])
-
-    // Check if the access token is expired
-    useEffect(() => {
-        refreshTokenIfNeeded()
-    }, [])
 
     // Check login status on component mount
     useEffect(() => {
@@ -44,8 +39,8 @@ function App() {
     }, [isLoggedIn])
 
     const getEvents = useCallback(async () =>{
-        let response = await fetch(import.meta.env.VITE_BACKEND_API_URL+"/events/all")
-        response = await response.json()
+        let response = await axiosInstance.get("/events/all")
+        response = response.data
         sessionStorage.setItem('events', JSON.stringify(response))
         const currentEvents = response.filter(event => new Date(event.date) - new Date > -86400000)
         const sortedCurrentEvents = currentEvents.sort((a, b) => new Date(a.date) - new Date(b.date))
@@ -53,8 +48,8 @@ function App() {
     }, [setEvents])
 
     async function getCategories() {
-        let response = await fetch(import.meta.env.VITE_BACKEND_API_URL+"/categories")
-        response = await response.json()
+        let response = await axiosInstance.get("/categories")
+        response = response.data
         setCategories(response)
     }
     

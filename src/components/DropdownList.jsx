@@ -1,19 +1,14 @@
+import { Axios as axios } from "axios"
 import { useEffect } from "react"
-import { refreshTokenIfNeeded } from "../auth/refreshToken.js"
 
 export default function DropdownList({ setCategories, categories, setSearchCat }) {
     // Get list of categories
     // Convert category names into name string
     // Add to dropdown menu
 
-    // Check if the access token is expired
-    useEffect(() => {
-        refreshTokenIfNeeded()
-    }, [])
-
     useEffect(() => {
         async function getCategories() {
-            let response = await fetch(import.meta.env.REACT_APP_API_URL + "/categories")
+            let response = await axios.get("/categories")
             let data = await response.json()
             setCategories(data)
         }

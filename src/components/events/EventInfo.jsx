@@ -1,8 +1,8 @@
 import Maps from "./Maps"
 import { useParams, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { refreshTokenIfNeeded } from "../auth/refreshToken.js"
 import defaultProfilePicture from '../../assets/default-placeholder.png'
+import axiosInstance from "../../utils/axiosInstance"
 
 export default function EventInfo({ events, getEvents, user }) {
     const { id } = useParams()
@@ -14,11 +14,6 @@ export default function EventInfo({ events, getEvents, user }) {
     console.log("EventInfo events:", id)
 
     const navigate = useNavigate()
-
-    // Check if the access token is expired
-    useEffect(() => {
-        refreshTokenIfNeeded()
-    }, [])
 
     // Set loading state to false once events fetched
     useEffect(() => {
@@ -44,14 +39,7 @@ export default function EventInfo({ events, getEvents, user }) {
         if (!accessToken) {
             throw new Error("Access token not found. Please login.")
         }
-
-        await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/events/${eventId}/rsvp-add`, {
-            method: "POST",
-            headers: {
-                contentType: "application/json",
-                Authorization: `Bearer ${accessToken}`
-            }
-        })
+        await axiosInstance.post(`/events/${eventId}/rsvp-add`)
         .then(response => {
             response.json()
             getEvents(eventId)
@@ -64,30 +52,18 @@ export default function EventInfo({ events, getEvents, user }) {
         if (!accessToken) {
             throw new Error("Access token not found. Please login.")
         }
-        await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/events/${eventId}/rsvp-remove`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${accessToken}`, // Add the token in the request
-            },
-        })
+        await axiosInstance.post(`/events/${eventId}/rsvp-remove`)
         .then(response => {
-            response.json()
+            response.data
             getEvents(eventId)
         })
-        .then(data => console.log(data))
         .catch(err => console.error(err))
     }
 
     // Get RSVP count
     async function getRSVP(eventId) {
-        await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/events/${eventId}/rsvp-count`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-        .then(response => response.json())
+        await axiosInstance.get(`/events/${eventId}/rsvp-count`)
+        .then(response => response.data)
         .then(data => setRsvpCount(data.count ?? 0))
         .catch(err => console.error(err))
     }
