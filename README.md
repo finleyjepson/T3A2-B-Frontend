@@ -190,7 +190,7 @@ For Part A of the assessment, 2024-02-12 marked the first day of planning and de
 - 2024-02-17 (Evening)
 ![Trello Board - 2024-02-17 - Evening](./docs/Trello/trello-17-feb-evening.png)
 
-For Part B of the assessment, 2024-02-20 marked the first day of planning and delegating tasks. Similar to Part A, screenshots were taken daily, besides 2024-02-25 where no significant changes were made, and on 2024-02-26 when two screenshots were taken due to significant progress from morning to afternoon.  
+For Part B of the assessment, 2024-02-20 marked the first day of planning and delegating tasks. Similar to Part A, screenshots were taken daily, besides 2024-02-25 where no significant changes were made, and on 2024-02-26 when two screenshots were taken due to significant progress from morning to afternoon. Tasks and cards were created largely created based on the user stories created in Part A and the components. We categorised pieces of work into To Do, Doing, In Review, Done and Bug Fixes. Our tickets were further categorised by coloured labels as front end (orange), back end (green), database (pink), API (red), documentation (blue) and bugs (yellow).
 
 - 2024-02-20
 ![Trello Board - 2024-02-20](./docs/Trello/trello-20-feb.png)
@@ -224,6 +224,9 @@ For Part B of the assessment, 2024-02-20 marked the first day of planning and de
 
 - 2024-03-01
 ![Trello Board - 2024-03-01](./docs/Trello/trello-01-mar.png)
+
+- 2024-03-02
+![Trello Board - 2024-03-01](./docs/Trello/trello-02-mar.png)
 
 ## User Testing
 
