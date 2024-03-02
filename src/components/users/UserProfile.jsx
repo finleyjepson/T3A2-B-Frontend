@@ -261,7 +261,7 @@ const UserProfilePage = ({ user, setUser }) => {
                         )}
         
                         {/* Profile Picture Box */}
-                        <div className="bg-indigo-100 rounded-lg overflow-hidden col-span-2 animate-in slide-in-from-left fade-in duration-1s">
+                        <div className="bg-indigo-100 rounded-lg overflow-hidden col-span-10 md:col-span-2 sm:col-span-10 animate-in slide-in-from-left fade-in duration-1s">
                             <form onSubmit={handleProfilePictureChange}>
                             <div className="p-6">
                                 <h2 className="text-lg font-semibold mb-4">Profile Picture</h2>
@@ -284,7 +284,7 @@ const UserProfilePage = ({ user, setUser }) => {
                         </div>
         
                         {/* My Upcoming Events Box */}
-                        <div className="bg-indigo-900 rounded-lg overflow-hidden col-span-8 animate-in slide-in-from-right fade-in duration-1s">
+                        <div className="bg-indigo-900 rounded-lg overflow-hidden col-span-10 md:col-span-8 sm:col-span-10 animate-in slide-in-from-right fade-in duration-1s">
                             <div className="p-6">
                                 <h2 className="text-lg text-white font-semibold mb-4">My Upcoming Events</h2>
                                 <div className="grid grid-cols-2 gap-4 text-lg text-white">
@@ -294,7 +294,7 @@ const UserProfilePage = ({ user, setUser }) => {
                         </div>
         
                         {/* My Favourite Anime Box */}
-                        <div className="bg-indigo-900 rounded-lg overflow-hidden col-span-4 animate-in slide-in-from-left fade-in duration-1s">
+                        <div className="bg-indigo-900 rounded-lg overflow-hidden col-span-10 md:col-span-4 sm:col-span-10 animate-in slide-in-from-left fade-in duration-1s">
                             <div className="p-6">
                                 <h2 className="text-lg text-white font-semibold mb-4">Top 5 Anime</h2>
                                 <form className='flex' onSubmit={handleAddFavouriteAnime}>
@@ -319,7 +319,7 @@ const UserProfilePage = ({ user, setUser }) => {
                         </div>
         
                         {/* My Favourite Characters Box */}
-                        <div className="bg-indigo-900 rounded-lg overflow-hidden col-span-6 animate-in slide-in-from-right fade-in duration-1s">
+                        <div className="bg-indigo-900 rounded-lg overflow-hidden col-span-10 md:col-span-6 sm:col-span-10 animate-in slide-in-from-right fade-in duration-1s">
                             <div className="p-6">
                                 <h2 className="text-lg text-white font-semibold mb-4">Top 5 Favourite Characters</h2>
                                 <form className='flex' onSubmit={handleAddFavouriteCharacter}>
