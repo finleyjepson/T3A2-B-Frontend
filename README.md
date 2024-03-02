@@ -1,7 +1,7 @@
 # T3A2-A + T3A2-B - Anime Event and Screening Scheduler
 Created by Finley, Thomas and Jon
 
-- **Deployed app:** https://t3-a2-b-frontend-dl3h.vercel.app/
+- **Deployed app:** https://animescreen.vercel.app/
 - **Deployed backend:** https://t3a2-b-backend.onrender.com/
 - **GitHub repositories:**
   - [GitHub - T3A2-A](https://github.com/finleyjepson/T3A2-A)
@@ -230,6 +230,9 @@ For Part B of the assessment, 2024-02-20 marked the first day of planning and de
 
 - 2024-03-02
 ![Trello Board - 2024-03-01](./docs/Trello/trello-02-mar.png)
+
+- 2024-03-03
+![Trello Board - 2024-03-01](./docs/Trello/trello-03-mar.png)
 
 ## User Testing
 
