@@ -1,8 +1,8 @@
 import Maps from "./Maps"
 import { useParams, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
-import axios from "axios"
 import { refreshTokenIfNeeded } from "../auth/refreshToken.js"
+import defaultProfilePicture from '../../assets/default-placeholder.png'
 
 export default function EventInfo({ events, getEvents, user }) {
     const { id } = useParams()
@@ -127,7 +127,7 @@ export default function EventInfo({ events, getEvents, user }) {
                                 <img src={eventPicture} alt="Profile Picture" className="h-full object-cover" />
                                 // If null, show 'no profile picture'
                             ) : (
-                                <span>No profile picture</span>
+                                <img src={defaultProfilePicture} alt="Profile Picture" className="h-full object-cover" />
                             )}
                         </div>
                     </div>
