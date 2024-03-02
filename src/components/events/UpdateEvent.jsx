@@ -318,8 +318,6 @@ export default function UpdateEvent({ categories, user }) {
                                     </button>
                                 </div>
                             </div>
-    
- 
                         </form>
                     </div>
                 </div>

@@ -45,7 +45,7 @@ export default function UpcomingAnimeContainer({ events }) {
                     {/* <!-- End Header --> */}
 
                     {/* <!-- Body --> */}
-                    <div class="w-full min-h-[300px] flex flex-col mx-auto px-6 py-1">
+                    <div class="max-w-[300px] min-h-[300px] flex flex-col mx-auto px-6 py-1">
                         <h2 class="mt-5 font-semibold text-gray-800">
                         {
                             // Limit showing only the top items

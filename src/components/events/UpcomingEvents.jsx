@@ -14,7 +14,7 @@ export default function UpcomingEvents({ events, max }) {
                 {events.slice(0, max).map((event, index) => (
                     <li key={index} className='odd:bg-white'>
                         <Link to={`/events/${index}`}>
-                            <div className='px-4 py-1 transition-all delay-150 hover:-translate-y-1 hover:scale-105 hover:rounded-lg hover:bg-blue-100 hover:shadow-lg'>
+                            <div className='max-w-[466px] px-4 py-1 transition-all delay-150 hover:-translate-y-1 hover:scale-105 hover:rounded-lg hover:bg-blue-100 hover:shadow-lg'>
                                 <div className="flex justify-between">
                                     <p className="text-sm">{event.anime}</p>
                                     <p className="text-sm">{dateMod(event.date)}</p>
