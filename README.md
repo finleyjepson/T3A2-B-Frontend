@@ -1,11 +1,14 @@
 # T3A2-A + T3A2-B - Anime Event and Screening Scheduler
 Created by Finley, Thomas and Jon
 
-Deployed website: https://t3-a2-b-frontend-dl3h.vercel.app/
+- **Deployed app:** https://t3-a2-b-frontend-dl3h.vercel.app/
+- **Deployed backend:** https://t3a2-b-backend.onrender.com/
+- **GitHub repositories:**
+  - [GitHub - T3A2-A](https://github.com/finleyjepson/T3A2-A)
+  - [GitHub - T3A2-B - Backend](https://github.com/finleyjepson/T3A2-B-Backend)
+  - [GitHub - T3A2-B - Frontend](https://github.com/finleyjepson/T3A2-B-Frontend)
 
 ## Description
-
-[Github Repository](https://github.com/finleyjepson/T3A2-A)
 
 ### Purpose
 
