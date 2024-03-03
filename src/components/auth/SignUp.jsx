@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom" // Used for navigation after logi
 export default function Signup() {
     const [error, setError] = useState("")
     const [typingTimeout, setTypingTimeout] = useState(null)
+    const [successMessage, setSuccessMessage] = useState("")
 
     const navigate = useNavigate()
 
@@ -77,12 +78,15 @@ export default function Signup() {
             if (!response.ok) {
                 throw new Error("Signup / Login failed after registration")
             }
-            // Update isLoggedIn and username state after successful signup
            
             console.log("User successfully registered")
+            // Show success message
+            setSuccessMessage("User successfully registered. Please login on home screen.");
+            // Redirect user back to home after 3 seconds
+            setTimeout(() => {
+                navigate("/"); // Navigate back to home page
+            }, 3000); // Wait 3 seconds
             
-            // Redirect user back to home after successful sign up:
-            navigate("/")
 
             // Catch response:
         } catch (error) {
@@ -161,6 +165,9 @@ export default function Signup() {
                             </a>
                         </p>
                     </form>
+                    {successMessage && (
+                        <p className='text-green-500'>{successMessage}</p>
+                    )}
                 </div>
             </div>
         </div>
