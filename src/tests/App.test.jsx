@@ -73,6 +73,15 @@ describe('Login Component', () => {
         expect(loginButton).toBeInTheDocument() // Expect that the login button exists
         fireEvent.click(loginButton) // Simulate a button click on the login button
     })
+    it('allows user to login with valid credentials', async () => {
+        render(<MemoryRouter><Login /></MemoryRouter>)
+        const usernameInput = screen.getByLabelText('Username')
+        const passwordInput = screen.getByLabelText('Password')
+        const loginButton = screen.getByText('Login')
+        fireEvent.change(usernameInput, { target: { value: 'validUsername' } })
+        fireEvent.change(passwordInput, { target: { value: 'validPassword' } })
+        fireEvent.click(loginButton)
+    })
 })
 
 describe('User List Component', () => {

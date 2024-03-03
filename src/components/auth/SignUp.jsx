@@ -101,7 +101,7 @@ export default function Signup() {
                     {/* Form labels and input boxes. Calls handleSubmit() on submission */}
                     <form className='space-y-4 md:space-y-4' onSubmit={handleSubmit}>
                         <div>
-                            <label htmlFor='text' className='block mb-2 text-sm font-medium text-gray-900'>
+                            <label htmlFor='username' className='block mb-2 text-sm font-medium text-gray-900'>
                                 Username
                             </label>
                             <input
