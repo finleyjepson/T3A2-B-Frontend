@@ -81,11 +81,11 @@ export default function Signup() {
            
             console.log("User successfully registered")
             // Show success message
-            setSuccessMessage("User successfully registered. Please login on home screen.");
+            setSuccessMessage("User successfully registered. Please login on home screen. Going back home...");
             // Redirect user back to home after 3 seconds
             setTimeout(() => {
                 navigate("/"); // Navigate back to home page
-            }, 3000); // Wait 3 seconds
+            }, 2000); // Wait 3 seconds
             
 
             // Catch response:
