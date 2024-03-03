@@ -33,7 +33,9 @@ export default function UserList({ users, getUsers }) {
                 throw new Error("Access token not found. Please login.")
             }
             await axiosInstance.delete(`/users/${userId}`)
+            
             navigate('/users')
+            getUsers()
             // Catch response:
         } catch (error) {
             console.error("Problem deleting user", error.message)
